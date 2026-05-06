@@ -17,6 +17,8 @@ builder.Services.AddControllers(options =>
     // Register the global filter
     options.Filters.Add<GlobalExceptionFilter>();
 });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddOpenApi();
 
@@ -26,6 +28,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
