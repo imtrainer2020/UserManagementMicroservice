@@ -24,8 +24,7 @@ namespace AuditLogService.API.Repository
                     Action = dto.Action,
                     ServiceName = dto.ServiceName,
                     IsError = dto.IsError,
-                    ErrorMessage = dto.ErrorMessage,
-                    CreatedAt = DateTime.UtcNow
+                    ErrorMessage = dto.ErrorMessage
                 });
                 return ApiResponse<int>.Success(await context.SaveChangesAsync());
             }

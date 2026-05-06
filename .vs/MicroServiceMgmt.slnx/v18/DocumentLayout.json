@@ -3,28 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A892EAA7-8DF2-4EE6-92FD-40959607776D}|UserService.API\\UserService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\userservice.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A892EAA7-8DF2-4EE6-92FD-40959607776D}|UserService.API\\UserService.API.csproj|solutionrelative:userservice.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\authservice.api\\repository\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|solutionrelative:authservice.api\\repository\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0BE94256-1781-4125-909A-30537EFE9043}|Shared.CL\\Shared.CL.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\shared.cl\\filters\\globalexceptionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BE94256-1781-4125-909A-30537EFE9043}|Shared.CL\\Shared.CL.csproj|solutionrelative:shared.cl\\filters\\globalexceptionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\authservice.api\\repository\\iauthrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|solutionrelative:authservice.api\\repository\\iauthrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0BE94256-1781-4125-909A-30537EFE9043}|Shared.CL\\Shared.CL.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\shared.cl\\filters\\roleauthfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BE94256-1781-4125-909A-30537EFE9043}|Shared.CL\\Shared.CL.csproj|solutionrelative:shared.cl\\filters\\roleauthfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\authservice.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|solutionrelative:authservice.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0BE94256-1781-4125-909A-30537EFE9043}|Shared.CL\\Shared.CL.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\shared.cl\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BE94256-1781-4125-909A-30537EFE9043}|Shared.CL\\Shared.CL.csproj|solutionrelative:shared.cl\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\authservice.api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|solutionrelative:authservice.api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C65DB489-0348-42F0-8E87-0A6CDA117187}|AuditLogService.API\\AuditLogService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\auditlogservice.api\\repository\\auditlogrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C65DB489-0348-42F0-8E87-0A6CDA117187}|AuditLogService.API\\AuditLogService.API.csproj|solutionrelative:auditlogservice.api\\repository\\auditlogrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\authservice.api\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E5F4FAC7-56CB-4689-9FDF-4CCBFA9FD462}|AuthService.API\\AuthService.API.csproj|solutionrelative:authservice.api\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C65DB489-0348-42F0-8E87-0A6CDA117187}|AuditLogService.API\\AuditLogService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\auditlogservice.api\\repository\\iauditlogrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C65DB489-0348-42F0-8E87-0A6CDA117187}|AuditLogService.API\\AuditLogService.API.csproj|solutionrelative:auditlogservice.api\\repository\\iauditlogrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C65DB489-0348-42F0-8E87-0A6CDA117187}|AuditLogService.API\\AuditLogService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\auditlogservice.api\\controllers\\auditlogscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C65DB489-0348-42F0-8E87-0A6CDA117187}|AuditLogService.API\\AuditLogService.API.csproj|solutionrelative:auditlogservice.api\\controllers\\auditlogscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,89 +34,89 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\UserService.API\\Program.cs",
-              "RelativeDocumentMoniker": "UserService.API\\Program.cs",
-              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\UserService.API\\Program.cs",
-              "RelativeToolTip": "UserService.API\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
+              "Title": "AuthRepository.cs",
+              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Repository\\AuthRepository.cs",
+              "RelativeDocumentMoniker": "AuthService.API\\Repository\\AuthRepository.cs",
+              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Repository\\AuthRepository.cs",
+              "RelativeToolTip": "AuthService.API\\Repository\\AuthRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAzwAMAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T08:33:33.857Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ApiResponse.cs",
-              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\ApiResponse.cs",
-              "RelativeDocumentMoniker": "Shared.CL\\ApiResponse.cs",
-              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\ApiResponse.cs",
-              "RelativeToolTip": "Shared.CL\\ApiResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T08:30:58.706Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "RoleAuthFilter.cs",
-              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\Filters\\RoleAuthFilter.cs",
-              "RelativeDocumentMoniker": "Shared.CL\\Filters\\RoleAuthFilter.cs",
-              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\Filters\\RoleAuthFilter.cs",
-              "RelativeToolTip": "Shared.CL\\Filters\\RoleAuthFilter.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAwwAgAAAA2AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T07:52:37.322Z",
+              "WhenOpened": "2026-05-06T09:18:59.05Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "GlobalExceptionFilter.cs",
-              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\Filters\\GlobalExceptionFilter.cs",
-              "RelativeDocumentMoniker": "Shared.CL\\Filters\\GlobalExceptionFilter.cs",
-              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\Filters\\GlobalExceptionFilter.cs",
-              "RelativeToolTip": "Shared.CL\\Filters\\GlobalExceptionFilter.cs",
-              "ViewState": "AgIAADQAAAAAAAAAAAAiwEUAAAAsAAAAAAAAAA==",
+              "Title": "IAuthRepository.cs",
+              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Repository\\IAuthRepository.cs",
+              "RelativeDocumentMoniker": "AuthService.API\\Repository\\IAuthRepository.cs",
+              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Repository\\IAuthRepository.cs",
+              "RelativeToolTip": "AuthService.API\\Repository\\IAuthRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T07:46:11.141Z",
+              "WhenOpened": "2026-05-06T09:18:44.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Program.cs",
+              "RelativeDocumentMoniker": "AuthService.API\\Program.cs",
+              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Program.cs",
+              "RelativeToolTip": "AuthService.API\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T09:17:49.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "AuthService.API\\Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "AuthService.API\\Controllers\\UsersController.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwAsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T09:16:05.127Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "AuditLogRepository.cs",
-              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuditLogService.API\\Repository\\AuditLogRepository.cs",
-              "RelativeDocumentMoniker": "AuditLogService.API\\Repository\\AuditLogRepository.cs",
-              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuditLogService.API\\Repository\\AuditLogRepository.cs",
-              "RelativeToolTip": "AuditLogService.API\\Repository\\AuditLogRepository.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAA1wBsAAAAvAAAAAAAAAA==",
+              "Title": "AuthDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Data\\AuthDbContext.cs",
+              "RelativeDocumentMoniker": "AuthService.API\\Data\\AuthDbContext.cs",
+              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuthService.API\\Data\\AuthDbContext.cs",
+              "RelativeToolTip": "AuthService.API\\Data\\AuthDbContext.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAwwBYAAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T06:24:09.799Z",
+              "WhenOpened": "2026-05-06T09:06:46.639Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "IAuditLogRepository.cs",
-              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuditLogService.API\\Repository\\IAuditLogRepository.cs",
-              "RelativeDocumentMoniker": "AuditLogService.API\\Repository\\IAuditLogRepository.cs",
-              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuditLogService.API\\Repository\\IAuditLogRepository.cs",
-              "RelativeToolTip": "AuditLogService.API\\Repository\\IAuditLogRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAAAjAAAAAAAAAA==",
+              "Title": "AuditLogsController.cs",
+              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuditLogService.API\\Controllers\\AuditLogsController.cs",
+              "RelativeDocumentMoniker": "AuditLogService.API\\Controllers\\AuditLogsController.cs",
+              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuditLogService.API\\Controllers\\AuditLogsController.cs",
+              "RelativeToolTip": "AuditLogService.API\\Controllers\\AuditLogsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T06:24:06.124Z",
+              "WhenOpened": "2026-05-06T08:37:31.006Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             }
           ]
         }

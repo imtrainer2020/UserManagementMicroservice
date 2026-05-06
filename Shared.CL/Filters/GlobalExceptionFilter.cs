@@ -65,7 +65,7 @@ namespace Shared.CL.Filters
             }
 
             // 4. Return your standardized ApiResponse to the frontend
-            var response = ApiResponse<string>.Fail("An unexpected error occurred. Our technical team has been notified.");
+            var response = ApiResponse<object>.Fail("An unexpected error occurred. Our technical team has been notified.");
             context.Result = new ObjectResult(response) { StatusCode = 500 };
             context.ExceptionHandled = true;
         }
