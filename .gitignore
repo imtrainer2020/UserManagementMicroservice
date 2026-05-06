@@ -2,6 +2,10 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
+.vs/
 /.vs/MicroServiceMgmt.slnx/FileContentIndex
 /.vs/MicroServiceMgmt.slnx/v18/.suo
+
+# Build results
+[Bb]in/
+[Oo]bj/
