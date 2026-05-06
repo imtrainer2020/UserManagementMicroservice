@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0BE94256-1781-4125-909A-30537EFE9043}|Shared.CL\\Shared.CL.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\shared.cl\\dtos\\auditlogdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BE94256-1781-4125-909A-30537EFE9043}|Shared.CL\\Shared.CL.csproj|solutionrelative:shared.cl\\dtos\\auditlogdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C65DB489-0348-42F0-8E87-0A6CDA117187}|AuditLogService.API\\AuditLogService.API.csproj|c:\\users\\2483869\\onedrive - cognizant\\desktop\\practice\\dfsa002\\microservicemgmt\\auditlogservice.api\\repository\\iauditlogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C65DB489-0348-42F0-8E87-0A6CDA117187}|AuditLogService.API\\AuditLogService.API.csproj|solutionrelative:auditlogservice.api\\repository\\iauditlogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuditLogDto.cs",
+              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\DTOs\\AuditLogDto.cs",
+              "RelativeDocumentMoniker": "Shared.CL\\DTOs\\AuditLogDto.cs",
+              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\DTOs\\AuditLogDto.cs",
+              "RelativeToolTip": "Shared.CL\\DTOs\\AuditLogDto.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAwwBQAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T05:33:48.17Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IAuditLogService.cs",
+              "DocumentMoniker": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuditLogService.API\\Repository\\IAuditLogService.cs",
+              "RelativeDocumentMoniker": "AuditLogService.API\\Repository\\IAuditLogService.cs",
+              "ToolTip": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\AuditLogService.API\\Repository\\IAuditLogService.cs",
+              "RelativeToolTip": "AuditLogService.API\\Repository\\IAuditLogService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T05:27:00.725Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

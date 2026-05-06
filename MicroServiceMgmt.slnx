@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Frontend/" />
+  <Folder Name="/Gateway/">
+    <Project Path="Gateway.API/Gateway.API.csproj" Id="5ac881df-06b4-4373-b897-cc0727277ef9" />
+  </Folder>
+  <Folder Name="/Services/">
+    <Project Path="AuditLogService.API/AuditLogService.API.csproj" Id="c65db489-0348-42f0-8e87-0a6cda117187" />
+    <Project Path="AuthService.API/AuthService.API.csproj" Id="e5f4fac7-56cb-4689-9fdf-4ccbfa9fd462" />
+    <Project Path="RoleService.API/RoleService.API.csproj" Id="62bb9d0e-9589-45bd-9fd9-2c65e1957105" />
+    <Project Path="UserService.API/UserService.API.csproj" Id="a892eaa7-8df2-4ee6-92fd-40959607776d" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="Shared.CL/Shared.CL.csproj" Id="0be94256-1781-4125-909a-30537efe9043" />
+  </Folder>
+</Solution>
