@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using AuthService.API.Models;
 using Microsoft.EntityFrameworkCore;
+using RoleService.API.Models;
 
-namespace AuthService.API.Data;
+namespace RoleService.API.Data;
 
-public partial class AuthDbContext : DbContext
+public partial class RoleDbContext : DbContext
 {
-    public AuthDbContext()
+    public RoleDbContext()
     {
     }
 
-    public AuthDbContext(DbContextOptions<AuthDbContext> options)
+    public RoleDbContext(DbContextOptions<RoleDbContext> options)
         : base(options)
     {
     }
 
-    public virtual DbSet<User> Users { get; set; }
-    public virtual DbSet<UserRolesMapping> UserRolesMappings { get; set; }
+    public virtual DbSet<Role> Roles { get; set; }
 
 //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -25,25 +24,16 @@ public partial class AuthDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07927026DE");
+            entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC074FDEF211");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D105346B220AD9").IsUnique();
+            entity.HasIndex(e => e.RoleName, "UQ__Roles__8A2B6160B594E396").IsUnique();
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Email).HasMaxLength(150);
-            entity.Property(e => e.IsActive).HasDefaultValue(true);
-            entity.Property(e => e.PasswordHash).HasMaxLength(500);
-        });
-
-        modelBuilder.Entity<UserRolesMapping>(entity =>
-        {
-            entity.HasKey(e => new { e.UserId, e.RoleId }).HasName("PK__UserRole__AF2760ADA1A25B9C");
-
-            entity.ToTable("UserRolesMapping");
+            entity.Property(e => e.RoleName).HasMaxLength(25);
         });
 
         OnModelCreatingPartial(modelBuilder);

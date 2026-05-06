@@ -4,7 +4,7 @@ using AuthService.API.Models;
 using AuthService.API.Data;
 using AuthService.API.Repository;
 using Shared.CL;
-using Shared.CL.DTOs;
+using Shared.CL.DTOs.AuthDto;
 
 [Route("api/[controller]")]
 [ApiController]

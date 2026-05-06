@@ -1,7 +1,7 @@
 ﻿using AuthService.API.Data;
 using AuthService.API.Models;
 using Shared.CL;
-using Shared.CL.DTOs;
+using Shared.CL.DTOs.AuthDto;
 
 namespace AuthService.API.Repository
 {

@@ -1,5 +1,5 @@
 ﻿using Shared.CL;
-using Shared.CL.DTOs;
+using Shared.CL.DTOs.AuditDto;
 
 namespace AuditLogService.API.Repository
 {

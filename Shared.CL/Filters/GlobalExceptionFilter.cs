@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Text;
 using Shared.CL.DTOs;
+using Shared.CL.DTOs.AuditDto;
 
 namespace Shared.CL.Filters
 {

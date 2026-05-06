@@ -1,6 +1,11 @@
 using Shared.CL.Filters;
+using Microsoft.EntityFrameworkCore;
+using RoleService.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("RoleDbConnectionString") ?? throw new InvalidOperationException("Connection string 'RoleDbContext' not found.");
+
+builder.Services.AddDbContext<RoleDbContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
 

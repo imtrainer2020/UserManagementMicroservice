@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Shared.CL.DTOs
+namespace Shared.CL.DTOs.AuditDto
 {
     public class AuditLogDto
     {
