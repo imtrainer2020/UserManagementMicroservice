@@ -1,8 +1,18 @@
+using Shared.CL.Filters;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+// Register HttpClient so the filter can use it
+builder.Services.AddHttpClient();
+
+builder.Services.AddControllers(options =>
+{
+    // Register the global filter
+    options.Filters.Add<GlobalExceptionFilter>();
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

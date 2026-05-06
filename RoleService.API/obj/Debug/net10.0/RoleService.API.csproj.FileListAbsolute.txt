@@ -16,6 +16,7 @@ C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\RoleService.API.csproj.CoreCompileInputs.cache
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\RoleService.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\RoleService.API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\RoleService.API.sourcelink.json
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
@@ -32,3 +33,5 @@ C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\RoleService.API.pdb
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\RoleService.API.genruntimeconfig.cache
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\obj\Debug\net10.0\ref\RoleService.API.dll
+C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\bin\Debug\net10.0\Shared.CL.dll
+C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\RoleService.API\bin\Debug\net10.0\Shared.CL.pdb

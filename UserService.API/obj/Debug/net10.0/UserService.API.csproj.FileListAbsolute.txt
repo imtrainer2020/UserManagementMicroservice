@@ -18,6 +18,7 @@ C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\UserService.API\obj\Debug\net10.0\UserService.API.csproj.CoreCompileInputs.cache
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\UserService.API\obj\Debug\net10.0\UserService.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\UserService.API\obj\Debug\net10.0\UserService.API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\UserService.API\obj\Debug\net10.0\UserService.API.sourcelink.json
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\UserService.API\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\UserService.API\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\UserService.API\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json

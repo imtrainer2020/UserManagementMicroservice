@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v10.0": {
       "AuthService.API/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.OpenApi": "10.0.7"
+          "Microsoft.AspNetCore.OpenApi": "10.0.7",
+          "Shared.CL": "1.0.0"
         },
         "runtime": {
           "AuthService.API.dll": {}
@@ -30,6 +31,14 @@
           "lib/net8.0/Microsoft.OpenApi.dll": {
             "assemblyVersion": "2.0.0.0",
             "fileVersion": "2.0.0.0"
+          }
+        }
+      },
+      "Shared.CL/1.0.0": {
+        "runtime": {
+          "Shared.CL.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       }
@@ -54,6 +63,11 @@
       "sha512": "sha512-GGYLfzV/G/ct80OZ45JxnWP7NvMX1BCugn/lX7TH5o0lcVaviavsLMTxmFV2AybXWjbi3h6FF1vgZiTK6PXndw==",
       "path": "microsoft.openapi/2.0.0",
       "hashPath": "microsoft.openapi.2.0.0.nupkg.sha512"
+    },
+    "Shared.CL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

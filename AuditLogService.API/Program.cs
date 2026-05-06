@@ -1,6 +1,8 @@
 using AuditLogService.API.Data;
 using AuditLogService.API.Repository;
 using Microsoft.EntityFrameworkCore;
+using Shared.CL.Filters;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AuditLogDbConnectionString") ?? throw new InvalidOperationException("Connection string 'AuditLogDbConnectionString' not found.");
 
@@ -8,8 +10,15 @@ builder.Services.AddDbContext<AuditLogDbContext>(options => options.UseSqlServer
 
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// Register HttpClient so the filter can use it
+builder.Services.AddHttpClient();
+
+builder.Services.AddControllers(options =>
+{
+    // Register the global filter
+    options.Filters.Add<GlobalExceptionFilter>();
+});
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();

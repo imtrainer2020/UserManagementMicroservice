@@ -43,6 +43,16 @@
           "build/Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props": {},
           "build/Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets": {}
         }
+      },
+      "Shared.CL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/Shared.CL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Shared.CL.dll": {}
+        }
       }
     }
   },
@@ -162,12 +172,18 @@
         "tools/zh-Hant/Microsoft.VisualStudio.Containers.Tools.Shared.resources.dll",
         "tools/zh-Hant/Microsoft.VisualStudio.Containers.Tools.Tasks.resources.dll"
       ]
+    },
+    "Shared.CL/1.0.0": {
+      "type": "project",
+      "path": "../Shared.CL/Shared.CL.csproj",
+      "msbuildProject": "../Shared.CL/Shared.CL.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
       "Microsoft.AspNetCore.OpenApi >= 10.0.7",
-      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.23.0"
+      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.23.0",
+      "Shared.CL >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -203,7 +219,11 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\Shared.CL.csproj": {
+              "projectPath": "C:\\Users\\2483869\\OneDrive - Cognizant\\Desktop\\Practice\\DFSA002\\MicroServiceMgmt\\Shared.CL\\Shared.CL.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

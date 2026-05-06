@@ -5,7 +5,9 @@ C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\Shared.CL.AssemblyInfoInputs.cache
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\Shared.CL.AssemblyInfo.cs
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\Shared.CL.csproj.CoreCompileInputs.cache
+C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\Shared.CL.sourcelink.json
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\Shared.CL.dll
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\refint\Shared.CL.dll
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\Shared.CL.pdb
 C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\ref\Shared.CL.dll
+C:\Users\2483869\OneDrive - Cognizant\Desktop\Practice\DFSA002\MicroServiceMgmt\Shared.CL\obj\Debug\net10.0\Shared.CL.csproj.AssemblyReference.cache
