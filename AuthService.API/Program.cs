@@ -1,13 +1,14 @@
-using Shared.CL.Filters;
-using Microsoft.EntityFrameworkCore;
 using AuthService.API.Data;
+using AuthService.API.Repository;
+using Microsoft.EntityFrameworkCore;
+using Shared.CL.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("AuthDbContext") ?? throw new InvalidOperationException("Connection string 'AuthDbContext' not found.");
+var connectionString = builder.Configuration.GetConnectionString("AuthDbConnectionString") ?? throw new InvalidOperationException("Connection string 'AuthDbConnectionString' not found.");
 
 builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(connectionString));
 
-// Add services to the container.
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 // Register HttpClient so the filter can use it
 builder.Services.AddHttpClient();

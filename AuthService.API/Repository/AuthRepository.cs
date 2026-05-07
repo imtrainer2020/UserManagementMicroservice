@@ -12,22 +12,18 @@ namespace AuthService.API.Repository
         {
             context = _context;
         }
-        public async Task<ApiResponse<int>> RegisterUserAsync(UserRegisterDto dto)
+        public async Task<int> RegisterUserAsync(UserRegisterDto dto)
         {
-            try
+            string securePasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            var user = new User
             {
-                string securePasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
-                await context.Users.AddAsync(new User
-                {
-                    Email = dto.Email,
-                    PasswordHash = securePasswordHash
-                });
-                return ApiResponse<int>.Success(await context.SaveChangesAsync());
-            }
-            catch (Exception ex)
-            {
-                return ApiResponse<int>.Fail(ex.Message);
-            }
+                Email = dto.Email,
+                PasswordHash = securePasswordHash
+            };
+
+            await context.Users.AddAsync(user);
+            await context.SaveChangesAsync();
+            return user.Id;
         }
     }
 }

@@ -19,7 +19,17 @@ public class UsersController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<ApiResponse<int>>> RegisterUser([FromBody] UserRegisterDto dto)
     {
-        var result = await repo.RegisterUserAsync(dto);
-        return (result.IsSuccess) ? Ok(result) : BadRequest(result);
+        try
+        {
+            return Ok(ApiResponse<int>
+                .Success(
+                    await repo.RegisterUserAsync(dto),
+                    "User registered successfully.")
+                );
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ApiResponse<int>.Fail(ex.InnerException?.Message ?? ex.Message));
+        }
     }
 }

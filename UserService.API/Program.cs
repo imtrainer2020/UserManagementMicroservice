@@ -1,13 +1,14 @@
-using Shared.CL.Filters;
 using Microsoft.EntityFrameworkCore;
+using Shared.CL.Filters;
 using UserService.API.Data;
+using UserService.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("UserDbConnectionString") ?? throw new InvalidOperationException("Connection string 'UserDbConnectionString' not found.");
 
 builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
 
-// Add services to the container.
+builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
 
 // Register HttpClient so the filter can use it
 builder.Services.AddHttpClient();

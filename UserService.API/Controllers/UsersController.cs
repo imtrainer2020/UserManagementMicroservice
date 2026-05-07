@@ -18,7 +18,6 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult<ApiResponse<int>>> AddUserDetails(UserDetailCreateDto dto)
     {
         var result = await repo.AddUserDetailsAsync(dto);

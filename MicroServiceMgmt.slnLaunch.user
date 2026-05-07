@@ -4,27 +4,28 @@
     "Projects": [
       {
         "Path": "Gateway.API\\Gateway.API.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": "http"
       },
       {
         "Path": "AuthService.API\\AuthService.API.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": "http"
       },
       {
         "Path": "AuditLogService.API\\AuditLogService.API.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": "http"
       },
       {
         "Path": "RoleService.API\\RoleService.API.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": "http"
       },
       {
         "Path": "UserService.API\\UserService.API.csproj",
-        "Action": "Start"
-      },
-      {
-        "Path": "App.UI\\App.UI.esproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": "http"
       }
     ]
   }

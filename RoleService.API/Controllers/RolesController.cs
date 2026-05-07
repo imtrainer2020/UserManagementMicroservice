@@ -18,10 +18,9 @@ public class RolesController : ControllerBase
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult<ApiResponse<int>>> CreateRole(RoleCreateDto dto)
     {
         var result = await repo.CreateRoleAsync(dto);
-        return (result.IsSuccess) ? Ok(result) : BadRequest(result);
+        return (result!=null && result.IsSuccess) ? Ok(result) : BadRequest(result);
     }
 }
