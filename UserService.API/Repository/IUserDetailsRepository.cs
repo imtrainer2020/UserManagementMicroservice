@@ -5,6 +5,6 @@ namespace UserService.API.Repository
 {
     public interface IUserDetailsRepository
     {
-        public Task<ApiResponse<int>> AddUserDetailsAsync(UserDetailCreateDto dto);
+        public Task<int> AddUserDetailsAsync(UserDetailCreateDto dto);
     }
 }

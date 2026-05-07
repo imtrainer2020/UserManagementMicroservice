@@ -15,24 +15,17 @@ namespace UserService.API.Repository
             context = _context;
         }
 
-        public async Task<ApiResponse<int>> AddUserDetailsAsync(UserDetailCreateDto dto)
+        public async Task<int> AddUserDetailsAsync(UserDetailCreateDto dto)
         {
-			try
-			{
-                await context.UserDetails.AddAsync(new UserDetail
-                {
-                    Address = dto.Address,
-                    Fullname = dto.Fullname,
-                    PhotoUrl = dto.PhotoUrl,
-                    Phone = dto.Phone,
-                    UserId = dto.UserId
-                });
-                return ApiResponse<int>.Success(await context.SaveChangesAsync());
-            }
-			catch (Exception ex)
-			{
-                return ApiResponse<int>.Fail(ex.Message);
-            }
+            await context.UserDetails.AddAsync(new UserDetail
+            {
+                Address = dto.Address,
+                Fullname = dto.Fullname,
+                PhotoUrl = dto.PhotoUrl,
+                Phone = dto.Phone,
+                UserId = dto.UserId
+            });
+            return await context.SaveChangesAsync();
         }
     }
 }

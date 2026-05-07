@@ -13,17 +13,10 @@ namespace RoleService.API.Repository
         {
             this.context = _context;
         }
-        public async Task<ApiResponse<int>> CreateRoleAsync(RoleCreateDto dto)
+        public async Task<int> AddRoleAsync(RoleCreateDto dto)
         {
-            try
-            {
-                await context.Roles.AddAsync(new Role { RoleName = dto.RoleName });
-                return ApiResponse<int>.Success(await context.SaveChangesAsync());
-            }
-            catch (Exception ex)
-            {
-                return ApiResponse<int>.Fail(ex.Message);
-            }
+            await context.Roles.AddAsync(new Role { RoleName = dto.RoleName });
+            return await context.SaveChangesAsync();
         }
     }
 }

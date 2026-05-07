@@ -5,6 +5,6 @@ namespace AuditLogService.API.Repository
 {
     public interface IAuditLogRepository
     {
-        public Task<ApiResponse<int>> AddAuditLogAsync(AuditLogDto dto);
+        public Task<int> AddAuditLogAsync(AuditLogDto dto);
     }
 }

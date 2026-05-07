@@ -5,6 +5,6 @@ namespace RoleService.API.Repository
 {
     public interface IRoleRepository
     {
-        public Task<ApiResponse<int>> CreateRoleAsync(RoleCreateDto dto);
+        public Task<int> AddRoleAsync(RoleCreateDto dto);
     }
 }

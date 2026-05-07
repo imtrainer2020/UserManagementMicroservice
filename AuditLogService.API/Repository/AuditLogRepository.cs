@@ -13,25 +13,18 @@ namespace AuditLogService.API.Repository
         {
             context = _context;
         }
-        public async Task<ApiResponse<int>> AddAuditLogAsync(AuditLogDto dto)
+        public async Task<int> AddAuditLogAsync(AuditLogDto dto)
         {
-            try
+            await context.AuditLogs.AddAsync(new AuditLog
             {
-                await context.AuditLogs.AddAsync(new AuditLog
-                {
-                    UserId = dto.UserId,
-                    UserEmail = dto.UserEmail,
-                    Action = dto.Action,
-                    ServiceName = dto.ServiceName,
-                    IsError = dto.IsError,
-                    ErrorMessage = dto.ErrorMessage
-                });
-                return ApiResponse<int>.Success(await context.SaveChangesAsync());
-            }
-            catch (Exception ex)
-            {
-                return ApiResponse<int>.Fail(ex.Message);
-            }
+                UserId = dto.UserId,
+                UserEmail = dto.UserEmail,
+                Action = dto.Action,
+                ServiceName = dto.ServiceName,
+                IsError = dto.IsError,
+                ErrorMessage = dto.ErrorMessage
+            });
+            return await context.SaveChangesAsync();
         }
     }
 }

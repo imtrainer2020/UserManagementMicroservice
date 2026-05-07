@@ -20,7 +20,14 @@ public class RolesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ApiResponse<int>>> CreateRole(RoleCreateDto dto)
     {
-        var result = await repo.CreateRoleAsync(dto);
-        return (result!=null && result.IsSuccess) ? Ok(result) : BadRequest(result);
+        try
+        {
+            int res = await repo.AddRoleAsync(dto);
+            return Ok(ApiResponse<int>.Success(res, "Role Added successfully."));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ApiResponse<int>.Fail(ex.InnerException?.Message ?? ex.Message));
+        }
     }
 }
