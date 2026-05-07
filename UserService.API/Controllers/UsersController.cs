@@ -1,17 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UserService.API.Models;
+using Shared.CL;
+using Shared.CL.DTOs.RolesDto;
+using Shared.CL.DTOs.UserDetailDto;
 using UserService.API.Data;
+using UserService.API.Models;
+using UserService.API.Repository;
 
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly UserDbContext _context;
-    public UsersController(UserDbContext context)
+    private readonly IUserDetailsRepository repo;
+    public UsersController(IUserDetailsRepository _repo)
     {
-        _context = context;
+        repo = _repo;
     }
 
-    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult<ApiResponse<int>>> AddUserDetails(UserDetailCreateDto dto)
+    {
+        var result = await repo.AddUserDetailsAsync(dto);
+        return (result.IsSuccess) ? Ok(result) : BadRequest(result);
+    }
+
 }

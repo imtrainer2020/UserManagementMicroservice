@@ -15,7 +15,7 @@ namespace UserService.API.Repository
             context = _context;
         }
 
-        public async Task<ApiResponse<int>> CreateRoleAsync(UserDetailCreateDto dto)
+        public async Task<ApiResponse<int>> AddUserDetailsAsync(UserDetailCreateDto dto)
         {
 			try
 			{
