@@ -17,10 +17,6 @@ public class AuditLogsController : ControllerBase
     public async Task<ActionResult<ApiResponse<int>>> AddAuditLog(AuditLogDto dto)
     {
         ApiResponse<int> result = await repo.AddAuditLogAsync(dto);
-
-        if (!result.IsSuccess)
-            return StatusCode(500, result);
-
-        return Ok(result);
+        return (result.IsSuccess) ? Ok(result) : BadRequest(result);
     }
 }
