@@ -20,15 +20,9 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ApiResponse<int>>> AddUserDetails(UserDetailCreateDto dto)
     {
-        try
-        {
-            int res = await repo.AddUserDetailsAsync(dto);
-            return Ok(ApiResponse<int>.Success(res, "User details added successfully."));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ApiResponse<int>.Fail(ex.InnerException?.Message ?? ex.Message));
-        }
+        int res = await repo.AddUserDetailsAsync(dto);
+        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User details added successfully."))
+            : Ok(ApiResponse<int>.Fail("Failed to add user details."));
     }
 
 }

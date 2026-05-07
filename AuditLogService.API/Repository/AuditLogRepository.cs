@@ -15,7 +15,7 @@ namespace AuditLogService.API.Repository
         }
         public async Task<int> AddAuditLogAsync(AuditLogDto dto)
         {
-            await context.AuditLogs.AddAsync(new AuditLog
+            AuditLog log = new AuditLog
             {
                 UserId = dto.UserId,
                 UserEmail = dto.UserEmail,
@@ -23,8 +23,11 @@ namespace AuditLogService.API.Repository
                 ServiceName = dto.ServiceName,
                 IsError = dto.IsError,
                 ErrorMessage = dto.ErrorMessage
-            });
-            return await context.SaveChangesAsync();
+            };
+            await context.AuditLogs.AddAsync(log);
+            await context.SaveChangesAsync();
+
+            return log.Id;
         }
     }
 }

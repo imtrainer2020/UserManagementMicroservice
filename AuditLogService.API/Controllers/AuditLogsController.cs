@@ -16,14 +16,9 @@ public class AuditLogsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ApiResponse<int>>> AddAuditLog(AuditLogDto dto)
     {
-        try
-        {
-            int res = await repo.AddAuditLogAsync(dto);
-            return Ok(ApiResponse<int>.Success(res, "Log Registered successfully."));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ApiResponse<int>.Fail(ex.InnerException?.Message ?? ex.Message));
-        }
+        int res = await repo.AddAuditLogAsync(dto);
+        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "Log registered successfully."))
+            : Ok(ApiResponse<int>.Fail("Log registration failed."));
+
     }
 }

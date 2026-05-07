@@ -17,15 +17,18 @@ namespace UserService.API.Repository
 
         public async Task<int> AddUserDetailsAsync(UserDetailCreateDto dto)
         {
-            await context.UserDetails.AddAsync(new UserDetail
+            var ud = new UserDetail
             {
                 Address = dto.Address,
                 Fullname = dto.Fullname,
                 PhotoUrl = dto.PhotoUrl,
                 Phone = dto.Phone,
                 UserId = dto.UserId
-            });
-            return await context.SaveChangesAsync();
+            };
+            await context.UserDetails.AddAsync(ud);
+            await context.SaveChangesAsync();
+
+            return ud.Id;
         }
     }
 }

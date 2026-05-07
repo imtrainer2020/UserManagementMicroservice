@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RoleService.API.Data;
-using RoleService.API.Models;
 using RoleService.API.Repository;
 using Shared.CL;
 using Shared.CL.DTOs.RolesDto;
@@ -20,14 +18,15 @@ public class RolesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ApiResponse<int>>> CreateRole(RoleCreateDto dto)
     {
-        try
+        int res = await repo.AddRoleAsync(dto);
+        switch (res)
         {
-            int res = await repo.AddRoleAsync(dto);
-            return Ok(ApiResponse<int>.Success(res, "Role Added successfully."));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ApiResponse<int>.Fail(ex.InnerException?.Message ?? ex.Message));
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "Role added successfully."));
+            case -1:
+                return Ok(ApiResponse<int>.Fail("Role " + dto.RoleName + " already exists."));
+            default:
+                return Ok(ApiResponse<int>.Fail("An error occurred while adding the role."));
         }
     }
 }
