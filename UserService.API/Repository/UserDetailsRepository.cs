@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.CL;
-using Shared.CL.DTOs.UserDetailDto;
+using Shared.CL.DTOs;
 using UserService.API.Data;
 using UserService.API.Models;
 

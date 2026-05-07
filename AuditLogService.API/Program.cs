@@ -13,11 +13,7 @@ builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 // Register HttpClient so the filter can use it
 builder.Services.AddHttpClient();
 
-builder.Services.AddControllers(options =>
-{
-    // Register the global filter
-    options.Filters.Add<GlobalExceptionFilter>();
-});
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

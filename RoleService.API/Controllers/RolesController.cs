@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RoleService.API.Repository;
 using Shared.CL;
-using Shared.CL.DTOs.RolesDto;
+using Shared.CL.DTOs;
 
 [Route("api/[controller]")]
 [ApiController]

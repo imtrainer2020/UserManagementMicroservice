@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AuditLogService.API.Repository;
 using Shared.CL;
-using Shared.CL.DTOs.AuditDto;
+using Shared.CL.DTOs;
 
 [Route("api/[controller]")]
 [ApiController]

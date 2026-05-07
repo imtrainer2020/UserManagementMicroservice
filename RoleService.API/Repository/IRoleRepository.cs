@@ -1,5 +1,5 @@
 ﻿using Shared.CL;
-using Shared.CL.DTOs.RolesDto;
+using Shared.CL.DTOs;
 
 namespace RoleService.API.Repository
 {

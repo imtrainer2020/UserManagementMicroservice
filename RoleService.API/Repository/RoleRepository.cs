@@ -1,8 +1,8 @@
 ﻿using RoleService.API.Data;
 using RoleService.API.Models;
 using Shared.CL;
-using Shared.CL.DTOs.RolesDto;
 using Microsoft.EntityFrameworkCore;
+using Shared.CL.DTOs;
 
 namespace RoleService.API.Repository
 {

@@ -1,5 +1,5 @@
 ﻿using Shared.CL;
-using Shared.CL.DTOs.UserDetailDto;
+using Shared.CL.DTOs;
 
 namespace UserService.API.Repository
 {
