@@ -23,7 +23,7 @@ public class UsersController : ControllerBase
         try
         {
             int res = await repo.AddUserDetailsAsync(dto);
-            return Ok(ApiResponse<int>.Success(res, "Role Added successfully."));
+            return Ok(ApiResponse<int>.Success(res, "User details added successfully."));
         }
         catch (Exception ex)
         {
