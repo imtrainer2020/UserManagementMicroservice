@@ -16,3 +16,6 @@ Content-Type: application/json
   "Email": "admin@app.com",
   "Password": "Admin@123"
 }
+
+###
+GET {{Gateway.API_HostAddress}}/gateway/auditlogs

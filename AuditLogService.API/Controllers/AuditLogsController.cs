@@ -14,11 +14,20 @@ public class AuditLogsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ApiResponse<int>>> AddAuditLog(AuditLogDto dto)
+    public async Task<ActionResult<ApiResponse<int>>> AddAuditLog(AuditLogCreateDto dto)
     {
         int res = await repo.AddAuditLogAsync(dto);
         return (res > 0) ? Ok(ApiResponse<int>.Success(res, "Log registered successfully."))
             : Ok(ApiResponse<int>.Fail("Log registration failed."));
 
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<ApiResponse<IList<AuditLogListDto>>>> GetAuditLogs()
+    {
+        var auditLogs = await repo.GetAuditLogsAsync();
+        return (auditLogs != null && auditLogs.Count > 0) ? 
+            Ok(ApiResponse<IList<AuditLogListDto>>.Success(auditLogs, "Audit logs retrieved successfully."))
+            : Ok(ApiResponse<IList<AuditLogListDto>>.Fail("No audit logs found."));
     }
 }

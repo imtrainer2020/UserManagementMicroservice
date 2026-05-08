@@ -30,4 +30,53 @@ public class UsersController : ControllerBase
         string token = await repo.LoginUserAsync(dto);
         return Ok(ApiResponse<string>.Success(token, "Login successful."));
     }
+
+    [HttpPost("forgetpassword")]
+    public async Task<ActionResult<ApiResponse<bool>>> ForgetPassword([FromBody] string email)
+    {
+        bool isEmailExist = await repo.ForgetPasswordAsync(email);
+        return Ok(ApiResponse<bool>.Success(isEmailExist, isEmailExist ? "Email exists." : "Email does not exist."));
+    }
+
+    [HttpPut("update")]
+    public async Task<ActionResult<ApiResponse<int>>> UpdateUser([FromBody] UserEditDto dto)
+    {
+        int res = await repo.UpdateUserAsync(dto);
+        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User updated successfully."))
+            : Ok(ApiResponse<int>.Fail("User update failed."));
+    }
+
+    [HttpPost("resetpassword")]
+    public async Task<ActionResult<ApiResponse<int>>> ResetPassword([FromBody] ResetPasswordDto dto)
+    {
+        int res = await repo.ResetPasswordAsync(dto);
+        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "Password reset successfully."))
+            : Ok(ApiResponse<int>.Fail("Password reset failed."));
+    }
+
+    [HttpDelete("delete")]
+    public async Task<ActionResult<ApiResponse<int>>> DeleteUser([FromBody] UserDeleteDto dto)
+    {
+        int res = await repo.DeleteUserAsync(dto);
+        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User deleted successfully."))
+            : Ok(ApiResponse<int>.Fail("User deletion failed."));
+    }
+
+    [HttpGet("list")]
+    public async Task<ActionResult<ApiResponse<IList<UserListDto>>>> ListUsers()
+    {
+        var users = await repo.GetAllUsersAsync();
+        return (users != null && users.Count > 0) ?
+            Ok(ApiResponse<IList<UserListDto>>.Success(users, "Users listed successfully."))
+            : Ok(ApiResponse<IList<UserListDto>>.Fail("No users found."));
+    }
+
+    [HttpGet("view")]
+    public async Task<ActionResult<ApiResponse<UserViewDto>>> ViewUser([FromQuery] int? id, [FromQuery] string? email)
+    {
+        UserViewDto user = await repo.ViewUserAsync(id, email);
+        return (user != null && user.Id > 1) ?
+            Ok(ApiResponse<UserViewDto>.Success(user, "User viewed successfully."))
+            : Ok(ApiResponse<UserViewDto>.Fail("User not found."));
+    }
 }

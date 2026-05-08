@@ -18,6 +18,26 @@ namespace AuthService.API.Repository
             context = _context;
             config = _config;
         }
+
+        public async Task<int> UpdateUserAsync(UserEditDto dto)
+        {
+            var user = await GetUserByIdAsync(dto.Id);
+            if (user == null) throw new Exception("User not found");
+
+            user.Email = dto.Email;
+            user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            user.RoleId = (dto.RoleId > 0) ? dto.RoleId : 2; // Default to "User" role if not provided
+            user.IsActive = dto.IsActive;
+
+            return await context.SaveChangesAsync();
+        }
+
+        public async Task<bool> ForgetPasswordAsync(string email)
+        {
+            bool isEmailExist = await context.Users.AnyAsync(u => u.Email == email);
+            return isEmailExist;
+        }
+
         public async Task<string> LoginUserAsync(UserLoginDto dto)
         {
             // 1. Find the user
@@ -52,16 +72,81 @@ namespace AuthService.API.Repository
 
         public async Task<int> RegisterUserAsync(UserRegisterDto dto)
         {
-            string securePasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
             var user = new User
             {
                 Email = dto.Email,
-                PasswordHash = securePasswordHash
+                PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                RoleId = (dto.RoleId > 0) ? dto.RoleId : 2 // Default to "User" role if not provided
             };
 
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
             return user.Id;
+        }
+
+        public async Task<int> ResetPasswordAsync(ResetPasswordDto dto)
+        {
+            var user = await GetUserByEmailAsync(dto.Email);
+            if (user == null) throw new Exception("User not found");
+
+            user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            return await context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteUserAsync(UserDeleteDto dto)
+        {
+            User? user = null;
+            if (dto.Id != null && dto.Id > 0)
+                user = await GetUserByIdAsync(dto.Id.Value);
+            else if (dto.email != null && dto.email.Length > 0)
+                user = await GetUserByEmailAsync(dto.email);
+
+            if (user == null) throw new Exception("User not found");
+
+            context.Users.Remove(user);
+            return await context.SaveChangesAsync();
+        }
+
+        public async Task<IList<UserListDto>> GetAllUsersAsync()
+        {
+            return await context.Users
+                .Select(u => new UserListDto
+                {
+                    Id = u.Id,
+                    Email = u.Email,
+                    IsActive = u.IsActive
+                })
+                .ToListAsync();
+        }
+
+        public async Task<UserViewDto> ViewUserAsync(int? id, string? email)
+        {
+            User? user = null;
+            if (id != null && id > 0)
+                user = await GetUserByIdAsync(id.Value);
+            else if (email != null && email.Length > 0)
+                user = await GetUserByEmailAsync(email);
+
+            if (user == null) throw new Exception("User not found");
+
+            var userViewDto = new UserViewDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                RoleId = user.RoleId,
+                IsActive = user.IsActive,
+                RoleName = (await context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId))?.RoleName ?? "User"
+            };
+            return userViewDto;
+        }
+
+        private async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+        private async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

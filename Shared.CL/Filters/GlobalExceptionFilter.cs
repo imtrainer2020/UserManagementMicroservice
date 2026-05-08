@@ -40,7 +40,7 @@ namespace Shared.CL.Filters
             int? userId = int.TryParse(userIdClaim, out var id) ? id : null;
 
             // 2. Build the Audit Log Payload based on your DB schema requirements
-            var auditLog = new AuditLogDto
+            var auditLog = new AuditLogCreateDto
             {
                 UserId = userId,
                 UserEmail = emailClaim,

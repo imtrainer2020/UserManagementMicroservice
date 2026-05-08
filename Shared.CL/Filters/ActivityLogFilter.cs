@@ -41,7 +41,7 @@ namespace Shared.CL.Filters
             int? userId = int.TryParse(userIdClaim, out var id) ? id : null;
 
             // BUILDING THE LOG RECORD
-            var auditLog = new AuditLogDto
+            var auditLog = new AuditLogCreateDto
             {
                 UserId = userId,
                 UserEmail = emailClaim,

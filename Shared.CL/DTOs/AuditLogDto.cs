@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Shared.CL.DTOs
 {
-    public record AuditLogDto
+    public record AuditLogCreateDto
     {
         public int? UserId { get; init; }
         public string? UserEmail { get; init; }
@@ -12,5 +12,10 @@ namespace Shared.CL.DTOs
         public string ServiceName { get; init; } = null!;
         public bool IsError { get; init; } = true;
         public string? ErrorMessage { get; init; }
+    }
+
+    public record AuditLogListDto : AuditLogCreateDto
+    {
+        public DateTime CreatedAt { get; init; }
     }
 }
