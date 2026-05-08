@@ -18,4 +18,6 @@ public partial class UserDetail
     public string? Phone { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    public virtual User User { get; set; } = null!;
 }

@@ -16,28 +16,16 @@ public partial class UserDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Role> Roles { get; set; }
-
     public virtual DbSet<User> Users { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MS_UserMgmt;Trusted_Connection=True;TrustServerCertificate=True");
+    public virtual DbSet<UserDetail> UserDetails { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MS_UserMgmt;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Role>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC074FDEF211");
-
-            entity.HasIndex(e => e.RoleName, "UQ__Roles__8A2B6160B594E396").IsUnique();
-
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.RoleName).HasMaxLength(25);
-        });
-
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0744B5CDF3");
@@ -51,11 +39,26 @@ public partial class UserDbContext : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.PasswordHash).HasMaxLength(500);
             entity.Property(e => e.RoleId).HasDefaultValue(2);
+        });
 
-            entity.HasOne(d => d.Role).WithMany(p => p.Users)
-                .HasForeignKey(d => d.RoleId)
+        modelBuilder.Entity<UserDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserDeta__3214EC07A3B0A7B0");
+
+            entity.ToTable("UserDetail");
+
+            entity.Property(e => e.Address).HasMaxLength(500);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Fullname).HasMaxLength(250);
+            entity.Property(e => e.Phone).HasMaxLength(20);
+            entity.Property(e => e.PhotoUrl).HasMaxLength(500);
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserDetails)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Users_ToRoles");
+                .HasConstraintName("FK__UserDetai__UserI__60A75C0F");
         });
 
         OnModelCreatingPartial(modelBuilder);
