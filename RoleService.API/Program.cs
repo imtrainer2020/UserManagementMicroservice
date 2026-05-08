@@ -17,6 +17,9 @@ builder.Services.AddControllers(options =>
 {
     // Register the global filter
     options.Filters.Add<GlobalExceptionFilter>();
+
+    // Log successful activities and endpoint hits
+    options.Filters.Add<ActivityLogFilter>();
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

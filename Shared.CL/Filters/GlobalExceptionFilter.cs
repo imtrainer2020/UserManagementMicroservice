@@ -11,26 +11,26 @@ namespace Shared.CL.Filters
 {
     public class GlobalExceptionFilter : IAsyncExceptionFilter
     {
-        private readonly ILogger<GlobalExceptionFilter> _logger;
-        private readonly HttpClient _httpClient;
-        private readonly string _serviceName;
-        private readonly string _auditLogApiUrl;
+        private readonly ILogger<GlobalExceptionFilter> logger;
+        private readonly HttpClient httpClient;
+        private readonly string serviceName;
+        private readonly string auditLogApiUrl;
 
         public GlobalExceptionFilter(
-            ILogger<GlobalExceptionFilter> logger,
-            HttpClient httpClient,
-            IConfiguration config)
+            ILogger<GlobalExceptionFilter> _logger,
+            HttpClient _httpClient,
+            IConfiguration _config)
         {
-            _logger = logger;
-            _httpClient = httpClient;
+            logger = _logger;
+            httpClient = _httpClient;
 
             // Read from appsettings.json of whichever API is currently running
-            _serviceName = config["ServiceName"] ?? "UnknownService";
-            _auditLogApiUrl = config["AuditLogApiUrl"] ?? "https://localhost:5001/api/auditlogs";
+            serviceName = _config["ServiceName"] ?? "UnknownService";
+            auditLogApiUrl = _config["AuditLogApiUrl"] ?? "http://localhost:5298/api/auditlogs";
         }
         public async Task OnExceptionAsync(ExceptionContext context)
         {
-            _logger.LogError(context.Exception, "Unhandled exception occurred in {ServiceName}", _serviceName);
+            logger.LogError(context.Exception, "Unhandled exception occurred in {ServiceName}", serviceName);
 
             // 1. Attempt to extract User details if the request was authenticated
             var user = context.HttpContext.User;
@@ -45,7 +45,7 @@ namespace Shared.CL.Filters
                 UserId = userId,
                 UserEmail = emailClaim,
                 Action = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}",
-                ServiceName = _serviceName,
+                ServiceName = serviceName,
                 IsError = true,
                 ErrorMessage = context.Exception.ToString() // Sends full stack trace to the DB
             };
@@ -56,12 +56,12 @@ namespace Shared.CL.Filters
                 var json = JsonSerializer.Serialize(auditLog);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                await _httpClient.PostAsync(_auditLogApiUrl, content);
+                await httpClient.PostAsync(auditLogApiUrl, content);
             }
             catch (Exception ex)
             {
                 // If the Audit Service is down, log to the local console/file so the error isn't lost
-                _logger.LogCritical(ex, "FAILED to send audit log to AuditLogService.API.");
+                logger.LogCritical(ex, "FAILED to send audit log to AuditLogService.API.");
             }
 
             // 4. Return your standardized ApiResponse to the frontend

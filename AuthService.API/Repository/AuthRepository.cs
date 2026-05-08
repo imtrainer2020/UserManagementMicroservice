@@ -18,24 +18,12 @@ namespace AuthService.API.Repository
             context = _context;
             config = _config;
         }
-
-        private async Task<string> GetRoleNamefromUserIdAsync(int userId)
-        {
-            var user = await context.Users.FindAsync(userId);
-            if (user == null) throw new Exception("User not found");
-            return user.Role.RoleName;
-        }
-        private async Task<string> GetRoleNamefromEmailAsync(string email)
-        {
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null) throw new Exception("User not found");
-            return user.Role.RoleName;
-        }
-
         public async Task<string> LoginUserAsync(UserLoginDto dto)
         {
             // 1. Find the user
-            User? user = await context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            User? user = await context.Users
+                                      .Include(u => u.Role)
+                                      .FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null) throw new Exception("Invalid Email or Password");
 
             // 2. Verify Password
@@ -52,7 +40,7 @@ namespace AuthService.API.Repository
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, await GetRoleNamefromUserIdAsync(user.Id))
+                    new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "User")
                 }),
                 Expires = DateTime.UtcNow.AddHours(2), // Token is valid for 2 hours
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
