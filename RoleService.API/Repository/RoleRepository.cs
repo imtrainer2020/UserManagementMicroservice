@@ -30,5 +30,44 @@ namespace RoleService.API.Repository
             else
                 return -1;
         }
+
+        public async Task<int> DeleteRoleAsync(int id)
+        {
+            Role? role = await context.Roles.FirstOrDefaultAsync(r => r.Id == id);
+            if (role != null)
+            {
+                context.Roles.Remove(role);
+                return await context.SaveChangesAsync();
+            }
+            else
+                throw new Exception("Role not found");
+        }
+
+        public async Task<IList<RoleViewDto>> GetAllRolesAsync()
+        {
+            return await context.Roles
+                .Select(s => new RoleViewDto(s.Id, s.RoleName, s.CreatedAt))
+                .ToListAsync();
+        }
+
+        public async Task<RoleViewDto> GetRoleByIdAsync(int id)
+        {
+            return await context.Roles
+                .Where(r => r.Id == id)
+                .Select(s => new RoleViewDto(s.Id, s.RoleName, s.CreatedAt))
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<int> UpdateRoleAsync(RoleUpdateDto dto)
+        {
+            Role? role = await context.Roles.FirstOrDefaultAsync(r => r.Id == dto.Id);
+            if (role != null)
+            {
+                role.RoleName = dto.RoleName;
+                return await context.SaveChangesAsync();
+            }
+            else
+                throw new Exception("Role not found");
+        }
     }
 }

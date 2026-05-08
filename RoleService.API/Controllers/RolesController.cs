@@ -29,4 +29,40 @@ public class RolesController : ControllerBase
                 return Ok(ApiResponse<int>.Fail("An error occurred while adding the role."));
         }
     }
+
+    [HttpGet]
+    public async Task<ActionResult<ApiResponse<IList<RoleViewDto>>>> GetAllRoles()
+    {
+        var roles = await repo.GetAllRolesAsync();
+        return (roles != null && roles.Count > 0) ?
+         Ok(ApiResponse<IList<RoleViewDto>>.Success(roles, "Roles retrieved successfully."))
+         : Ok(ApiResponse<IList<RoleViewDto>>.Fail("No roles found."));
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<ApiResponse<int>>> UpdateRole(RoleUpdateDto dto)
+    {
+        int res = await repo.UpdateRoleAsync(dto);
+        return (res > 0) ?
+         Ok(ApiResponse<int>.Success(res, "Role updated successfully."))
+         : Ok(ApiResponse<int>.Fail("An error occurred while updating the role."));
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult<ApiResponse<int>>> DeleteRole(int id)
+    {
+        int res = await repo.DeleteRoleAsync(id);
+        return (res > 0) ?
+         Ok(ApiResponse<int>.Success(res, "Role deleted successfully."))
+         : Ok(ApiResponse<int>.Fail("An error occurred while deleting the role."));
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<ApiResponse<RoleViewDto>>> GetRoleById(int id)
+    {
+        var role = await repo.GetRoleByIdAsync(id);
+        return (role != null) ?
+         Ok(ApiResponse<RoleViewDto>.Success(role, "Role retrieved successfully."))
+         : Ok(ApiResponse<RoleViewDto>.Fail("Role not found."));
+    }
 }
