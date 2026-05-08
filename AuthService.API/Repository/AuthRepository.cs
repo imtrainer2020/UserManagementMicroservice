@@ -12,15 +12,30 @@ namespace AuthService.API.Repository
     public class AuthRepository : IAuthRepository
     {
         private readonly AuthDbContext context;
-        public AuthRepository(AuthDbContext _context)
+        private readonly IConfiguration config;
+        public AuthRepository(AuthDbContext _context, IConfiguration _config)
         {
             context = _context;
+            config = _config;
+        }
+
+        private async Task<string> GetRoleNamefromUserIdAsync(int userId)
+        {
+            var user = await context.Users.FindAsync(userId);
+            if (user == null) throw new Exception("User not found");
+            return user.Role.RoleName;
+        }
+        private async Task<string> GetRoleNamefromEmailAsync(string email)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null) throw new Exception("User not found");
+            return user.Role.RoleName;
         }
 
         public async Task<string> LoginUserAsync(UserLoginDto dto)
         {
             // 1. Find the user
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            User? user = await context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null) throw new Exception("Invalid Email or Password");
 
             // 2. Verify Password
@@ -28,24 +43,22 @@ namespace AuthService.API.Repository
             if (!isPasswordValid) throw new Exception("Invalid Email or Password");
 
             // 3. Create the JWT Token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            // In a real app, keep this key in appsettings.json
-            var key = Encoding.ASCII.GetBytes("ThisIsAMySuperSecretKeyForDevelopmentOnly12345");
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(config["JwtSettings:Secret"]!);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    // Later, you can look up user roles and add them here:
-                    // new Claim(ClaimTypes.Role, "Admin")
+                    new Claim(ClaimTypes.Role, await GetRoleNamefromUserIdAsync(user.Id))
                 }),
                 Expires = DateTime.UtcNow.AddHours(2), // Token is valid for 2 hours
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
 

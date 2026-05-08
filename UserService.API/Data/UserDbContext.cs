@@ -16,9 +16,9 @@ public partial class UserDbContext : DbContext
     {
     }
 
-    public virtual DbSet<UserDetail> UserDetails { get; set; }
+    public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<UserRolesMapping> UserRolesMappings { get; set; }
+    public virtual DbSet<User> Users { get; set; }
 
 //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -26,26 +26,36 @@ public partial class UserDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UserDetail>(entity =>
+        modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserDeta__3214EC07A3B0A7B0");
+            entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC074FDEF211");
 
-            entity.ToTable("UserDetail");
+            entity.HasIndex(e => e.RoleName, "UQ__Roles__8A2B6160B594E396").IsUnique();
 
-            entity.Property(e => e.Address).HasMaxLength(500);
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Fullname).HasMaxLength(250);
-            entity.Property(e => e.Phone).HasMaxLength(20);
-            entity.Property(e => e.PhotoUrl).HasMaxLength(500);
+            entity.Property(e => e.RoleName).HasMaxLength(25);
         });
 
-        modelBuilder.Entity<UserRolesMapping>(entity =>
+        modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => new { e.UserId, e.RoleId }).HasName("PK__UserRole__AF2760ADA1A25B9C");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0744B5CDF3");
 
-            entity.ToTable("UserRolesMapping");
+            entity.HasIndex(e => e.Email, "UQ__tmp_ms_x__A9D105343FF47831").IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(150);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.PasswordHash).HasMaxLength(500);
+            entity.Property(e => e.RoleId).HasDefaultValue(2);
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Users_ToRoles");
         });
 
         OnModelCreatingPartial(modelBuilder);
