@@ -57,7 +57,7 @@ public class RolesController : ControllerBase
          : Ok(ApiResponse<int>.Fail("An error occurred while deleting the role."));
     }
 
-    [HttpGet]
+    [HttpGet("id")]
     public async Task<ActionResult<ApiResponse<RoleViewDto>>> GetRoleById(int id)
     {
         var role = await repo.GetRoleByIdAsync(id);
