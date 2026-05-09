@@ -11,11 +11,11 @@ public partial class User
 
     public string PasswordHash { get; set; } = null!;
 
-    public int RoleId { get; set; }
+    public int RoleId { get; set; } = 2;
 
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public virtual ICollection<UserDetail> UserDetails { get; set; } = new List<UserDetail>();
 }

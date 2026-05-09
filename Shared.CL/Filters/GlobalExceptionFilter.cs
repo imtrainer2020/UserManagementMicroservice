@@ -33,14 +33,14 @@ namespace Shared.CL.Filters
             logger.LogError(context.Exception, "Unhandled exception occurred in {ServiceName}", serviceName);
 
             // 1. Attempt to extract User details if the request was authenticated
-            var user = context.HttpContext.User;
-            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var emailClaim = user.FindFirst(ClaimTypes.Email)?.Value;
+            ClaimsPrincipal user = context.HttpContext.User;
+            string? userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string? emailClaim = user.FindFirst(ClaimTypes.Email)?.Value;
 
             int? userId = int.TryParse(userIdClaim, out var id) ? id : null;
 
             // 2. Build the Audit Log Payload based on your DB schema requirements
-            var auditLog = new AuditLogCreateDto
+            AuditLogCreateDto auditLog = new AuditLogCreateDto
             {
                 UserId = userId,
                 UserEmail = emailClaim,
@@ -53,8 +53,8 @@ namespace Shared.CL.Filters
             // 3. Send the log to the AuditLogService.API
             try
             {
-                var json = JsonSerializer.Serialize(auditLog);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                string json = JsonSerializer.Serialize(auditLog);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 await httpClient.PostAsync(auditLogApiUrl, content);
             }
@@ -65,7 +65,7 @@ namespace Shared.CL.Filters
             }
 
             // 4. Return your standardized ApiResponse to the frontend
-            var response = ApiResponse<object>.Fail("An unexpected error occurred. Our technical team has been notified.");
+            ApiResponse<object> response = ApiResponse<object>.Fail("An unexpected error occurred. Our technical team has been notified.");
             context.Result = new ObjectResult(response) { StatusCode = 500 };
             context.ExceptionHandled = true;
         }

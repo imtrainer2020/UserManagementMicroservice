@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace Shared.CL.Filters
@@ -24,7 +25,7 @@ namespace Shared.CL.Filters
             if (allowAnonymous) return;
 
             // 2. Check for the Authorization header
-            var authHeader = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+            string? authHeader = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
             if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
             {
                 // UPDATED: Using ObjectResult to match the GlobalExceptionFilter pattern
@@ -35,14 +36,14 @@ namespace Shared.CL.Filters
                 return;
             }
 
-            var token = authHeader.Substring("Bearer ".Length).Trim();
+            string token = authHeader.Substring("Bearer ".Length).Trim();
 
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
+                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
                 string secretKey = config["JwtSettings:Secret"] ?? "ThisIsMySuperSecretKeyForDevelopmentOnly1234567890";
-                var key = Encoding.ASCII.GetBytes(secretKey);
+                byte[] key = Encoding.ASCII.GetBytes(secretKey);
 
                 // 3. Validate Token
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
@@ -55,14 +56,14 @@ namespace Shared.CL.Filters
                 }, out SecurityToken validatedToken);
 
                 // 4. Attach the User Identity to the HttpContext
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var identity = new System.Security.Claims.ClaimsIdentity(jwtToken.Claims, "jwt");
-                context.HttpContext.User = new System.Security.Claims.ClaimsPrincipal(identity);
+                JwtSecurityToken jwtToken = (JwtSecurityToken)validatedToken;
+                ClaimsIdentity identity = new ClaimsIdentity(jwtToken.Claims, "jwt");
+                context.HttpContext.User = new ClaimsPrincipal(identity);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // UPDATED: Using ObjectResult for failures
-                context.Result = new ObjectResult(ApiResponse<object>.Fail("Unauthorized. Token expired or invalid."))
+                context.Result = new ObjectResult(ApiResponse<object>.Fail("Unauthorized. Token expired or invalid. " + ex.Message))
                 {
                     StatusCode = 401
                 };

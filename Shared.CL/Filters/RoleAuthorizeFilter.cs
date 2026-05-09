@@ -19,7 +19,7 @@ namespace Shared.CL.Filters
                                          .Any(em => em.GetType() == typeof(AllowAnonymousAttribute));
             if (allowAnonymous) return;
 
-            var user = context.HttpContext.User;
+            ClaimsPrincipal user = context.HttpContext.User;
             if (!user.Identity?.IsAuthenticated ?? true)
             {
                 context.Result = new ObjectResult(ApiResponse<object>.Fail("Unauthorized access."))
@@ -30,7 +30,9 @@ namespace Shared.CL.Filters
             if (allowedRoles == null || allowedRoles.Length == 0) return;
 
             // Extract the user's roles from their JWT claims
-            var userRoles = user.FindAll(ClaimTypes.Role).Select(c => c.Value);
+            var userRoles = user.Claims
+                                .Where(c => c.Type == ClaimTypes.Role || c.Type == "role")
+                                .Select(c => c.Value);
 
             // Check if any of the user's roles match the allowed roles
             bool hasAccess = allowedRoles.Any(role => userRoles.Contains(role.ToString()));

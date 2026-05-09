@@ -13,9 +13,9 @@ public partial class User
 
     public int RoleId { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public virtual Role Role { get; set; } = null!;
 }

@@ -19,7 +19,7 @@ public class UserDetailsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<ApiResponse<IList<UserDetailViewDto>>>> GetAllUserDetail()
     {
-        var udList = await repo.GetAllUserDetailsAsync();
+        IList<UserDetailViewDto> udList = await repo.GetAllUserDetailsAsync();
         return (udList != null && udList.Count > 0) ?
             Ok(ApiResponse<IList<UserDetailViewDto>>.Success(udList, "User Details listed successfully."))
             : Ok(ApiResponse<IList<UserDetailViewDto>>.Fail("No user details found."));
@@ -29,7 +29,7 @@ public class UserDetailsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ApiResponse<UserDetailViewDto?>>> GetUserDetail(int id)
     {
-        var userdetail = await repo.GetUserDetailsAsync(id);
+        UserDetailViewDto? userdetail = await repo.GetUserDetailsAsync(id);
 
         return (userdetail != null && userdetail.Id > 1) ?
             Ok(ApiResponse<UserDetailViewDto>.Success(userdetail, "User Detail viewed successfully."))

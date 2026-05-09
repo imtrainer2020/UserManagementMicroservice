@@ -15,7 +15,7 @@ public partial class AuditLog
 
     public string ServiceName { get; set; } = null!;
 
-    public bool IsError { get; set; }
+    public bool IsError { get; set; } = false;
 
     public string? ErrorMessage { get; set; }
 

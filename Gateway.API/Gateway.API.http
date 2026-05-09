@@ -9,6 +9,16 @@ Content-Type: application/json
 }
 
 ###
+POST {{Gateway.API_HostAddress}}/gateway/auth/register
+Content-Type: application/json
+
+{
+  "Email": "user@app.com",
+  "Password": "User@123",
+  "RoleId": "2"
+}
+
+###
 POST {{Gateway.API_HostAddress}}/gateway/auth/login
 Content-Type: application/json
 
@@ -19,3 +29,16 @@ Content-Type: application/json
 
 ###
 GET {{Gateway.API_HostAddress}}/gateway/auditlogs
+
+###
+@admintoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwiZW1haWwiOiJhZG1pbkBhcHAuY29tIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzc4MzI5NDYyLCJleHAiOjE3NzgzMzY2NjIsImlhdCI6MTc3ODMyOTQ2Mn0.0uuJ-C2Lbc6QQ0kyo_GAO68YcsKzI45yPsXq1fpgjtc
+@usertoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJ1c2VyQGFwcC5jb20iLCJyb2xlIjoiVXNlciIsIm5iZiI6MTc3ODMyODg1MCwiZXhwIjoxNzc4MzM2MDUwLCJpYXQiOjE3NzgzMjg4NTB9.YBartynJZHNax_aaDvhhr1tkal4_qiYBFXVGznFPozE
+
+POST {{Gateway.API_HostAddress}}/gateway/auth/resetuserrole
+Content-Type: application/json
+Authorization: Bearer {{admintoken}}
+
+{
+    "Id":"2",
+    "RoleId": "2"
+}

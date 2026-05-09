@@ -56,7 +56,7 @@ namespace RoleService.API.Repository
                 .Where(r => r.Id == id)
                 .Select(s => new RoleViewDto(s.Id, s.RoleName, s.CreatedAt))
                 .FirstOrDefaultAsync();
-            if(role == null)
+            if (role == null)
                 throw new Exception("Role not found");
             return role;
         }

@@ -17,7 +17,7 @@ namespace UserService.API.Repository
 
         public async Task<int> AddUserDetailsAsync(UserDetailCreateDto dto)
         {
-            var ud = new UserDetail
+            UserDetail ud = new UserDetail
             {
                 Address = dto.Address,
                 Fullname = dto.Fullname,

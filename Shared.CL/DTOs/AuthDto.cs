@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Shared.CL.DTOs
 {
-    public record UserRegisterDto(string Email, string Password, int RoleId);
+    public record UserRegisterDto(string Email, string Password, int RoleId = 2);
     public record UserEditDto
     {
         public int Id { get; init; }
@@ -30,7 +30,7 @@ namespace Shared.CL.DTOs
         public string Email { get; init; } = null!;
         public int RoleId { get; init; } = 2;
         public bool IsActive { get; init; } = true;
-        public string RoleName { get; init; }
+        public string RoleName { get; init; } = "User";
     }
     public record UserListDto
     {

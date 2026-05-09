@@ -34,7 +34,7 @@ public class RolesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<ApiResponse<IList<RoleViewDto>>>> GetAllRoles()
     {
-        var roles = await repo.GetAllRolesAsync();
+        IList<RoleViewDto> roles = await repo.GetAllRolesAsync();
         return (roles != null && roles.Count > 0) ?
          Ok(ApiResponse<IList<RoleViewDto>>.Success(roles, "Roles retrieved successfully."))
          : Ok(ApiResponse<IList<RoleViewDto>>.Fail("No roles found."));
@@ -61,7 +61,7 @@ public class RolesController : ControllerBase
     [HttpGet("id")]
     public async Task<ActionResult<ApiResponse<RoleViewDto?>>> GetRoleById(int id)
     {
-        var role = await repo.GetRoleByIdAsync(id);
+        RoleViewDto? role = await repo.GetRoleByIdAsync(id);
         return (role != null) ?
          Ok(ApiResponse<RoleViewDto>.Success(role, "Role retrieved successfully."))
          : Ok(ApiResponse<RoleViewDto>.Fail("Role not found."));

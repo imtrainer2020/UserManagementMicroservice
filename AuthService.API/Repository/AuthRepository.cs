@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Shared.CL.DTOs;
+using Shared.CL.Enums;
 
 namespace AuthService.API.Repository
 {
@@ -21,7 +22,7 @@ namespace AuthService.API.Repository
 
         public async Task<int> UpdateUserAsync(UserEditDto dto)
         {
-            var user = await GetUserByIdAsync(dto.Id);
+            User? user = await GetUserByIdAsync(dto.Id);
             if (user == null) throw new Exception("User not found");
 
             user.Email = dto.Email;
@@ -43,7 +44,7 @@ namespace AuthService.API.Repository
             // 1. Find the user
             User? user = await context.Users
                                       .Include(u => u.Role)
-                                      .FirstOrDefaultAsync(u => u.Email == dto.Email);
+                                      .FirstOrDefaultAsync(u => u.Email == dto.Email && u.IsActive == true);
             if (user == null) throw new Exception("Invalid Email or Password");
 
             // 2. Verify Password
@@ -60,7 +61,7 @@ namespace AuthService.API.Repository
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "User")
+                    new Claim(ClaimTypes.Role, user.Role?.RoleName ?? RolesEnum.User.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(2), // Token is valid for 2 hours
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -72,7 +73,10 @@ namespace AuthService.API.Repository
 
         public async Task<int> RegisterUserAsync(UserRegisterDto dto)
         {
-            var user = new User
+            User? user = await GetUserByEmailAsync(dto.Email);
+            if (user != null) throw new Exception("Email already exists");
+
+            user = new User
             {
                 Email = dto.Email,
                 PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password),
@@ -86,7 +90,7 @@ namespace AuthService.API.Repository
 
         public async Task<int> ResetPasswordAsync(ResetPasswordDto dto)
         {
-            var user = await GetUserByEmailAsync(dto.Email);
+            User? user = await GetUserByEmailAsync(dto.Email);
             if (user == null) throw new Exception("User not found");
 
             user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
@@ -129,7 +133,7 @@ namespace AuthService.API.Repository
 
             if (user == null) throw new Exception("User not found");
 
-            var userViewDto = new UserViewDto
+            UserViewDto userViewDto = new UserViewDto
             {
                 Id = user.Id,
                 Email = user.Email,
