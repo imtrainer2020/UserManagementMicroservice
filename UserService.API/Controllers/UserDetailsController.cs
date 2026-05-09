@@ -46,7 +46,7 @@ public class UserDetailsController : ControllerBase
     }
 
     [HttpPut("resetpassword")]
-    public async Task<ActionResult<ApiResponse<int>>> PutUserResetPassword(UserResetPasswordDto dto)
+    public async Task<ActionResult<ApiResponse<int>>> PutUserResetPassword(UserPasswordChangeDto dto)
     {
         int res = await repo.UserResetPasswordAsync(dto);
         return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User password reset successfully."))

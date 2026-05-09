@@ -26,5 +26,5 @@ namespace Shared.CL.DTOs
         }
     }
 
-    public record UserResetPasswordDto(int UserId, string NewPassword);
+    public record UserPasswordChangeDto(int UserId, string NewPassword);
 }

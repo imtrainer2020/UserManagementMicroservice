@@ -85,7 +85,7 @@ namespace UserService.API.Repository
             return await context.SaveChangesAsync();
         }
 
-        public async Task<int> UserResetPasswordAsync(UserResetPasswordDto dto)
+        public async Task<int> UserResetPasswordAsync(UserPasswordChangeDto dto)
         {
             User? user = await context.Users.FirstOrDefaultAsync(u => u.Id == dto.UserId);
             if (user == null)
