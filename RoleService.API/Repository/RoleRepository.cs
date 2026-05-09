@@ -45,14 +45,14 @@ namespace RoleService.API.Repository
 
         public async Task<IList<RoleViewDto>> GetAllRolesAsync()
         {
-            return await context.Roles
+            return await context.Roles.AsNoTracking()
                 .Select(s => new RoleViewDto(s.Id, s.RoleName, s.CreatedAt))
                 .ToListAsync();
         }
 
         public async Task<RoleViewDto?> GetRoleByIdAsync(int id)
         {
-            RoleViewDto? role = await context.Roles
+            RoleViewDto? role = await context.Roles.AsNoTracking()
                 .Where(r => r.Id == id)
                 .Select(s => new RoleViewDto(s.Id, s.RoleName, s.CreatedAt))
                 .FirstOrDefaultAsync();

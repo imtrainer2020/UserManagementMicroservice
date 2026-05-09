@@ -48,7 +48,7 @@ namespace UserService.API.Repository
 
         public async Task<UserDetailViewDto?> GetUserDetailsAsync(int id)
         {
-            UserDetail? ud = await context.UserDetails.FirstOrDefaultAsync(u => u.Id == id);
+            UserDetail? ud = await context.UserDetails.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
             if (ud == null)
                 throw new Exception("User detail not found");
 
@@ -64,7 +64,7 @@ namespace UserService.API.Repository
 
         public async Task<IList<UserDetailViewDto>> GetAllUserDetailsAsync()
         {
-            IList<UserDetail> userDetailsService = await context.UserDetails.ToListAsync();
+            IList<UserDetail> userDetailsService = await context.UserDetails.AsNoTracking().ToListAsync();
             return userDetailsService.Select(ud => new UserDetailViewDto(ud.Id)
             {
                 Address = ud.Address,

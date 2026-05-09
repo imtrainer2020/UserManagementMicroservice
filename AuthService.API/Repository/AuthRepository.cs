@@ -35,14 +35,14 @@ namespace AuthService.API.Repository
 
         public async Task<bool> ForgetPasswordAsync(string email)
         {
-            bool isEmailExist = await context.Users.AnyAsync(u => u.Email == email);
+            bool isEmailExist = await context.Users.AsNoTracking().AnyAsync(u => u.Email == email);
             return isEmailExist;
         }
 
         public async Task<string> LoginUserAsync(UserLoginDto dto)
         {
             // 1. Find the user
-            User? user = await context.Users
+            User? user = await context.Users.AsNoTracking()
                                       .Include(u => u.Role)
                                       .FirstOrDefaultAsync(u => u.Email == dto.Email && u.IsActive == true);
             if (user == null) throw new Exception("Invalid Email or Password");
@@ -113,7 +113,7 @@ namespace AuthService.API.Repository
 
         public async Task<IList<UserListDto>> GetAllUsersAsync()
         {
-            return await context.Users
+            return await context.Users.AsNoTracking()
                 .Select(u => new UserListDto
                 {
                     Id = u.Id,
@@ -139,7 +139,7 @@ namespace AuthService.API.Repository
                 Email = user.Email,
                 RoleId = user.RoleId,
                 IsActive = user.IsActive,
-                RoleName = (await context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId))?.RoleName ?? "User"
+                RoleName = (await context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Id == user.RoleId))?.RoleName ?? "User"
             };
             return userViewDto;
         }
@@ -160,11 +160,11 @@ namespace AuthService.API.Repository
 
         private async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
         }
         private async Task<User?> GetUserByIdAsync(int id)
         {
-            return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return await context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
         }
 
     }

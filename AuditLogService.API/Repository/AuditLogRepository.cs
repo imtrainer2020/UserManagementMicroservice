@@ -32,7 +32,7 @@ namespace AuditLogService.API.Repository
         }
         public async Task<IList<AuditLogListDto>> GetAuditLogsAsync()
         {
-            return await context.AuditLogs.Select(log => new AuditLogListDto
+            return await context.AuditLogs.AsNoTracking().Select(log => new AuditLogListDto
             {
                 UserId = log.UserId,
                 UserEmail = log.UserEmail,
