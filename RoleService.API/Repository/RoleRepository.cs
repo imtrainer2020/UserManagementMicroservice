@@ -50,12 +50,15 @@ namespace RoleService.API.Repository
                 .ToListAsync();
         }
 
-        public async Task<RoleViewDto> GetRoleByIdAsync(int id)
+        public async Task<RoleViewDto?> GetRoleByIdAsync(int id)
         {
-            return await context.Roles
+            RoleViewDto? role = await context.Roles
                 .Where(r => r.Id == id)
                 .Select(s => new RoleViewDto(s.Id, s.RoleName, s.CreatedAt))
                 .FirstOrDefaultAsync();
+            if(role == null)
+                throw new Exception("Role not found");
+            return role;
         }
 
         public async Task<int> UpdateRoleAsync(RoleUpdateDto dto)

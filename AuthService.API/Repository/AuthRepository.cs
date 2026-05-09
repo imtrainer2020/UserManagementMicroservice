@@ -98,8 +98,8 @@ namespace AuthService.API.Repository
             User? user = null;
             if (dto.Id != null && dto.Id > 0)
                 user = await GetUserByIdAsync(dto.Id.Value);
-            else if (dto.email != null && dto.email.Length > 0)
-                user = await GetUserByEmailAsync(dto.email);
+            else if (dto.Email != null && dto.Email.Length > 0)
+                user = await GetUserByEmailAsync(dto.Email);
 
             if (user == null) throw new Exception("User not found");
 
@@ -140,6 +140,20 @@ namespace AuthService.API.Repository
             return userViewDto;
         }
 
+        public async Task<int> ChangeUserRolesAsync(ChangeUserRolesDto dto)
+        {
+            User? user = null;
+            if (dto.Id != null && dto.Id > 0)
+                user = await GetUserByIdAsync(dto.Id.Value);
+            else if (dto.Email != null && dto.Email.Length > 0)
+                user = await GetUserByEmailAsync(dto.Email);
+
+            if (user == null) throw new Exception("User not found");
+
+            user.RoleId = dto.RoleId;
+            return await context.SaveChangesAsync();
+        }
+
         private async Task<User?> GetUserByEmailAsync(string email)
         {
             return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -148,5 +162,6 @@ namespace AuthService.API.Repository
         {
             return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
+
     }
 }

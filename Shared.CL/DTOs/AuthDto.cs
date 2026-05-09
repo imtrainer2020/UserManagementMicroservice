@@ -15,8 +15,15 @@ namespace Shared.CL.DTOs
     }
     public record UserLoginDto(string Email, string Password);
     public record ResetPasswordDto(string Email, string Password);
-    public record UserDeleteDto(int? Id, string? email);
+    public record UserDeleteDto(int? Id, string? Email);
+    public record ChangeUserRolesDto : UserDeleteDto
+    {
+        public ChangeUserRolesDto(int? Id, string? Email) : base(Id, Email)
+        {
 
+        }
+        public int RoleId { get; init; } = 2;
+    }
     public record UserViewDto
     {
         public int Id { get; init; }

@@ -12,6 +12,7 @@ namespace AuthService.API.Repository
         public Task<int> UpdateUserAsync(UserEditDto dto);
         public Task<int> ResetPasswordAsync(ResetPasswordDto dto);
         public Task<int> DeleteUserAsync(UserDeleteDto dto);
+        public Task<int> ChangeUserRolesAsync(ChangeUserRolesDto dto);
         public Task<UserViewDto> ViewUserAsync(int? id, string? email);
     }
 }

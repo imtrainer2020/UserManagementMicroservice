@@ -54,6 +54,14 @@ public class UsersController : ControllerBase
             : Ok(ApiResponse<int>.Fail("Password reset failed."));
     }
 
+    [HttpPost("resetuserrole")]
+    public async Task<ActionResult<ApiResponse<int>>> ChangeUserRoles([FromBody] ChangeUserRolesDto dto)
+    {
+        int res = await repo.ChangeUserRolesAsync(dto);
+        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User role changed successfully."))
+            : Ok(ApiResponse<int>.Fail("Failed to change user role."));
+    }
+
     [HttpDelete("delete")]
     public async Task<ActionResult<ApiResponse<int>>> DeleteUser([FromBody] UserDeleteDto dto)
     {

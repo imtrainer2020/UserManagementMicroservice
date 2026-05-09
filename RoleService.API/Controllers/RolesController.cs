@@ -58,7 +58,7 @@ public class RolesController : ControllerBase
     }
 
     [HttpGet("id")]
-    public async Task<ActionResult<ApiResponse<RoleViewDto>>> GetRoleById(int id)
+    public async Task<ActionResult<ApiResponse<RoleViewDto?>>> GetRoleById(int id)
     {
         var role = await repo.GetRoleByIdAsync(id);
         return (role != null) ?

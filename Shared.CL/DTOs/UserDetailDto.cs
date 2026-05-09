@@ -16,4 +16,15 @@ namespace Shared.CL.DTOs
 
         public string? Phone { get; init; }
     }
+
+    public record UserDetailUpdateDto(int Id) : UserDetailCreateDto;
+
+    public record UserDetailViewDto : UserDetailUpdateDto
+    {
+        public UserDetailViewDto(int Id) : base(Id)
+        {
+        }
+    }
+
+    public record UserResetPasswordDto(int UserId, string NewPassword);
 }
