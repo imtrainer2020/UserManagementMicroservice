@@ -26,11 +26,6 @@
         "Path": "UserService.API\\UserService.API.csproj",
         "Action": "Start",
         "DebugTarget": "http"
-      },
-      {
-        "Path": "UserMgmt.UI\\UserMgmt.UI.esproj",
-        "Action": "Start",
-        "DebugTarget": "localhost (Chrome)"
       }
     ]
   }
