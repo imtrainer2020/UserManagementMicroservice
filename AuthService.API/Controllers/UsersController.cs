@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AuthService.API.Models;
-using AuthService.API.Data;
 using AuthService.API.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shared.CL;
 using Shared.CL.DTOs;
+using Shared.CL.Enums;
+using Shared.CL.Filters;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -17,6 +17,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<int>>> RegisterUser([FromBody] UserRegisterDto dto)
     {
         int res = await repo.RegisterUserAsync(dto);
@@ -25,6 +26,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<string>>> LoginUser([FromBody] UserLoginDto dto)
     {
         string token = await repo.LoginUserAsync(dto);
@@ -32,12 +34,14 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("forgetpassword")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<bool>>> ForgetPassword([FromBody] string email)
     {
         bool isEmailExist = await repo.ForgetPasswordAsync(email);
         return Ok(ApiResponse<bool>.Success(isEmailExist, isEmailExist ? "Email exists." : "Email does not exist."));
     }
 
+    [RoleAuthorize]
     [HttpPut("update")]
     public async Task<ActionResult<ApiResponse<int>>> UpdateUser([FromBody] UserEditDto dto)
     {
@@ -47,6 +51,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("resetpassword")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<int>>> ResetPassword([FromBody] ResetPasswordDto dto)
     {
         int res = await repo.ResetPasswordAsync(dto);
@@ -55,6 +60,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("resetuserrole")]
+    [RoleAuthorize(RolesEnum.Admin)]
     public async Task<ActionResult<ApiResponse<int>>> ChangeUserRoles([FromBody] ChangeUserRolesDto dto)
     {
         int res = await repo.ChangeUserRolesAsync(dto);
@@ -62,6 +68,7 @@ public class UsersController : ControllerBase
             : Ok(ApiResponse<int>.Fail("Failed to change user role."));
     }
 
+    [RoleAuthorize]
     [HttpDelete("delete")]
     public async Task<ActionResult<ApiResponse<int>>> DeleteUser([FromBody] UserDeleteDto dto)
     {
@@ -70,6 +77,7 @@ public class UsersController : ControllerBase
             : Ok(ApiResponse<int>.Fail("User deletion failed."));
     }
 
+    [RoleAuthorize]
     [HttpGet("list")]
     public async Task<ActionResult<ApiResponse<IList<UserListDto>>>> ListUsers()
     {
@@ -79,6 +87,7 @@ public class UsersController : ControllerBase
             : Ok(ApiResponse<IList<UserListDto>>.Fail("No users found."));
     }
 
+    [RoleAuthorize]
     [HttpGet("view")]
     public async Task<ActionResult<ApiResponse<UserViewDto>>> ViewUser([FromQuery] int? id, [FromQuery] string? email)
     {

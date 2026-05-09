@@ -20,6 +20,9 @@ builder.Services.AddControllers(options =>
 
     // Log successful activities and endpoint hits
     options.Filters.Add<ActivityLogFilter>();
+
+    // Authorizing globally
+    options.Filters.Add<JwtAuthFilter>();
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

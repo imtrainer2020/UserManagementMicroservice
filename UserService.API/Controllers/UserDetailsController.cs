@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Shared.CL;
 using Shared.CL.DTOs;
-using UserService.API.Data;
-using UserService.API.Models;
+using Shared.CL.Filters;
 using UserService.API.Repository;
 
 [Route("api/[controller]")]
 [ApiController]
+[RoleAuthorize]
 public class UserDetailsController : ControllerBase
 {
     private readonly IUserDetailsRepository repo;

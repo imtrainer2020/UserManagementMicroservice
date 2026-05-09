@@ -1,12 +1,13 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RoleService.API.Repository;
 using Shared.CL;
 using Shared.CL.DTOs;
+using Shared.CL.Enums;
+using Shared.CL.Filters;
 
 [Route("api/[controller]")]
 [ApiController]
+[RoleAuthorize(RolesEnum.Admin, RolesEnum.Manager)]
 public class RolesController : ControllerBase
 {
     private readonly IRoleRepository repo;
