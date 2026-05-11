@@ -23,17 +23,30 @@ POST {{Gateway.API_HostAddress}}/gateway/auth/login
 Content-Type: application/json
 
 {
+  "Email": "user@app.com",
+  "Password": "User@123"
+}
+###
+POST {{Gateway.API_HostAddress}}/gateway/auth/login
+Content-Type: application/json
+
+{
   "Email": "admin@app.com",
   "Password": "Admin@123"
 }
-
 ###
 GET {{Gateway.API_HostAddress}}/gateway/auditlogs
 
 ###
-@admintoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwiZW1haWwiOiJhZG1pbkBhcHAuY29tIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzc4MzI5NDYyLCJleHAiOjE3NzgzMzY2NjIsImlhdCI6MTc3ODMyOTQ2Mn0.0uuJ-C2Lbc6QQ0kyo_GAO68YcsKzI45yPsXq1fpgjtc
-@usertoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJ1c2VyQGFwcC5jb20iLCJyb2xlIjoiVXNlciIsIm5iZiI6MTc3ODMyODg1MCwiZXhwIjoxNzc4MzM2MDUwLCJpYXQiOjE3NzgzMjg4NTB9.YBartynJZHNax_aaDvhhr1tkal4_qiYBFXVGznFPozE
+@admintoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwiZW1haWwiOiJhZG1pbkBhcHAuY29tIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzc4NDc1MTE3LCJleHAiOjE3Nzg0ODIzMTcsImlhdCI6MTc3ODQ3NTExN30.at5hBSYxLlRhXhK0ZwBocl1zdrcyUwNAkMQXVyo4D2Y
+@usertoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwiZW1haWwiOiJ1c2VyQGFwcC5jb20iLCJyb2xlIjoiVXNlciIsIm5iZiI6MTc3ODQ3NDgzMiwiZXhwIjoxNzc4NDgyMDMyLCJpYXQiOjE3Nzg0NzQ4MzJ9.BcAC8Sqs2fVXg0qBxllhgv0Rg19IMvgsMGgvuInX7DY
 
+GET {{Gateway.API_HostAddress}}/gateway/auth/list
+Content-Type: application/json
+Authorization: Bearer {{admintoken}}
+
+
+###
 POST {{Gateway.API_HostAddress}}/gateway/auth/resetuserrole
 Content-Type: application/json
 Authorization: Bearer {{admintoken}}
