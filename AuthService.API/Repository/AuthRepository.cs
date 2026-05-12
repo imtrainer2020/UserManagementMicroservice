@@ -39,7 +39,7 @@ namespace AuthService.API.Repository
             return isEmailExist;
         }
 
-        public async Task<string> LoginUserAsync(UserLoginDto dto)
+        public async Task<LoggedUserDto> LoginUserAsync(UserLoginDto dto)
         {
             // 1. Find the user
             User? user = await context.Users.AsNoTracking()
@@ -68,7 +68,12 @@ namespace AuthService.API.Repository
             };
 
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return new LoggedUserDto(
+                tokenHandler.WriteToken(token),
+                user.Id,
+                user.Email,
+                user.Role?.RoleName ?? RolesEnum.User.ToString()
+            );
         }
 
         public async Task<int> RegisterUserAsync(UserRegisterDto dto)

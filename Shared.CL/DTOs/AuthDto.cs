@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Shared.CL.DTOs
 {
     public record UserRegisterDto(string Email, string Password, int RoleId = 2);
+
+    public record LoggedUserDto(string JwtToken, int? UserId, string? Email, string? RoleName);
     public record UserEditDto
     {
         public int Id { get; init; }

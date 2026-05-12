@@ -27,10 +27,10 @@ public class UsersController : ControllerBase
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<ApiResponse<string>>> LoginUser([FromBody] UserLoginDto dto)
+    public async Task<ActionResult<ApiResponse<LoggedUserDto>>> LoginUser([FromBody] UserLoginDto dto)
     {
-        string token = await repo.LoginUserAsync(dto);
-        return Ok(ApiResponse<string>.Success(token, "Login successful."));
+        LoggedUserDto loggedUser = await repo.LoginUserAsync(dto);
+        return Ok(ApiResponse<LoggedUserDto>.Success(loggedUser, "Login successful."));
     }
 
     [HttpPost("forgetpassword")]
