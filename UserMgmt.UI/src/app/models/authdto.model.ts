@@ -1,12 +1,12 @@
 //export interface AuthDto {}
 
 export interface LoginRequest {
-  email?: string | null;
-  password?: string | null;
+  email: string;
+  password: string;
 }
 
-export interface AuthResponse {
-  token: string;
+export interface LoggedUserDto {
+  jwttoken: string;
   userId: number;
   userEmail: string;
   role: string;

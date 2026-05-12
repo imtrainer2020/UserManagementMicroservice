@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../services/auth/auth.service';
+import { Router } from '@angular/router';
+import { ApiResponse } from '../../../shared/apiresponse.model';
+import { LoginRequest, LoggedUserDto } from '../../../models/authdto.model';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +14,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent {
   loginForm: FormGroup;
   isSubmitting = false;
+  errormessage: string = '';
+  successmessage: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -19,17 +25,52 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      this.isSubmitting = true;
-      
-      const loginData = this.loginForm.value;
-      console.log('Login Details:', loginData);
-      
-      // We will connect this to your Auth Microservice later
-      
-      setTimeout(() => this.isSubmitting = false, 1000); 
-    } else {
+    if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
+      return;
     }
+
+    this.isSubmitting = true;
+    this.errormessage = '';
+    this.successmessage = '';
+
+    // Extract login data from the form
+    const loginData: LoginRequest = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    };
+
+    // Call the AuthService to perform login
+    this.authService.login(loginData).subscribe({
+      next: (response: ApiResponse<LoggedUserDto>) => {
+        this.isSubmitting = false;
+
+        // Handle successful login (e.g., store token, redirect)
+        console.log('Login Response:', response);
+        if (response.isSuccess && response.data) {
+
+          // save token and user info to local storage
+          this.authService.saveToken(response.data);
+
+          this.successmessage = response.message;
+
+          // Redirect based on user role
+          const userRole = response.data.role;
+          if (userRole === 'Admin')
+            this.router.navigate(['/admin/dashboard']);
+          else if (userRole === 'Manager')
+            this.router.navigate(['/manager/dashboard']);
+          else
+            this.router.navigate(['/user/dashboard']);
+        }
+
+      },
+      error: (err: any) => {
+        this.isSubmitting = false;
+        this.errormessage = err.error?.message || 'Invalid email or password.';
+        // Handle login error
+      }
+    });
   }
+
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginRequest, AuthResponse } from '../../models/authdto.model';
+import { LoginRequest, LoggedUserDto } from '../../models/authdto.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../shared/apiresponse.model';
 
@@ -12,19 +12,23 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(data: LoginRequest): Observable<ApiResponse<string>> {
-    return this.http.post<ApiResponse<string>>(`${this.apiUrl}/login`, data);
+  login(data: LoginRequest): Observable<ApiResponse<LoggedUserDto>> {
+    return this.http.post<ApiResponse<LoggedUserDto>>(`${this.apiUrl}/login`, data);
   }
 
-  saveToken(authData: AuthResponse): void {
-    localStorage.setItem('jwt_token', authData.token);
-    localStorage.setItem('user_role', authData.role);
-    localStorage.setItem('user_id', authData.userId.toString());
-    localStorage.setItem('user_email', authData.userEmail);
+  saveToken(loggedUser: LoggedUserDto): void {
+    localStorage.setItem('jwt_token', loggedUser.jwttoken);
+    localStorage.setItem('user_role', loggedUser.role);
+    localStorage.setItem('user_id', loggedUser.userId?.toString());
+    localStorage.setItem('user_email', loggedUser.userEmail);
   }
 
   getToken(): string | null {
     return localStorage.getItem('jwt_token');
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
   }
 
   logout(): void {
