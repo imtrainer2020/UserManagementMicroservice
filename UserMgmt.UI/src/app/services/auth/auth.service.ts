@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginRequest, LoggedUserDto } from '../../models/authdto.model';
+import { LoginRequest, LoggedUserDto, ResetPasswordRequest } from '../../models/authdto.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../shared/apiresponse.model';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +11,20 @@ import { ApiResponse } from '../../shared/apiresponse.model';
 export class AuthService {
   private apiUrl = 'http://localhost:5070/gateway/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(data: LoginRequest): Observable<ApiResponse<LoggedUserDto>> {
     return this.http.post<ApiResponse<LoggedUserDto>>(`${this.apiUrl}/login`, data);
+  }
+
+  forgetPassword(email: string): Observable<ApiResponse<boolean>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    console.log(email);
+    return this.http.post<ApiResponse<boolean>>(`${this.apiUrl}/forgetpassword`, JSON.stringify(email), { headers });
+  }
+
+  resetPassword(data: ResetPasswordRequest): Observable<ApiResponse<number>> {
+    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/resetpassword`, data);
   }
 
   saveToken(loggedUser: LoggedUserDto): void {

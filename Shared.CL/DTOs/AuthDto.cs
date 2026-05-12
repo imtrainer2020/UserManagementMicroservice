@@ -17,7 +17,7 @@ namespace Shared.CL.DTOs
         public bool IsActive { get; init; } = true;
     }
     public record UserLoginDto(string Email, string Password);
-    public record ResetPasswordDto(string Email, string Password);
+    public record ResetPasswordDto(string Email, string NewPassword);
     public record UserDeleteDto(int? Id, string? Email);
     public record ChangeUserRolesDto : UserDeleteDto
     {

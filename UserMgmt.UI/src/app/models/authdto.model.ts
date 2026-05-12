@@ -11,3 +11,8 @@ export interface LoggedUserDto {
   userEmail: string;
   role: string;
 }
+
+export interface ResetPasswordRequest {
+  email: string;
+  newPassword: string;
+}

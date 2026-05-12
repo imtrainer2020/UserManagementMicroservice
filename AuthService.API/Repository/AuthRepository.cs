@@ -98,7 +98,7 @@ namespace AuthService.API.Repository
             User? user = await GetUserByEmailAsync(dto.Email);
             if (user == null) throw new Exception("User not found");
 
-            user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
             return await context.SaveChangesAsync();
         }
 

@@ -9,14 +9,19 @@ import { SignupComponent } from './components/auth/signup/signup.component';
 import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
 import { provideHttpClient } from '@angular/common/http';
 import { RolesComponent } from './components/roles/roles.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 
 @NgModule({
-  declarations: [App, LoginComponent, SignupComponent, ForgetPasswordComponent, RolesComponent],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideHttpClient()
+  declarations: [
+    App,
+    LoginComponent,
+    SignupComponent,
+    ForgetPasswordComponent,
+    RolesComponent,
+    ResetPasswordComponent,
   ],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+  providers: [provideBrowserGlobalErrorListeners(), provideHttpClient()],
   bootstrap: [App],
 })
-export class AppModule { }
+export class AppModule {}

@@ -14,8 +14,8 @@ import { LoginRequest, LoggedUserDto } from '../../../models/authdto.model';
 export class LoginComponent {
   loginForm: FormGroup;
   isSubmitting = false;
-  errormessage: string = '';
-  successmessage: string = '';
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
@@ -31,8 +31,8 @@ export class LoginComponent {
     }
 
     this.isSubmitting = true;
-    this.errormessage = '';
-    this.successmessage = '';
+    this.errorMessage = '';
+    this.successMessage = '';
 
     // Extract login data from the form
     const loginData: LoginRequest = {
@@ -52,7 +52,7 @@ export class LoginComponent {
           // save token and user info to local storage
           this.authService.saveToken(response.data);
 
-          this.successmessage = response.message;
+          this.successMessage = response.message;
 
           // Redirect based on user role
           const userRole = response.data.role;
@@ -67,7 +67,7 @@ export class LoginComponent {
       },
       error: (err: any) => {
         this.isSubmitting = false;
-        this.errormessage = err.error?.message || 'Invalid email or password.';
+        this.errorMessage = err.error?.message || 'Invalid email or password.';
         // Handle login error
       }
     });
