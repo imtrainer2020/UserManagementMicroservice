@@ -1,6 +1,6 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing-module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { App } from './app';
@@ -10,6 +10,7 @@ import { SignupComponent } from './components/auth/signup/signup.component';
 import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { authInterceptor } from './shared/interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,10 @@ import { ResetPasswordComponent } from './components/auth/reset-password/reset-p
     ResetPasswordComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
-  providers: [provideBrowserGlobalErrorListeners(), provideHttpClient()],
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withInterceptors([authInterceptor]))
+  ],
   bootstrap: [App],
 })
-export class AppModule {}
+export class AppModule { }

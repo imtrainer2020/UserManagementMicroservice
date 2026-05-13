@@ -1,0 +1,51 @@
+import {
+  HttpInterceptorFn, HttpErrorResponse,
+  HttpRequest, HttpHandlerFn, HttpEvent
+} from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { AuthService } from '../../services/auth/auth.service';
+import tok from '@angular/common/locales/extra/tok';
+
+
+
+export const authInterceptor: HttpInterceptorFn =
+  (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
+
+    // 1. Define endpoints that DO NOT need a token
+    const exemptUrls: string[] = [
+      '/gateway/auth/login',
+      '/gateway/auth/register',
+      '/gateway/auth/forgetpassword',
+      '/gateway/auth/resetpassword'
+    ];
+
+    // 2. Check if the current request URL contains any of the exempt URLs
+    const isExempt = exemptUrls.some(url => req.url.toLowerCase().includes(url.toLowerCase()));
+    if (!isExempt) {
+      const token = authService.getToken();
+
+      if (token != null && token.length > 0) {
+        req = req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      }
+    }
+
+    return next(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          authService.logout();
+          router.navigate(['/login']);
+        }
+        return throwError(() => error);
+      })
+    );
+
+  };

@@ -48,4 +48,29 @@ export class AuthService {
     localStorage.removeItem('user_id');
     localStorage.removeItem('user_email');
   }
+
+  // 1. Helper to decode the JWT payload
+  private decodeToken(token: string): any {
+    try {
+      const payload = token.split('.')[1];
+      // base64 decode
+      const decodedJson = atob(payload);
+      return JSON.parse(decodedJson);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // 2. Helper to get the user's role
+  getUserRole(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const decoded = this.decodeToken(token);
+    if (!decoded) return null;
+
+    // .NET often uses this long URL schema for roles, or simply 'role'
+    return decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded['role'] || null;
+  }
+
 }

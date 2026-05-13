@@ -9,5 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\shared\" />
+    <Folder Include="src\app\shared\interceptors\" />
   </ItemGroup>
 </Project>
