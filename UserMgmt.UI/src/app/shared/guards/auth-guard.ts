@@ -23,7 +23,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
 
   if (!hasRole) {
     alert('Access Denied. You do not have permission to view this page.');
-    authService.logout(); // Log them out just in case
+    // authService.logout(); // Log them out just in case
     router.navigate(['/']); // Send them back to safety
     return false;
   }

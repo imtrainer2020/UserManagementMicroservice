@@ -19,7 +19,6 @@ export class AuthService {
 
   forgetPassword(email: string): Observable<ApiResponse<boolean>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    console.log(email);
     return this.http.post<ApiResponse<boolean>>(`${this.apiUrl}/forgetpassword`, JSON.stringify(email), { headers });
   }
 
@@ -49,28 +48,8 @@ export class AuthService {
     localStorage.removeItem('user_email');
   }
 
-  // 1. Helper to decode the JWT payload
-  private decodeToken(token: string): any {
-    try {
-      const payload = token.split('.')[1];
-      // base64 decode
-      const decodedJson = atob(payload);
-      return JSON.parse(decodedJson);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // 2. Helper to get the user's role
   getUserRole(): string | null {
-    const token = this.getToken();
-    if (!token) return null;
-
-    const decoded = this.decodeToken(token);
-    if (!decoded) return null;
-
-    // .NET often uses this long URL schema for roles, or simply 'role'
-    return decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded['role'] || null;
+    return localStorage.getItem('user_role');
   }
 
 }

@@ -7,9 +7,6 @@ import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
-import tok from '@angular/common/locales/extra/tok';
-
-
 
 export const authInterceptor: HttpInterceptorFn =
   (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
@@ -40,7 +37,7 @@ export const authInterceptor: HttpInterceptorFn =
 
     return next(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+        if (error.status === 401 || error.status === 403) {
           authService.logout();
           router.navigate(['/login']);
         }
