@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -16,12 +16,14 @@ export class ResetPasswordComponent implements OnInit {
   errorMessage: string = '';
   successMessage: string = '';
   emailFromRoute: string = '';
+  isSubmitting: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {
     // Custom cross-field validation for password matching
     this.resetPasswordForm = this.fb.group({
@@ -56,6 +58,7 @@ export class ResetPasswordComponent implements OnInit {
     // 2. Clear messages and start spinner
     this.errorMessage = '';
     this.successMessage = '';
+    this.isSubmitting = true;
 
     const payload: ResetPasswordRequest = {
       email: this.resetPasswordForm.value.email,
@@ -69,15 +72,21 @@ export class ResetPasswordComponent implements OnInit {
         console.log(response);
         if (response.isSuccess) {
           this.successMessage = 'Password reset successfully. Redirecting to login...';
+          this.isSubmitting = false;
+          this.cdr.detectChanges();
           setTimeout(() => this.router.navigate(['/login']), 1500);
         } else {
           this.errorMessage = response?.message || 'Failed to reset password.';
+          this.isSubmitting = false;
+          this.cdr.detectChanges();
         }
       },
       error: (err: any) => {
         // Stop the spinner if the server crashes
         console.error("API Error details:", err);
         this.errorMessage = err.error.message || 'Unable to connect to the server';
+        this.isSubmitting = false;
+        this.cdr.detectChanges();
       }
     });
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -14,8 +14,10 @@ export class ForgetPasswordComponent {
   forgetPasswordForm: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
+  isSubmitting: boolean = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService,
+    private router: Router, private cdr: ChangeDetectorRef) {
     this.forgetPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
@@ -31,6 +33,7 @@ export class ForgetPasswordComponent {
     // 2. Clear old messages and start spinner
     this.errorMessage = '';
     this.successMessage = '';
+    this.isSubmitting = true;
 
     const email: string = this.forgetPasswordForm.value.email;
 
@@ -40,20 +43,28 @@ export class ForgetPasswordComponent {
         // Stop the spinner instantly
         console.log(response);
         if (response.isSuccess && response.data === true) {
-          this.successMessage = response.message; // "Email exists."
+          this.successMessage = 'Redirecting to Reset'; // "Email exists."
+          this.isSubmitting = false;
+          this.cdr.detectChanges();
 
           // Navigate to reset-password, carry email as query param
-          this.router.navigate(['/reset-password'], {
-            queryParams: { email }
-          });
+          setTimeout(() => {
+            this.router.navigate(['/reset-password'], {
+              queryParams: { email }
+            })
+          }, 1500);
         } else {
           this.errorMessage = response.message || 'No account found with this email.';
+          this.isSubmitting = false;
+          this.cdr.detectChanges();
         }
       },
       error: (err) => {
         // Stop the spinner if the server crashes or isn't running
         console.error("API Error details:", err);
         this.errorMessage = err.error?.message || 'Something went wrong. Please try again.';
+        this.isSubmitting = false;
+        this.cdr.detectChanges();
       }
     });
   }
