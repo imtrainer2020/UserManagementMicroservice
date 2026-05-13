@@ -165,11 +165,11 @@ namespace AuthService.API.Repository
 
         private async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
+            return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
         private async Task<User?> GetUserByIdAsync(int id)
         {
-            return await context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
     }

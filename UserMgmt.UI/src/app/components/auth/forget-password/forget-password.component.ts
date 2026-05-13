@@ -12,7 +12,6 @@ import { ApiResponse } from '../../../shared/apiresponse.model';
 })
 export class ForgetPasswordComponent {
   forgetPasswordForm: FormGroup;
-  isSubmitting = false;
   errorMessage: string = '';
   successMessage: string = '';
 
@@ -30,7 +29,6 @@ export class ForgetPasswordComponent {
     }
 
     // 2. Clear old messages and start spinner
-    this.isSubmitting = true;
     this.errorMessage = '';
     this.successMessage = '';
 
@@ -40,8 +38,7 @@ export class ForgetPasswordComponent {
     this.authService.forgetPassword(email).subscribe({
       next: (response: ApiResponse<boolean>) => {
         // Stop the spinner instantly
-        this.isSubmitting = false;
-
+        console.log(response);
         if (response.isSuccess && response.data === true) {
           this.successMessage = response.message; // "Email exists."
 
@@ -55,7 +52,6 @@ export class ForgetPasswordComponent {
       },
       error: (err) => {
         // Stop the spinner if the server crashes or isn't running
-        this.isSubmitting = false;
         console.error("API Error details:", err);
         this.errorMessage = err.error?.message || 'Something went wrong. Please try again.';
       }

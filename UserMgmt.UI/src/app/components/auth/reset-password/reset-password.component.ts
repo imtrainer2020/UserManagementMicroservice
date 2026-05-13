@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import { ApiResponse } from '../../../shared/apiresponse.model';
+import { ResetPasswordRequest } from '../../../models/authdto.model';
 
 @Component({
   selector: 'app-reset-password',
@@ -12,7 +13,6 @@ import { ApiResponse } from '../../../shared/apiresponse.model';
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
-  isSubmitting = false;
   errorMessage: string = '';
   successMessage: string = '';
   emailFromRoute: string = '';
@@ -56,9 +56,8 @@ export class ResetPasswordComponent implements OnInit {
     // 2. Clear messages and start spinner
     this.errorMessage = '';
     this.successMessage = '';
-    this.isSubmitting = true;
 
-    const payload = {
+    const payload: ResetPasswordRequest = {
       email: this.resetPasswordForm.value.email,
       newPassword: this.resetPasswordForm.value.newPassword
     };
@@ -67,9 +66,8 @@ export class ResetPasswordComponent implements OnInit {
     this.authService.resetPassword(payload).subscribe({
       next: (response: ApiResponse<number>) => {
         // Stop the spinner instantly
-        this.isSubmitting = false;
-
-        if (response.isSuccess && response.data && response.data > 0) {
+        console.log(response);
+        if (response.isSuccess) {
           this.successMessage = 'Password reset successfully. Redirecting to login...';
           setTimeout(() => this.router.navigate(['/login']), 1500);
         } else {
@@ -78,9 +76,8 @@ export class ResetPasswordComponent implements OnInit {
       },
       error: (err: any) => {
         // Stop the spinner if the server crashes
-        this.isSubmitting = false;
         console.error("API Error details:", err);
-        this.errorMessage = 'Unable to connect to the server. Is your .NET backend running?';
+        this.errorMessage = err.error.message || 'Unable to connect to the server';
       }
     });
 

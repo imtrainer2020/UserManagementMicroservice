@@ -20,25 +20,46 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<int>>> RegisterUser([FromBody] UserRegisterDto dto)
     {
-        int res = await repo.RegisterUserAsync(dto);
-        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User registered successfully."))
-            : Ok(ApiResponse<int>.Fail("User registration failed."));
+        try
+        {
+            int res = await repo.RegisterUserAsync(dto);
+            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User registered successfully."))
+                : Ok(ApiResponse<int>.Fail("User registration failed."));
+        }
+        catch (Exception ex)
+        {
+            return Ok(ApiResponse<int>.Fail(ex.Message));
+        }
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<LoggedUserDto>>> LoginUser([FromBody] UserLoginDto dto)
     {
-        LoggedUserDto loggedUser = await repo.LoginUserAsync(dto);
-        return Ok(ApiResponse<LoggedUserDto>.Success(loggedUser, "Login successful."));
+        try
+        {
+            LoggedUserDto loggedUser = await repo.LoginUserAsync(dto);
+            return Ok(ApiResponse<LoggedUserDto>.Success(loggedUser, "Login successful."));
+        }
+        catch (Exception ex)
+        {
+            return Ok(ApiResponse<LoggedUserDto>.Fail(ex.Message));
+        }
     }
 
     [HttpPost("forgetpassword")]
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<bool>>> ForgetPassword([FromBody] string email)
     {
-        bool isEmailExist = await repo.ForgetPasswordAsync(email);
-        return Ok(ApiResponse<bool>.Success(isEmailExist, isEmailExist ? "Email exists." : "Email does not exist."));
+        try
+        {
+            bool isEmailExist = await repo.ForgetPasswordAsync(email);
+            return Ok(ApiResponse<bool>.Success(isEmailExist, isEmailExist ? "Email exists." : "Email does not exist."));
+        }
+        catch (Exception ex)
+        {
+            return Ok(ApiResponse<bool>.Fail(ex.Message));
+        }
     }
 
     [RoleAuthorize]
@@ -54,9 +75,16 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<int>>> ResetPassword([FromBody] ResetPasswordDto dto)
     {
-        int res = await repo.ResetPasswordAsync(dto);
-        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "Password reset successfully."))
-            : Ok(ApiResponse<int>.Fail("Password reset failed."));
+        try
+        {
+            int res = await repo.ResetPasswordAsync(dto);
+            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "Password reset successfully."))
+                : Ok(ApiResponse<int>.Fail("Password reset failed."));
+        }
+        catch (Exception ex)
+        {
+            return Ok(ApiResponse<int>.Fail(ex.Message));
+        }
     }
 
     [HttpPost("resetuserrole")]
