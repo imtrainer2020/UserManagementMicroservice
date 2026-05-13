@@ -41,10 +41,10 @@ export class ForgetPasswordComponent {
     this.authService.forgetPassword(email).subscribe({
       next: (response: ApiResponse<boolean>) => {
         // Stop the spinner instantly
+        this.isSubmitting = false;
         console.log(response);
         if (response.isSuccess && response.data === true) {
           this.successMessage = 'Redirecting to Reset'; // "Email exists."
-          this.isSubmitting = false;
           this.cdr.detectChanges();
 
           // Navigate to reset-password, carry email as query param
