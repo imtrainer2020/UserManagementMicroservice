@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginRequest, LoggedUserDto, ResetPasswordRequest } from '../../models/authdto.model';
+import { LoginRequest, LoggedUserDto, ResetPasswordRequest, SignupRequest } from '../../models/authdto.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../shared/apiresponse.model';
 import { HttpHeaders } from '@angular/common/http';
@@ -24,6 +24,10 @@ export class AuthService {
 
   resetPassword(data: ResetPasswordRequest): Observable<ApiResponse<number>> {
     return this.http.post<ApiResponse<number>>(`${this.apiUrl}/resetpassword`, data);
+  }
+
+  signup(data: SignupRequest): Observable<ApiResponse<number>> {
+    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/register`, data);
   }
 
   saveToken(loggedUser: LoggedUserDto): void {

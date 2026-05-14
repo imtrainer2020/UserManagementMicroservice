@@ -47,7 +47,8 @@ export class LoginComponent {
 
         // Handle successful login (e.g., store token, redirect)
         console.log('Login Response:', response);
-        if (response.isSuccess && response.data) {
+        debugger;
+        if (response != null && response.data != null && response.isSuccess) {
 
           // save token and user info to local storage
           this.authService.saveToken(response.data);
@@ -55,13 +56,7 @@ export class LoginComponent {
           this.successMessage = response.message;
 
           // Redirect based on user role
-          const userRole = response.data.role;
-          if (userRole.toLowerCase() === 'admin')
-            this.router.navigate(['/admin/dashboard']);
-          else if (userRole.toLowerCase() === 'manager')
-            this.router.navigate(['/manager/dashboard']);
-          else
-            this.router.navigate(['/user/dashboard']);
+          this.router.navigate(['dashboard']);
         }
 
       },

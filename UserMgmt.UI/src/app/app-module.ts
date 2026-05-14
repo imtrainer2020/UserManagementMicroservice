@@ -12,6 +12,8 @@ import { RolesComponent } from './components/roles/roles.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
 import { HasRoleDirective } from './shared/directives/has-role.directive';
+import { UnauthorizedComponent } from './components/auth/unauthorized/unauthorized.component';
+import { UserDashboardComponent } from './components/dashboard/user-dashboard/user-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { HasRoleDirective } from './shared/directives/has-role.directive';
     RolesComponent,
     ResetPasswordComponent,
     HasRoleDirective,
+    UnauthorizedComponent,
+    UserDashboardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [

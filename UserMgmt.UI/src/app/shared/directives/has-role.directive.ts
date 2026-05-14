@@ -1,11 +1,11 @@
-import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, OnChanges, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Directive({
   selector: '[appHasRole]',
   standalone: false,
 })
-export class HasRoleDirective implements OnInit {
+export class HasRoleDirective implements OnInit, OnChanges {
   @Input() appHasRole: string[] = [];
 
   constructor(
@@ -15,6 +15,10 @@ export class HasRoleDirective implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.updateView();
+  }
+
+  ngOnChanges() {
     this.updateView();
   }
 

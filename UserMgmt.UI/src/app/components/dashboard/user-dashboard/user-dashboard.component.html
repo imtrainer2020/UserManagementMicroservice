@@ -1,0 +1,287 @@
+<h1>Welcome to the Dashboard</h1>
+
+<!-- ── TOP NAVBAR ─────────────────────────────────────────── -->
+
+<!--<nav class="navbar navbar-dark bg-dark px-4">
+
+  <a class="navbar-brand fw-bold">
+
+    <i class="bi bi-grid-fill me-2"></i>{{ config?.title }}
+
+  </a>
+
+  <div class="d-flex align-items-center gap-3">
+
+    <span class="text-white-50 small">{{ userEmail }}</span>
+
+    <span class="badge {{ config?.badgeClass }} text-uppercase px-3 py-2">
+
+      {{ userRole }}
+
+    </span>
+
+    <button class="btn btn-sm btn-outline-light" (click)="logout()">
+
+      <i class="bi bi-box-arrow-right me-1"></i>Logout
+
+    </button>
+
+  </div>
+
+</nav>-->
+
+
+
+<!-- ── MAIN LAYOUT ───────────────────────────────────────────── -->
+
+<!--<div class="container-fluid py-4 px-4">-->
+
+
+
+  <!-- Welcome Banner -->
+
+  <!--<div class="mb-4">
+
+    <h4 class="mb-0">Hello, {{ userEmail }} 👋</h4>
+
+    <p class="text-muted small">{{ config?.greeting }}</p>
+
+  </div>-->
+
+
+
+  <!-- ════════════════════════════════════════════════════════
+
+       ADMIN-ONLY SECTION
+
+       Uses HasRoleDirective — hidden for Manager and User
+
+  ════════════════════════════════════════════════════════ -->
+
+  <!--<div *appHasRole="['Admin']" class="mb-5">
+
+    <h6 class="text-uppercase text-danger fw-semibold mb-3">
+
+      <i class="bi bi-shield-lock-fill me-1"></i> Admin Controls
+
+    </h6>
+
+    <div class="row g-3">
+
+      <div class="col-md-4 col-sm-6">
+
+        <div class="card border-0 shadow-sm h-100 widget-card" (click)="navigateTo('/users')">
+
+          <div class="card-body">
+
+            <div class="d-flex align-items-center gap-3 mb-2">
+
+              <div class="icon-circle bg-danger-subtle text-danger">
+
+                <i class="bi bi-people-fill fs-5"></i>
+
+              </div>
+
+              <h6 class="mb-0">User Management</h6>
+
+            </div>
+
+            <p class="text-muted small mb-0">Create, update and manage all system users</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-4 col-sm-6">
+
+        <div class="card border-0 shadow-sm h-100 widget-card" (click)="navigateTo('/roles')">
+
+          <div class="card-body">
+
+            <div class="d-flex align-items-center gap-3 mb-2">
+
+              <div class="icon-circle bg-danger-subtle text-danger">
+
+                <i class="bi bi-shield-fill fs-5"></i>
+
+              </div>
+
+              <h6 class="mb-0">Role Management</h6>
+
+            </div>
+
+            <p class="text-muted small mb-0">Assign and configure system roles</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-4 col-sm-6">
+
+        <div class="card border-0 shadow-sm h-100 widget-card">
+
+          <div class="card-body">
+
+            <div class="d-flex align-items-center gap-3 mb-2">
+
+              <div class="icon-circle bg-danger-subtle text-danger">
+
+                <i class="bi bi-clock-history fs-5"></i>
+
+              </div>
+
+              <h6 class="mb-0">Audit Trails</h6>
+
+            </div>
+
+            <p class="text-muted small mb-0">Track all system data change events</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>-->
+
+
+
+  <!-- ════════════════════════════════════════════════════════
+
+       ADMIN + MANAGER SHARED SECTION
+
+       Uses HasRoleDirective — hidden for User
+
+  ════════════════════════════════════════════════════════ -->
+
+  <!--<div *appHasRole="['Admin', 'Manager']" class="mb-5">
+
+    <h6 class="text-uppercase text-warning fw-semibold mb-3">
+
+      <i class="bi bi-people me-1"></i> Team & Reports
+
+    </h6>
+
+    <div class="row g-3">
+
+      <div class="col-md-4 col-sm-6">
+
+        <div class="card border-0 shadow-sm h-100 widget-card">
+
+          <div class="card-body">
+
+            <div class="d-flex align-items-center gap-3 mb-2">
+
+              <div class="icon-circle bg-warning-subtle text-warning">
+
+                <i class="bi bi-people fs-5"></i>
+
+              </div>
+
+              <h6 class="mb-0">Team Overview</h6>
+
+            </div>
+
+            <p class="text-muted small mb-0">View team members and their current status</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-4 col-sm-6">
+
+        <div class="card border-0 shadow-sm h-100 widget-card">
+
+          <div class="card-body">
+
+            <div class="d-flex align-items-center gap-3 mb-2">
+
+              <div class="icon-circle bg-warning-subtle text-warning">
+
+                <i class="bi bi-bar-chart-fill fs-5"></i>
+
+              </div>
+
+              <h6 class="mb-0">Reports</h6>
+
+            </div>
+
+            <p class="text-muted small mb-0">View performance and activity reports</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>-->
+
+
+
+  <!-- ════════════════════════════════════════════════════════
+
+       ALL ROLES SECTION — config-driven widgets
+
+       Rendered from roleConfig in the component
+
+  ════════════════════════════════════════════════════════ -->
+
+  <!--<div class="mb-4">
+
+    <h6 class="text-uppercase text-primary fw-semibold mb-3">
+
+      <i class="bi bi-grid me-1"></i> My Workspace
+
+    </h6>
+
+    <div class="row g-3">
+
+      @for (widget of config?.widgets; track widget.label) {
+
+      <div class="col-md-4 col-sm-6">
+
+        <div class="card border-0 shadow-sm h-100 widget-card"
+                           [class.clickable]="widget.route !== null"
+                           (click)="navigateTo(widget.route)">
+
+          <div class="card-body">
+
+            <div class="d-flex align-items-center gap-3 mb-2">
+
+              <div class="icon-circle bg-primary-subtle text-primary">
+
+                <i class="bi {{ widget.icon }} fs-5"></i>
+
+              </div>
+
+              <h6 class="mb-0">{{ widget.label }}</h6>
+
+            </div>
+
+            <p class="text-muted small mb-0">{{ widget.description }}</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      }
+
+    </div>
+
+  </div>
+
+
+
+</div>-->

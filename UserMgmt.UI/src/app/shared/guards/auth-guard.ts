@@ -6,6 +6,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
   const authService = inject(AuthService);
   const router = inject(Router);
 
+  debugger;
   // If user is not logged in, redirect to login page with the returnUrl query param
   if (!authService.isLoggedIn()) {
     router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
@@ -22,9 +23,8 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
   const hasRole = allowedRoles.map(role => role.toLowerCase()).includes(userRole);
 
   if (!hasRole) {
-    alert('Access Denied. You do not have permission to view this page.');
     // authService.logout(); // Log them out just in case
-    router.navigate(['/']); // Send them back to safety
+    router.navigate(['/unauthorized']); // Send them back to safety
     return false;
   }
 

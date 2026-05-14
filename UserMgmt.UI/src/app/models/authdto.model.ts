@@ -16,3 +16,8 @@ export interface ResetPasswordRequest {
   email: string;
   newPassword: string;
 }
+
+export interface SignupRequest {
+  email: string;
+  password: string;
+}

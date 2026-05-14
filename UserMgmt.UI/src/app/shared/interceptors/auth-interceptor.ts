@@ -15,12 +15,13 @@ export const authInterceptor: HttpInterceptorFn =
 
     // 1. Define endpoints that DO NOT need a token
     const exemptUrls: string[] = [
-      '/gateway/auth/login',
-      '/gateway/auth/register',
-      '/gateway/auth/forgetpassword',
-      '/gateway/auth/resetpassword'
+      '/login',
+      '/register',
+      '/forgetpassword',
+      '/resetpassword'
     ];
 
+    debugger;
     // 2. Check if the current request URL contains any of the exempt URLs
     const isExempt = exemptUrls.some(url => req.url.toLowerCase().includes(url.toLowerCase()));
     if (!isExempt) {
@@ -37,9 +38,12 @@ export const authInterceptor: HttpInterceptorFn =
 
     return next(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401 || error.status === 403) {
+        if (error.status === 401) {
           authService.logout();
           router.navigate(['/login']);
+        }
+        else if (error.status === 403) {
+          router.navigate(['/unauthorized']);
         }
         return throwError(() => error);
       })
