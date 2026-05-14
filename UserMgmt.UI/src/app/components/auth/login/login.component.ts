@@ -56,9 +56,9 @@ export class LoginComponent {
 
           // Redirect based on user role
           const userRole = response.data.role;
-          if (userRole === 'Admin')
+          if (userRole.toLowerCase() === 'admin')
             this.router.navigate(['/admin/dashboard']);
-          else if (userRole === 'Manager')
+          else if (userRole.toLowerCase() === 'manager')
             this.router.navigate(['/manager/dashboard']);
           else
             this.router.navigate(['/user/dashboard']);

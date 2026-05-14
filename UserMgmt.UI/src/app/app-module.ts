@@ -11,7 +11,6 @@ import { ForgetPasswordComponent } from './components/auth/forget-password/forge
 import { RolesComponent } from './components/roles/roles.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
-import { HasRole } from './shared/directives/has-role';
 import { HasRoleDirective } from './shared/directives/has-role.directive';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { HasRoleDirective } from './shared/directives/has-role.directive';
     ForgetPasswordComponent,
     RolesComponent,
     ResetPasswordComponent,
-    HasRole,
     HasRoleDirective,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
