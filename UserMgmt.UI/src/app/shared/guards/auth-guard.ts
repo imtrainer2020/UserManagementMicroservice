@@ -19,10 +19,14 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
     return true; // No specific roles required, allow access
 
   const userRole = authService.getUserRole()?.toLowerCase() ?? '';
-  const hasRole = allowedRoles.map(role => role.toLowerCase()).includes(userRole);
+
+  console.log(userRole);
+  console.log(allowedRoles.map(role => role.toLowerCase()));
+
+  const hasRole = allowedRoles.map(role => role.toLowerCase()).includes(userRole.toLowerCase());
 
   if (!hasRole) {
-    authService.logout(); // Log them out just in case
+    // authService.logout(); // Log them out just in case
     router.navigate(['/unauthorized']); // Send them back to safety
     return false;
   }

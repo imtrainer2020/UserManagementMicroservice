@@ -32,9 +32,11 @@ export class AuthService {
 
   saveToken(loggedUser: LoggedUserDto): void {
     localStorage.setItem('jwt_token', loggedUser.jwttoken);
-    localStorage.setItem('user_role', loggedUser.role);
+    localStorage.setItem('user_role', this.normalizeRole(loggedUser.role));
     localStorage.setItem('user_id', loggedUser.userId?.toString());
     localStorage.setItem('user_email', loggedUser.userEmail);
+
+    console.log(this.normalizeRole(loggedUser.role));
   }
 
   getToken(): string | null {
@@ -62,9 +64,11 @@ export class AuthService {
     const roleMap: Record<string, string> = {
       'admin': 'admin',
       'role_admin': 'admin',
+      'administrator': 'admin',
       'manager': 'manager',
       'role_manager': 'manager',
       'user': 'user',
+      'customer': 'user',
       'role_user': 'user'
     };
     return roleMap[value] ?? value;
