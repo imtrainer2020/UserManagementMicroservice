@@ -21,7 +21,6 @@ export const authInterceptor: HttpInterceptorFn =
       '/resetpassword'
     ];
 
-    debugger;
     // 2. Check if the current request URL contains any of the exempt URLs
     const isExempt = exemptUrls.some(url => req.url.toLowerCase().includes(url.toLowerCase()));
     if (!isExempt) {

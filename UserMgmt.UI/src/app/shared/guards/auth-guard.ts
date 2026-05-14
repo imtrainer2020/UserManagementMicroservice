@@ -6,7 +6,6 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  debugger;
   // If user is not logged in, redirect to login page with the returnUrl query param
   if (!authService.isLoggedIn()) {
     router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
@@ -23,7 +22,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
   const hasRole = allowedRoles.map(role => role.toLowerCase()).includes(userRole);
 
   if (!hasRole) {
-    // authService.logout(); // Log them out just in case
+    authService.logout(); // Log them out just in case
     router.navigate(['/unauthorized']); // Send them back to safety
     return false;
   }

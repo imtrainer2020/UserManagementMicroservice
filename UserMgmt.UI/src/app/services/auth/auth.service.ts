@@ -53,7 +53,21 @@ export class AuthService {
   }
 
   getUserRole(): string | null {
-    return localStorage.getItem('user_role');
+    const role = localStorage.getItem('user_role');
+    return role ? this.normalizeRole(role):null;
   }
+
+  private normalizeRole(role: string | null | undefined): string {
+    const value = (role ?? '').trim().toLowerCase();
+    const roleMap: Record<string, string> = {
+      'admin': 'admin',
+      'role_admin': 'admin',
+      'manager': 'manager',
+      'role_manager': 'manager',
+      'user': 'user',
+      'role_user': 'user'
+    };
+    return roleMap[value] ?? value;
+}
 
 }
