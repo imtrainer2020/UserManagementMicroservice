@@ -44,7 +44,6 @@ export class ForgetPasswordComponent {
         this.isSubmitting = false;
         if (response.isSuccess && response.data === true) {
           this.successMessage = 'Redirecting to Reset'; // "Email exists."
-          this.cdr.detectChanges();
 
           // Navigate to reset-password, carry email as query param
           setTimeout(() => {
@@ -55,8 +54,8 @@ export class ForgetPasswordComponent {
         } else {
           this.errorMessage = response.message || 'No account found with this email.';
           this.isSubmitting = false;
-          this.cdr.detectChanges();
         }
+        this.cdr.detectChanges();
       },
       error: (err) => {
         // Stop the spinner if the server crashes or isn't running

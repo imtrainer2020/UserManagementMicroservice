@@ -49,7 +49,6 @@ export class LoginComponent {
         if (response != null && response.data != null && response.isSuccess) {
           // save token and user info to local storage
           this.authService.saveToken(response.data);
-
           this.successMessage = response.message;
 
           // Redirect based on user role

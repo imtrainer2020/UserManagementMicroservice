@@ -72,13 +72,12 @@ export class ResetPasswordComponent implements OnInit {
         this.isSubmitting = false;
         if (response.isSuccess) {
           this.successMessage = 'Password reset successfully. Redirecting to login...';
-          this.cdr.detectChanges();
           setTimeout(() => this.router.navigate(['/login']), 1500);
         } else {
           this.errorMessage = response?.message || 'Failed to reset password.';
           this.isSubmitting = false;
-          this.cdr.detectChanges();
         }
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         // Stop the spinner if the server crashes
