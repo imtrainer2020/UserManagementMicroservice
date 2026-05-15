@@ -42,7 +42,6 @@ export class ForgetPasswordComponent {
       next: (response: ApiResponse<boolean>) => {
         // Stop the spinner instantly
         this.isSubmitting = false;
-        console.log(response);
         if (response.isSuccess && response.data === true) {
           this.successMessage = 'Redirecting to Reset'; // "Email exists."
           this.cdr.detectChanges();

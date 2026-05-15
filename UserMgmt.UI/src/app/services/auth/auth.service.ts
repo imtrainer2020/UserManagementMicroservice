@@ -31,12 +31,10 @@ export class AuthService {
   }
 
   saveToken(loggedUser: LoggedUserDto): void {
-    localStorage.setItem('jwt_token', loggedUser.jwttoken);
-    localStorage.setItem('user_role', this.normalizeRole(loggedUser.role));
+    localStorage.setItem('jwt_token', loggedUser.jwtToken);
+    localStorage.setItem('user_role', this.normalizeRole(loggedUser.roleName));
     localStorage.setItem('user_id', loggedUser.userId?.toString());
-    localStorage.setItem('user_email', loggedUser.userEmail);
-
-    console.log(this.normalizeRole(loggedUser.role));
+    localStorage.setItem('user_email', loggedUser.email);
   }
 
   getToken(): string | null {
@@ -44,7 +42,8 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    return !!token && token !== undefined && token.trim().length > 0; // Returns true if token exists and is not empty
   }
 
   logout(): void {

@@ -6,10 +6,10 @@ export interface LoginRequest {
 }
 
 export interface LoggedUserDto {
-  jwttoken: string;
+  jwtToken: string;
   userId: number;
-  userEmail: string;
-  role: string;
+  email: string;
+  roleName: string;
 }
 
 export interface ResetPasswordRequest {

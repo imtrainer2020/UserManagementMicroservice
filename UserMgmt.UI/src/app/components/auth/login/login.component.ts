@@ -46,7 +46,6 @@ export class LoginComponent {
         this.isSubmitting = false;
 
         // Handle successful login (e.g., store token, redirect)
-        console.log('Login Response:', response);
         if (response != null && response.data != null && response.isSuccess) {
           // save token and user info to local storage
           this.authService.saveToken(response.data);
