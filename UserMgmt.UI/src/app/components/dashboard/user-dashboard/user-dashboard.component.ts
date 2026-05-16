@@ -10,33 +10,32 @@ import { DashboardConfig } from '../../../models/dashboard.model';
   styleUrl: './user-dashboard.component.css',
 })
 export class UserDashboardComponent {
- 
+
   userRole: string = '';
   userEmail: string = '';
   config!: DashboardConfig;
- 
+  today = new Date();
+
   // ✅ Central role config — add a new role here ONLY when roles grow.
   // No changes needed in routing, login, or template.
   private readonly roleConfig: Record<string, DashboardConfig> = {
     admin: {
       title: 'Admin Dashboard',
       greeting: 'Full system access.',
-      badgeClass: 'bg-danger',
+      badgeClass: 'badge-admin',
       widgets: [
-        { label: 'User Management', icon: 'bi-people-fill',    route: '/users',    description: 'Create, update and manage all users' },
-        { label: 'Role Management', icon: 'bi-shield-fill',    route: '/roles',    description: 'Assign and configure system roles' },
-        { label: 'System Logs',     icon: 'bi-journal-text',   route: null,        description: 'View application activity logs' },
-        { label: 'Audit Trails',    icon: 'bi-clock-history',  route: null,        description: 'Track all data change events' },
+        { label: 'User Management', icon: 'bi-people-fill', route: '/users', description: 'Create, update and manage all users' },
+        { label: 'Role Management', icon: 'bi-shield-fill', route: '/roles', description: 'Assign and configure system roles' },
+        { label: 'System Settings', icon: 'bi-gear-fill', route: null, description: 'Configure application-level settings' },
       ]
     },
     manager: {
       title: 'Manager Dashboard',
       greeting: 'Manage your team.',
-      badgeClass: 'bg-warning text-dark',
+      badgeClass: 'badge-manager',
       widgets: [
-        { label: 'Team Overview',   icon: 'bi-people',         route: null,        description: 'View your team members and status' },
-        { label: 'Role Management', icon: 'bi-shield-check',   route: '/roles',    description: 'Manage role assignments for your team' },
-        { label: 'Reports',         icon: 'bi-bar-chart-fill', route: null,        description: 'View performance and activity reports' },
+        { label: 'Role Management', icon: 'bi-shield-check', route: '/roles', description: 'Manage role assignments for your team' },
+        { label: 'My Activity', icon: 'bi-activity', route: null, description: 'See your recent actions' },
       ]
     },
     user: {
@@ -44,8 +43,9 @@ export class UserDashboardComponent {
       greeting: 'Welcome to your workspace.',
       badgeClass: 'bg-primary',
       widgets: [
-        { label: 'My Profile',      icon: 'bi-person-circle',  route: null,        description: 'View and update your profile' },
-        { label: 'My Activity',     icon: 'bi-activity',       route: null,        description: 'See your recent actions' },
+        { label: 'My Profile', icon: 'bi-person-circle', route: null, description: 'View and update your profile' },
+        { label: 'My Activity', icon: 'bi-activity', route: null, description: 'See your recent actions' },
+        { label: 'Notifications', icon: 'bi-bell-fill', route: null, description: 'See your notifications' },
       ]
     },
     // ➕ Future role example — just add this block:
@@ -58,24 +58,29 @@ export class UserDashboardComponent {
     //   ]
     // },
   };
- 
-  constructor(private authService: AuthService, private router: Router) {}
- 
+
+  constructor(private authService: AuthService, private router: Router) { }
+
   ngOnInit(): void {
-    this.userRole  = this.authService.getUserRole()?.toLowerCase() ?? 'user';
+    this.userRole = this.authService.getUserRole()?.toLowerCase() ?? 'user';
     this.userEmail = localStorage.getItem('user_email') ?? '';
-    this.config    = this.roleConfig[this.userRole] ?? {
+    this.config = this.roleConfig[this.userRole] ?? {
       title: 'Dashboard',
       greeting: 'Welcome.',
-      badgeClass: 'bg-secondary',
-      widgets: []
+      badgeClass: 'badge-secondary',
+      widgets: [],
     };
   }
- 
+
+  /** Returns the display name (part before @) from the email. */
+  getUserName(): string {
+    return this.userEmail?.split('@')[0] ?? 'User';
+  }
+
   navigateTo(route: string | null): void {
     if (route) this.router.navigate([route]);
   }
- 
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

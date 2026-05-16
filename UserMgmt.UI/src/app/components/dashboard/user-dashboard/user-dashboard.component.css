@@ -1,25 +1,274 @@
-.widget-card {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  cursor: default;
-  border-radius: 0.75rem;
+/* src/app/components/dashboard/user-dashboard/user-dashboard.component.css */
+
+/* ── Navbar ──────────────────────────────────────────────────────────── */
+.dash-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a1a2e;
+  color: #fff;
+  padding: 0.75rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
 }
 
-  .widget-card.clickable,
-  .widget-card[ng-reflect-class*="clickable"] {
-    cursor: pointer;
+.dash-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+
+.dash-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dash-email {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+}
+
+/* ── Role Badges ─────────────────────────────────────────────────────── */
+.dash-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+}
+
+.badge-admin {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.badge-manager {
+  background: #f39c12;
+  color: #1a1a2e;
+}
+
+.badge-user {
+  background: #3498db;
+  color: #fff;
+}
+
+/* ── Logout button ───────────────────────────────────────────────────── */
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+  .btn-logout:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
   }
+
+/* ── Page body ───────────────────────────────────────────────────────── */
+.dash-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ── Welcome banner ──────────────────────────────────────────────────── */
+.dash-welcome {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 14px;
+  color: #fff;
+}
+
+.dash-greeting {
+  margin: 0 0 0.25rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.dash-subtext {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.dash-date {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  white-space: nowrap;
+  align-self: center;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────── */
+.dash-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.label-admin {
+  color: #e74c3c;
+}
+
+.label-manager {
+  color: #f39c12;
+}
+
+.label-workspace {
+  color: #3498db;
+}
+
+/* ── Widget grid ─────────────────────────────────────────────────────── */
+.widget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Widget card base ────────────────────────────────────────────────── */
+.widget-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+  position: relative;
+}
 
   .widget-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+    transform: translateY(-2px);
   }
 
-.icon-circle {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
+.widget-clickable {
+  cursor: pointer;
+}
+
+.widget-arrow {
+  position: absolute;
+  right: 1.1rem;
+  color: #c0c0c0;
+  font-size: 0.85rem;
+}
+
+/* ── Widget icon circles ─────────────────────────────────────────────── */
+.widget-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.2rem;
   flex-shrink: 0;
+}
+
+.icon-admin {
+  background: #fde8e8;
+  color: #e74c3c;
+}
+
+.icon-manager {
+  background: #fef3cd;
+  color: #d4860a;
+}
+
+.icon-workspace {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+/* ── Widget text ─────────────────────────────────────────────────────── */
+.widget-body {
+  flex: 1;
+  min-width: 0;
+}
+
+  .widget-body h6 {
+    margin: 0 0 0.2rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .widget-body p {
+    margin: 0;
+    font-size: 0.78rem;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+
+/* ── Role-tinted left border ─────────────────────────────────────────── */
+.widget-admin {
+  border-left: 3px solid #e74c3c;
+}
+
+.widget-manager {
+  border-left: 3px solid #f39c12;
+}
+
+.widget-workspace {
+  border-left: 3px solid #3498db;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .dash-navbar {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .dash-body {
+    padding: 1.25rem 1rem;
+  }
+
+  .dash-welcome {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .dash-email {
+    display: none;
+  }
+
+  .widget-grid {
+    grid-template-columns: 1fr;
+  }
 }

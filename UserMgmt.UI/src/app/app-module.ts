@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing-module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { App } from './app';
 
 import { LoginComponent } from './components/auth/login/login.component';
@@ -27,7 +28,7 @@ import { UserDashboardComponent } from './components/dashboard/user-dashboard/us
     UnauthorizedComponent,
     UserDashboardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, CommonModule],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor])),

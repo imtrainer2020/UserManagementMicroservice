@@ -5,8 +5,8 @@ import { AuthService } from '../../services/auth/auth.service';
   selector: '[appHasRole]',
   standalone: false,
 })
-export class HasRoleDirective implements OnInit, OnChanges {
-  @Input() appHasRole: string[] = [];
+export class HasRoleDirective implements OnInit {
+  @Input('appHasRole') roles: string[] = [];
 
   constructor(
     private templateRef: TemplateRef<any>,
@@ -14,22 +14,13 @@ export class HasRoleDirective implements OnInit, OnChanges {
     private authService: AuthService
   ) { }
 
-  ngOnInit() {
-    this.updateView();
-  }
-
-  ngOnChanges() {
-    this.updateView();
-  }
-
-  private updateView() {
+  ngOnInit(): void {
     const userRole = this.authService.getUserRole()?.toLowerCase() ?? '';
-    const allowed = this.appHasRole.map(role => role.toLowerCase()).includes(userRole);
+    this.viewContainer.clear();  // ← always clear first
 
-    if (allowed) {
+    if (this.roles.map(r => r.toLowerCase()).some(r => r === userRole)) {
       this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
     }
   }
+
 }
