@@ -13,7 +13,10 @@ builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 // Register HttpClient so the filter can use it
 builder.Services.AddHttpClient();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<JwtAuthFilter>();
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

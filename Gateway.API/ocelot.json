@@ -47,8 +47,8 @@
       ],
       "UpstreamPathTemplate": "/gateway/auditlogs/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post" ]
-    }
-    ,{
+    },
+    {
       "DownstreamPathTemplate": "/api/auditlogs/user/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

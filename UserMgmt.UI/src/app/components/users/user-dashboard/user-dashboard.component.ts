@@ -35,7 +35,7 @@ export class UserDashboardComponent {
       badgeClass: 'badge-manager',
       widgets: [
         { label: 'Role Management', icon: 'bi-shield-check', route: '/roles-dashboard', description: 'Manage role assignments for your team' },
-        { label: 'My Activity', icon: 'bi-activity', route: null, description: 'See your recent actions' },
+        { label: 'My Activity', icon: 'bi-activity', route: '/my-activity', description: 'See your recent actions' },
       ]
     },
     user: {
@@ -44,7 +44,7 @@ export class UserDashboardComponent {
       badgeClass: 'bg-primary',
       widgets: [
         { label: 'My Profile', icon: 'bi-person-circle', route: null, description: 'View and update your profile' },
-        { label: 'My Activity', icon: 'bi-activity', route: null, description: 'See your recent actions' },
+        { label: 'My Activity', icon: 'bi-activity', route: '/my-activity', description: 'See your recent actions' },
         { label: 'Notifications', icon: 'bi-bell-fill', route: null, description: 'See your notifications' },
       ]
     },

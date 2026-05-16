@@ -11,6 +11,7 @@ import { UserDashboardComponent } from './components/users/user-dashboard/user-d
 import { LayoutComponent } from './components/layout/layout.component';
 import { MyProfileComponent } from './components/user-profile/my-profile/my-profile.component';
 import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/logs-dashboard.component';
+import { MyActivityComponent } from './components/audit-logs/my-activity/my-activity.component';
 
 const routes: Routes = [
   // ─── Public routes (no shell/layout) ───
@@ -44,6 +45,11 @@ const routes: Routes = [
       {
         path: 'logs-dashboard',
         component: LogsDashboardComponent,
+        data: { roles: ['Admin', 'Manager', 'User'] }
+      },
+      {
+        path: 'my-activity',
+        component: MyActivityComponent,
         data: { roles: ['Admin', 'Manager', 'User'] }
       },
       // ← Add all future pages here as children

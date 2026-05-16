@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { LogsService } from '../../../services/audit-logs/logs.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { AuditLogListDto } from '../../../models/audit-log.model';
@@ -20,7 +20,8 @@ export class MyActivityComponent implements OnInit {
 
   constructor(
     private logsService: LogsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +30,7 @@ export class MyActivityComponent implements OnInit {
     if (!userId || userId <= 0) {
       this.errorMessage = 'Unable to identify current user.';
       this.isLoading = false;
+      this.cdr.detectChanges();
       return;
     }
 
@@ -43,11 +45,13 @@ export class MyActivityComponent implements OnInit {
           this.errorMessage = res.message ?? 'No activity found.';
         }
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Activity load error:', err);
         this.errorMessage = 'Failed to load activity. Please try again.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -71,6 +75,7 @@ export class MyActivityComponent implements OnInit {
     }
 
     this.filteredLogs = result;
+    this.cdr.detectChanges();
   }
 
   get successCount(): number {

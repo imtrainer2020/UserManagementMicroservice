@@ -17,6 +17,7 @@ public class AuditLogsController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<int>>> AddAuditLog(AuditLogCreateDto dto)
     {
         int res = await repo.AddAuditLogAsync(dto);
@@ -25,6 +26,7 @@ public class AuditLogsController : ControllerBase
     }
 
     [HttpGet]
+    [RoleAuthorize]
     public async Task<ActionResult<ApiResponse<IList<AuditLogListDto>>>> GetAuditLogs()
     {
         IList<AuditLogListDto> auditLogs = await repo.GetAuditLogsAsync();
