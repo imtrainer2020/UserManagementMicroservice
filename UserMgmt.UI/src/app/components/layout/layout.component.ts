@@ -12,7 +12,6 @@ export class LayoutComponent implements OnInit {
   currentUser: string = '';
   currentUserRole: string = '';
   isSidebarCollapsed = false;
-
   constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
