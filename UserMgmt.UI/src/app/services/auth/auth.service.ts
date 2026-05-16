@@ -35,15 +35,11 @@ export class AuthService {
     localStorage.setItem('user_role', this.normalizeRole(loggedUser.roleName));
     localStorage.setItem('user_id', loggedUser.userId?.toString());
     localStorage.setItem('user_email', loggedUser.email);
-  }
 
-  getToken(): string | null {
-    return localStorage.getItem('jwt_token');
-  }
-
-  isLoggedIn(): boolean {
-    const token = this.getToken();
-    return !!token && token !== undefined && token.trim().length > 0; // Returns true if token exists and is not empty
+    sessionStorage.setItem('jwt_token', loggedUser.jwtToken);
+    sessionStorage.setItem('user_role', this.normalizeRole(loggedUser.roleName));
+    sessionStorage.setItem('user_id', loggedUser.userId?.toString());
+    sessionStorage.setItem('user_email', loggedUser.email);
   }
 
   logout(): void {
@@ -51,15 +47,46 @@ export class AuthService {
     localStorage.removeItem('user_role');
     localStorage.removeItem('user_id');
     localStorage.removeItem('user_email');
+
+    sessionStorage.removeItem('jwt_token');
+    sessionStorage.removeItem('user_role');
+    sessionStorage.removeItem('user_id');
+    sessionStorage.removeItem('user_email');
   }
 
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return !!token && token !== undefined && token.trim().length > 0; // Returns true if token exists and is not empty
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('jwt_token');
+  }
   getUserRole(): string | null {
     const role = localStorage.getItem('user_role');
-    return role ? this.normalizeRole(role):null;
+    return role ? this.normalizeRole(role) : null;
   }
-
+  getUserId(): number | null {
+    return Number(localStorage.getItem('user_id'));
+  }
   getUserEmail(): string | null {
     return localStorage.getItem('user_email');;
+  }
+
+
+  getCurrentUserToken(): string | null {
+    return sessionStorage.getItem('jwt_token');
+  }
+  getCurrentUserId(): number | null {
+    const id = sessionStorage.getItem('user_id');
+    return id ? parseInt(id, 10) : null;
+  }
+  getCurrentUserRole(): string | null {
+    const role = sessionStorage.getItem('user_role');
+    return role ? this.normalizeRole(role) : null;
+  }
+  getCurrentUserEmail(): string | null {
+    return sessionStorage.getItem('user_email');;
   }
 
   private normalizeRole(role: string | null | undefined): string {
@@ -75,6 +102,6 @@ export class AuthService {
       'role_user': 'user'
     };
     return roleMap[value] ?? value;
-}
+  }
 
 }

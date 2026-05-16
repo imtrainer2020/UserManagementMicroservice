@@ -12,8 +12,11 @@ import { AuditLogListDto } from '../../../models/audit-log.model';
 export class MyActivityComponent implements OnInit {
 
   logs: AuditLogListDto[] = [];
+  filteredLogs: AuditLogListDto[] = [];
   isLoading = true;
   errorMessage = '';
+  searchTerm = '';
+  filterStatus = 'all'; // 'all' | 'success' | 'error'
 
   constructor(
     private logsService: LogsService,
@@ -22,7 +25,8 @@ export class MyActivityComponent implements OnInit {
 
   ngOnInit(): void {
     const userId = this.authService.getCurrentUserId();
-    if (!userId) {
+
+    if (!userId || userId <= 0) {
       this.errorMessage = 'Unable to identify current user.';
       this.isLoading = false;
       return;
@@ -30,17 +34,50 @@ export class MyActivityComponent implements OnInit {
 
     this.logsService.getMyActivity(userId).subscribe({
       next: res => {
-        if (res.isSuccess) {
-          this.logs = res.data;
+        if (res.isSuccess && res.data) {
+          this.logs = res.data.sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          this.filteredLogs = [...this.logs];
         } else {
-          this.errorMessage = res.message;
+          this.errorMessage = res.message ?? 'No activity found.';
         }
         this.isLoading = false;
       },
-      error: () => {
-        this.errorMessage = 'Failed to load activity.';
+      error: (err) => {
+        console.error('Activity load error:', err);
+        this.errorMessage = 'Failed to load activity. Please try again.';
         this.isLoading = false;
       }
     });
   }
+
+  applyFilters(): void {
+    let result = [...this.logs];
+
+    if (this.filterStatus === 'success') {
+      result = result.filter(l => !l.isError);
+    } else if (this.filterStatus === 'error') {
+      result = result.filter(l => l.isError);
+    }
+
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter(l =>
+        l.action.toLowerCase().includes(term) ||
+        l.serviceName.toLowerCase().includes(term) ||
+        (l.errorMessage ?? '').toLowerCase().includes(term)
+      );
+    }
+
+    this.filteredLogs = result;
+  }
+
+  get successCount(): number {
+    return this.logs.filter(l => !l.isError).length;
+  }
+  get errorCount(): number {
+    return this.logs.filter(l => l.isError).length;
+  }
+
 }

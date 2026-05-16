@@ -1,55 +1,118 @@
 <div class="container mt-4">
-  <h3 class="mb-3">
-    <i class="bi bi-activity me-2"></i>My Activity
-  </h3>
 
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">
+      <i class="bi bi-activity me-2 text-primary"></i>My Activity
+    </h3>
+    @if (!isLoading && !errorMessage) {
+    <div class="d-flex gap-2 text-muted small">
+      <span class="badge bg-success-subtle text-success">
+        <i class="bi bi-check-circle me-1"></i>{{ successCount }} Success
+      </span>
+      <span class="badge bg-danger-subtle text-danger">
+        <i class="bi bi-x-circle me-1"></i>{{ errorCount }} Failed
+      </span>
+    </div>
+    }
+  </div>
+
+  <!-- Loading -->
   @if (isLoading) {
   <div class="text-center py-5">
-    <div class="spinner-border text-primary"></div>
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
     <p class="mt-2 text-muted">Loading your activity...</p>
   </div>
   }
 
+  <!-- Error -->
   @if (!isLoading && errorMessage) {
-  <div class="alert alert-warning">{{ errorMessage }}</div>
+  <div class="alert alert-warning d-flex align-items-center gap-2">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span>{{ errorMessage }}</span>
+  </div>
   }
 
+  <!-- Content -->
   @if (!isLoading && !errorMessage) {
+
+  <!-- Filters -->
+  <div class="row g-2 mb-3">
+    <div class="col-md-7">
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text"
+               class="form-control"
+               placeholder="Search by action, service or error..."
+               [(ngModel)]="searchTerm"
+               (input)="applyFilters()" />
+      </div>
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="filterStatus" (change)="applyFilters()">
+        <option value="all">All Status</option>
+        <option value="success">Success Only</option>
+        <option value="error">Failed Only</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
   <div class="table-responsive">
-    <table class="table table-hover align-middle">
+    <table class="table table-hover align-middle table-bordered">
       <thead class="table-light">
         <tr>
-          <th>Date &amp; Time</th>
+          <th style="width:160px">Date &amp; Time</th>
           <th>Action</th>
-          <th>Service</th>
-          <th>Status</th>
+          <th style="width:130px">Service</th>
+          <th style="width:100px" class="text-center">Status</th>
           <th>Details</th>
         </tr>
       </thead>
       <tbody>
-        @if (logs.length === 0) {
+        @if (filteredLogs.length === 0) {
         <tr>
-          <td colspan="5" class="text-center text-muted py-4">No activity recorded yet.</td>
+          <td colspan="5" class="text-center text-muted py-4">
+            <i class="bi bi-inbox fs-4 d-block mb-1"></i>
+            No activity records found.
+          </td>
         </tr>
         }
-        @for (log of logs; track log.createdAt) {
+        <!-- ✅ track $index — createdAt is NOT unique -->
+        @for (log of filteredLogs; track $index) {
         <tr [class.table-danger]="log.isError">
-          <td>{{ log.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td class="text-nowrap text-muted small">
+            {{ log.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </td>
           <td>{{ log.action }}</td>
-          <td><span class="badge bg-secondary">{{ log.serviceName }}</span></td>
           <td>
+            <span class="badge bg-secondary">{{ log.serviceName }}</span>
+          </td>
+          <td class="text-center">
             @if (log.isError) {
-            <span class="badge bg-danger">Failed</span>
+            <span class="badge bg-danger">
+              <i class="bi bi-x-circle me-1"></i>Failed
+            </span>
             } @else {
-            <span class="badge bg-success">Success</span>
+            <span class="badge bg-success">
+              <i class="bi bi-check-circle me-1"></i>Success
+            </span>
             }
           </td>
-          <td>{{ log.errorMessage ?? '—' }}</td>
+          <td class="text-muted small">
+            {{ log.errorMessage ?? '—' }}
+          </td>
         </tr>
         }
       </tbody>
     </table>
   </div>
-  <p class="text-muted small">{{ logs.length }} record(s) found</p>
+
+  <p class="text-muted small">
+    Showing {{ filteredLogs.length }} of {{ logs.length }} record(s)
+  </p>
   }
+
 </div>

@@ -2,7 +2,7 @@ import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing-module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { App } from './app';
@@ -18,9 +18,6 @@ import { UserDashboardComponent } from './components/users/user-dashboard/user-d
 import { LayoutComponent } from './components/layout/layout.component';
 import { MyProfileComponent } from './components/user-profile/my-profile/my-profile.component';
 import { RolesDashboardComponent } from './components/roles/roles-dashboard/roles-dashboard.component';
-import { RoleService } from './services/roles/role.service';
-import { UserProfileService } from './services/user-profile/user-profile.service';
-import { LogsService } from './services/audit-logs/logs.service';
 import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/logs-dashboard.component';
 
 @NgModule({
@@ -38,7 +35,7 @@ import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/l
     RolesDashboardComponent,
     LogsDashboardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, CommonModule, RouterModule, FormsModule],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor])),
