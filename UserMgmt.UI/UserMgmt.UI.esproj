@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\components\dashboard\" />
+    <Folder Include="src\app\services\roles\" />
     <Folder Include="src\app\shared\" />
     <Folder Include="src\app\shared\interceptors\" />
   </ItemGroup>

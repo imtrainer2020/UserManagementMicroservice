@@ -25,7 +25,7 @@ export class UserDashboardComponent {
       badgeClass: 'badge-admin',
       widgets: [
         { label: 'User Management', icon: 'bi-people-fill', route: '/users', description: 'Create, update and manage all users' },
-        { label: 'Role Management', icon: 'bi-shield-fill', route: '/roles', description: 'Assign and configure system roles' },
+        { label: 'Role Management', icon: 'bi-shield-fill', route: '/roles-dashboard', description: 'Assign and configure system roles' },
         { label: 'System Settings', icon: 'bi-gear-fill', route: null, description: 'Configure application-level settings' },
       ]
     },
@@ -34,7 +34,7 @@ export class UserDashboardComponent {
       greeting: 'Manage your team.',
       badgeClass: 'badge-manager',
       widgets: [
-        { label: 'Role Management', icon: 'bi-shield-check', route: '/roles', description: 'Manage role assignments for your team' },
+        { label: 'Role Management', icon: 'bi-shield-check', route: '/roles-dashboard', description: 'Manage role assignments for your team' },
         { label: 'My Activity', icon: 'bi-activity', route: null, description: 'See your recent actions' },
       ]
     },

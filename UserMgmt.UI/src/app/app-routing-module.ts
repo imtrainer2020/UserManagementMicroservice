@@ -4,7 +4,7 @@ import { SignupComponent } from './components/auth/signup/signup.component';
 import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { LoginComponent } from './components/auth/login/login.component';
-import { RolesComponent } from './components/roles/roles.component';
+import { RolesDashboardComponent } from './components/roles/roles-dashboard/roles-dashboard.component';
 import { authGuard } from './shared/guards/auth-guard';
 import { UnauthorizedComponent } from './components/auth/unauthorized/unauthorized.component';
 import { UserDashboardComponent } from './components/dashboard/user-dashboard/user-dashboard.component';
@@ -30,8 +30,8 @@ const routes: Routes = [
         data: { roles: ['Admin', 'Manager', 'User'] }
       },
       {
-        path: 'roles',
-        component: RolesComponent,
+        path: 'roles-dashboard',
+        component: RolesDashboardComponent,
         data: { roles: ['Admin', 'Manager'] }
       },
       // ← Add all future pages here as children
