@@ -14,7 +14,7 @@ import { ResetPasswordComponent } from './components/auth/reset-password/reset-p
 import { authInterceptor } from './shared/interceptors/auth-interceptor';
 import { HasRoleDirective } from './shared/directives/has-role.directive';
 import { UnauthorizedComponent } from './components/auth/unauthorized/unauthorized.component';
-import { UserDashboardComponent } from './components/dashboard/user-dashboard/user-dashboard.component';
+import { UserDashboardComponent } from './components/users/user-dashboard/user-dashboard.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { MyProfileComponent } from './components/user-profile/my-profile/my-profile.component';
 import { RolesDashboardComponent } from './components/roles/roles-dashboard/roles-dashboard.component';
@@ -36,9 +36,6 @@ import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/l
     UserDashboardComponent,
     MyProfileComponent,
     RolesDashboardComponent,
-    RoleService,
-    UserProfileService,
-    LogsService,
     LogsDashboardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, CommonModule, RouterModule],

@@ -7,8 +7,10 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RolesDashboardComponent } from './components/roles/roles-dashboard/roles-dashboard.component';
 import { authGuard } from './shared/guards/auth-guard';
 import { UnauthorizedComponent } from './components/auth/unauthorized/unauthorized.component';
-import { UserDashboardComponent } from './components/dashboard/user-dashboard/user-dashboard.component';
+import { UserDashboardComponent } from './components/users/user-dashboard/user-dashboard.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { MyProfileComponent } from './components/user-profile/my-profile/my-profile.component';
+import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/logs-dashboard.component';
 
 const routes: Routes = [
   // ─── Public routes (no shell/layout) ───
@@ -30,9 +32,19 @@ const routes: Routes = [
         data: { roles: ['Admin', 'Manager', 'User'] }
       },
       {
+        path: 'my-profile',
+        component: MyProfileComponent,
+        data: { roles: ['Admin', 'Manager', 'User'] }
+      },
+      {
         path: 'roles-dashboard',
         component: RolesDashboardComponent,
         data: { roles: ['Admin', 'Manager'] }
+      },
+      {
+        path: 'logs-dashboard',
+        component: LogsDashboardComponent,
+        data: { roles: ['Admin', 'Manager', 'User'] }
       },
       // ← Add all future pages here as children
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
