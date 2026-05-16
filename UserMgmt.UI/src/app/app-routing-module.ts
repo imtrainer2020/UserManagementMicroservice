@@ -8,25 +8,38 @@ import { RolesComponent } from './components/roles/roles.component';
 import { authGuard } from './shared/guards/auth-guard';
 import { UnauthorizedComponent } from './components/auth/unauthorized/unauthorized.component';
 import { UserDashboardComponent } from './components/dashboard/user-dashboard/user-dashboard.component';
+import { LayoutComponent } from './components/layout/layout.component';
 
 const routes: Routes = [
+  // ─── Public routes (no shell/layout) ───
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'forgot-password', component: ForgetPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
+
+  // ─── Protected routes (wrapped in layout shell) ───
   {
-    path: 'roles', component: RolesComponent,
-    canActivate: [authGuard], // Protect this route with both authentication and role guards
-    data: { roles: ['Admin', 'Manager'] } // Only Admins and Managers can access this route
-  },
-  {
-    path: 'dashboard', component: UserDashboardComponent,
+    path: '',
+    component: LayoutComponent,       // <-- Shell wraps all authenticated pages
     canActivate: [authGuard],
-    data: { roles: ['Admin', 'Manager', 'User'] }
+    children: [
+      {
+        path: 'dashboard',
+        component: UserDashboardComponent,
+        data: { roles: ['Admin', 'Manager', 'User'] }
+      },
+      {
+        path: 'roles',
+        component: RolesComponent,
+        data: { roles: ['Admin', 'Manager'] }
+      },
+      // ← Add all future pages here as children
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
   },
 
-  { path: '', redirectTo: '/login', pathMatch: 'full' } // Defaults to login page
+  { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({

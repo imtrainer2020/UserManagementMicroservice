@@ -58,6 +58,10 @@ export class AuthService {
     return role ? this.normalizeRole(role):null;
   }
 
+  getUserEmail(): string | null {
+    return localStorage.getItem('user_email');;
+  }
+
   private normalizeRole(role: string | null | undefined): string {
     const value = (role ?? '').trim().toLowerCase();
     const roleMap: Record<string, string> = {

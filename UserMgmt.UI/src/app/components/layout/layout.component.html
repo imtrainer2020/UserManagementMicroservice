@@ -1,0 +1,75 @@
+<div class="app-wrapper" [class.sidebar-collapsed]="isSidebarCollapsed">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <span class="brand-icon">👥</span>
+        <span class="brand-name" *ngIf="!isSidebarCollapsed">UMS</span>
+      </div>
+      <button class="toggle-btn" (click)="toggleSidebar()" title="Toggle Sidebar">
+        <span>{{ isSidebarCollapsed ? '▶' : '◀' }}</span>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a routerLink="/dashboard" routerLinkActive="active" title="Dashboard">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label" *ngIf="!isSidebarCollapsed">Dashboard</span>
+          </a>
+        </li>
+        <!-- Only visible to Admin/Manager via HasRoleDirective -->
+        <li *appHasRole="['Admin', 'Manager']">
+          <a routerLink="/roles" routerLinkActive="active" title="Roles">
+            <span class="nav-icon">🛡️</span>
+            <span class="nav-label" *ngIf="!isSidebarCollapsed">Roles</span>
+          </a>
+        </li>
+        <!-- Add more nav items here as you expand the app -->
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer" *ngIf="!isSidebarCollapsed">
+      <div class="user-info">
+        <div class="user-avatar">{{ currentUser.charAt(0).toUpperCase() }}</div>
+        <div class="user-details">
+          <span class="user-name">{{ currentUser }}</span>
+          <span class="user-role">{{ currentUserRole }}</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT AREA ===== -->
+  <div class="main-area">
+
+    <!-- TOP NAVBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2 class="page-title">User Management System</h2>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-username">
+          <span class="avatar-circle">{{ currentUser.charAt(0).toUpperCase() }}</span>
+          {{ currentUser }}
+        </span>
+        <button class="btn-logout" (click)="logout()">
+          🚪 Logout
+        </button>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT (child routes render here) -->
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span>© 2025 UserMgmt System — Built with Angular & .NET Core Microservices</span>
+    </footer>
+
+  </div>
+</div>
