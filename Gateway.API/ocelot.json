@@ -1,55 +1,67 @@
 {
-    "Routes": [
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/users/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
         {
-            "DownstreamPathTemplate": "/api/users/{everything}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5234
-                }
-            ],
-            "UpstreamPathTemplate": "/gateway/auth/{everything}",
-            "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
-        },
-        {
-            "DownstreamPathTemplate": "/api/users/{everything}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5284
-                }
-            ],
-            "UpstreamPathTemplate": "/gateway/user-profile/{everything}",
-            "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
-        },
-        {
-            "DownstreamPathTemplate": "/api/roles/{everything}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5056
-                }
-            ],
-            "UpstreamPathTemplate": "/gateway/roles/{everything}",
-            "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
-        },
-        {
-            "DownstreamPathTemplate": "/api/auditlogs/{everything}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 5298
-                }
-            ],
-            "UpstreamPathTemplate": "/gateway/auditlogs/{everything}",
-            "UpstreamHttpMethod": [ "Get", "Post" ]
+          "Host": "localhost",
+          "Port": 5234
         }
-    ],
-    "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:5070"
+      ],
+      "UpstreamPathTemplate": "/gateway/auth/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5284
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/user-profile/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/roles/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5056
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/roles/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auditlogs/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5298
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/auditlogs/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
     }
+    ,{
+      "DownstreamPathTemplate": "/api/auditlogs/user/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5298
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/auditlogs/user/{userId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5070"
+  }
 }

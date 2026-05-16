@@ -32,16 +32,35 @@ namespace AuditLogService.API.Repository
         }
         public async Task<IList<AuditLogListDto>> GetAuditLogsAsync()
         {
-            return await context.AuditLogs.AsNoTracking().Select(log => new AuditLogListDto
-            {
-                UserId = log.UserId,
-                UserEmail = log.UserEmail,
-                Action = log.Action,
-                ServiceName = log.ServiceName,
-                IsError = log.IsError,
-                ErrorMessage = log.ErrorMessage,
-                CreatedAt = log.CreatedAt
-            }).ToListAsync();
+            return await context.AuditLogs.AsNoTracking()
+                .OrderByDescending(log => log.CreatedAt)
+                .Select(log => new AuditLogListDto
+                {
+                    UserId = log.UserId,
+                    UserEmail = log.UserEmail,
+                    Action = log.Action,
+                    ServiceName = log.ServiceName,
+                    IsError = log.IsError,
+                    ErrorMessage = log.ErrorMessage,
+                    CreatedAt = log.CreatedAt
+                }).ToListAsync();
+        }
+        public async Task<IList<AuditLogListDto>> GetAuditLogsByUserIdAsync(int userId)
+        {
+            return await context.AuditLogs
+                .AsNoTracking()
+                .Where(log => log.UserId == userId)
+                .OrderByDescending(log => log.CreatedAt)
+                .Select(log => new AuditLogListDto
+                {
+                    UserId = log.UserId,
+                    UserEmail = log.UserEmail,
+                    Action = log.Action,
+                    ServiceName = log.ServiceName,
+                    IsError = log.IsError,
+                    ErrorMessage = log.ErrorMessage,
+                    CreatedAt = log.CreatedAt
+                }).ToListAsync();
         }
     }
 }

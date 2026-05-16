@@ -1,7 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
 using AuditLogService.API.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shared.CL;
 using Shared.CL.DTOs;
+using Shared.CL.Enums;
+using Shared.CL.Filters;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -19,15 +22,24 @@ public class AuditLogsController : ControllerBase
         int res = await repo.AddAuditLogAsync(dto);
         return (res > 0) ? Ok(ApiResponse<int>.Success(res, "Log registered successfully."))
             : Ok(ApiResponse<int>.Fail("Log registration failed."));
-
     }
 
     [HttpGet]
     public async Task<ActionResult<ApiResponse<IList<AuditLogListDto>>>> GetAuditLogs()
     {
-        var auditLogs = await repo.GetAuditLogsAsync();
+        IList<AuditLogListDto> auditLogs = await repo.GetAuditLogsAsync();
         return (auditLogs != null && auditLogs.Count > 0) ? 
             Ok(ApiResponse<IList<AuditLogListDto>>.Success(auditLogs, "Audit logs retrieved successfully."))
             : Ok(ApiResponse<IList<AuditLogListDto>>.Fail("No audit logs found."));
+    }
+
+    [HttpGet("user/{userId:int}")]
+    [RoleAuthorize]
+    public async Task<ActionResult<ApiResponse<IList<AuditLogListDto>>>> GetMyActivity(int userId)
+    {
+        IList<AuditLogListDto> auditLogs = await repo.GetAuditLogsByUserIdAsync(userId);
+        return (auditLogs != null && auditLogs.Count > 0) ?
+           Ok(ApiResponse<IList<AuditLogListDto>>.Success(auditLogs, "Audit logs retrieved successfully."))
+           : Ok(ApiResponse<IList<AuditLogListDto>>.Fail("No audit logs found."));
     }
 }
