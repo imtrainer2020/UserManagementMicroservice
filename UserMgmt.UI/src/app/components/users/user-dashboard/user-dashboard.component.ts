@@ -62,9 +62,9 @@ export class UserDashboardComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.userRole = this.authService.getUserRole()?.toLowerCase() ?? 'user';
-    this.userEmail = localStorage.getItem('user_email') ?? '';
-    this.config = this.roleConfig[this.userRole] ?? {
+    this.userRole  = this authService.getUserRole()?.toLowerCase() ?? 'user';
+    this.userEmail = this.authService.getUserEmail() ?? '';
+    this.config    = this.roleConfig[this.userRole] ?? {
       title: 'Dashboard',
       greeting: 'Welcome.',
       badgeClass: 'badge-secondary',

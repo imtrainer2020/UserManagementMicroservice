@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { LoginRequest, LoggedUserDto, ResetPasswordRequest, SignupRequest } from '../../models/authdto.model';
+import { Common } from '../../models/common.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../shared/apiresponse.model';
 import { HttpHeaders } from '@angular/common/http';
@@ -9,7 +10,15 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5070/gateway/auth';
+  private apiUrl = new Common().API_BASE_URL + 'auth';
+
+  private _currentUser = signal<LoggedUserDto | null>(this.loadUserFromStorage());
+
+  readonly currentUser = this._currentUser.asReadonly();
+  readonly isLoggedIn = computed(() => !!this.currentUser());
+  readonly userRole = computed(() => this.normalizeRole(this.currentUser()?.roleName));
+  readonly userEmail = computed(() => this.currentUser()?.email);
+  readonly userId = computed(() => this.currentUser()?.userId);
 
   constructor(private http: HttpClient) { }
 
@@ -35,58 +44,49 @@ export class AuthService {
     localStorage.setItem('user_role', this.normalizeRole(loggedUser.roleName));
     localStorage.setItem('user_id', loggedUser.userId?.toString());
     localStorage.setItem('user_email', loggedUser.email);
+    this._currentUser.set(loggedUser);
+  }
 
     sessionStorage.setItem('jwt_token', loggedUser.jwtToken);
     sessionStorage.setItem('user_role', this.normalizeRole(loggedUser.roleName));
     sessionStorage.setItem('user_id', loggedUser.userId?.toString());
     sessionStorage.setItem('user_email', loggedUser.email);
   }
+  getUserEmail(): string | null {
+    return localStorage.getItem('user_email');
+  }
+  getUserId(): number | null {
+    return Number(localStorage.getItem('user_id'));
+  }
+  getUserRole(): string | null {
+    const role = localStorage.getItem('user_role');
+    return role ? this.normalizeRole(role) : null;
+  }
+
+  loadUserFromStorage(): LoggedUserDto | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+    return {
+      jwtToken: token,
+      email: this.getUserEmail(),
+      userId: this.getUserId(),
+      roleName: this.getUserRole()
+    } as LoggedUserDto;
+  }
+
+  // isLoggedIn(): boolean {
+  //   const token = this.getToken();
+  //   return !!token && token !== undefined && token.trim().length > 0; // Returns true if token exists and is not empty
+  // }
 
   logout(): void {
     localStorage.removeItem('jwt_token');
     localStorage.removeItem('user_role');
     localStorage.removeItem('user_id');
     localStorage.removeItem('user_email');
-
-    sessionStorage.removeItem('jwt_token');
-    sessionStorage.removeItem('user_role');
-    sessionStorage.removeItem('user_id');
-    sessionStorage.removeItem('user_email');
-  }
-
-  isLoggedIn(): boolean {
-    const token = this.getToken();
-    return !!token && token !== undefined && token.trim().length > 0; // Returns true if token exists and is not empty
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('jwt_token');
-  }
-  getUserRole(): string | null {
-    const role = localStorage.getItem('user_role');
-    return role ? this.normalizeRole(role) : null;
-  }
-  getUserId(): number | null {
-    return Number(localStorage.getItem('user_id'));
-  }
-  getUserEmail(): string | null {
-    return localStorage.getItem('user_email');;
-  }
-
-
-  getCurrentUserToken(): string | null {
-    return sessionStorage.getItem('jwt_token');
-  }
-  getCurrentUserId(): number | null {
-    const id = sessionStorage.getItem('user_id');
-    return id ? parseInt(id, 10) : null;
-  }
-  getCurrentUserRole(): string | null {
-    const role = sessionStorage.getItem('user_role');
-    return role ? this.normalizeRole(role) : null;
-  }
-  getCurrentUserEmail(): string | null {
-    return sessionStorage.getItem('user_email');;
+    this._currentUser.set(null);
   }
 
   private normalizeRole(role: string | null | undefined): string {
