@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -17,7 +17,7 @@ export class ForgetPasswordComponent {
   isSubmitting: boolean = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService,
-    private router: Router, private cdr: ChangeDetectorRef) {
+    private router: Router) {
     this.forgetPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
@@ -55,14 +55,12 @@ export class ForgetPasswordComponent {
           this.errorMessage = response.message || 'No account found with this email.';
           this.isSubmitting = false;
         }
-        this.cdr.detectChanges();
       },
       error: (err) => {
         // Stop the spinner if the server crashes or isn't running
         console.error("API Error details:", err);
         this.errorMessage = err.error?.message || 'Something went wrong. Please try again.';
         this.isSubmitting = false;
-        this.cdr.detectChanges();
       }
     });
   }

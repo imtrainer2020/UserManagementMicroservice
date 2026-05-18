@@ -1,4 +1,7 @@
-import { Directive, Input, OnChanges, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive, Input, OnChanges, OnInit,
+  TemplateRef, ViewContainerRef, effect
+} from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Directive({
@@ -12,15 +15,19 @@ export class HasRoleDirective implements OnInit {
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
     private authService: AuthService
-  ) { }
+  ) {
+    effect(() => {
+      const userRole = this.authService.getUserRole()?.toLowerCase() ?? '';
+      this.viewContainer.clear();  // ← always clear first
+
+      if (this.roles.map(r => r.toLowerCase()).some(r => r === userRole)) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
+    });
+  }
 
   ngOnInit(): void {
-    const userRole = this.authService.getUserRole()?.toLowerCase() ?? '';
-    this.viewContainer.clear();  // ← always clear first
-
-    if (this.roles.map(r => r.toLowerCase()).some(r => r === userRole)) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-    }
+    
   }
 
 }

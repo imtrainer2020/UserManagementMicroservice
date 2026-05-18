@@ -18,7 +18,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
   if (allowedRoles.length === 0)
     return true; // No specific roles required, allow access
 
-  const userRole = authService.getUserRole()?.toLowerCase() ?? '';
+  const userRole = authService.userRole() ?? '';
   const normalizedAllowedRoles = allowedRoles.map(role => role.toLowerCase());
   const hasRole = normalizedAllowedRoles.includes(userRole.toLowerCase());
 
