@@ -83,7 +83,7 @@ export class LogsDashboardComponent {
   get errorCount(): number { return this.logs.filter(l => l.isError).length; }
 
   get currentUserRole(): string | null {
-    return this.authService.getCurrentUserRole();
+    return this.authService.getUserRole();
   }
 
 }

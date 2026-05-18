@@ -13,8 +13,8 @@ export class AuthService {
   private apiUrl = new Common().API_BASE_URL + 'auth';
 
   private _currentUser = signal<LoggedUserDto | null>(this.loadUserFromStorage());
-
   readonly currentUser = this._currentUser.asReadonly();
+
   readonly isLoggedIn = computed(() => !!this.currentUser());
   readonly userRole = computed(() => this.normalizeRole(this.currentUser()?.roleName));
   readonly userEmail = computed(() => this.currentUser()?.email);
@@ -47,10 +47,8 @@ export class AuthService {
     this._currentUser.set(loggedUser);
   }
 
-    sessionStorage.setItem('jwt_token', loggedUser.jwtToken);
-    sessionStorage.setItem('user_role', this.normalizeRole(loggedUser.roleName));
-    sessionStorage.setItem('user_id', loggedUser.userId?.toString());
-    sessionStorage.setItem('user_email', loggedUser.email);
+  getToken(): string | null {
+    return localStorage.getItem('jwt_token');
   }
   getUserEmail(): string | null {
     return localStorage.getItem('user_email');
