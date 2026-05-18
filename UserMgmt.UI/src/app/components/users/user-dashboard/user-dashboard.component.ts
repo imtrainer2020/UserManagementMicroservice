@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { DashboardConfig } from '../../../models/dashboard.model';
@@ -11,8 +11,9 @@ import { DashboardConfig } from '../../../models/dashboard.model';
 })
 export class UserDashboardComponent {
 
-  userRole: string = '';
-  userEmail: string = '';
+  readonly userEmail = computed(() => this.authService.getUserEmail());
+  readonly userRole = computed(() => this.authService.getUserRole());
+
   config!: DashboardConfig;
   today = new Date();
 
@@ -62,9 +63,10 @@ export class UserDashboardComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.userRole  = this authService.getUserRole()?.toLowerCase() ?? 'user';
-    this.userEmail = this.authService.getUserEmail() ?? '';
-    this.config    = this.roleConfig[this.userRole] ?? {
+    // this.userRole = this.authService.getUserRole()?.toLowerCase() ?? 'user';
+    // this.userEmail = this.authService.getUserEmail() ?? '';
+    const role = this.userRole() || 'user';
+    this.config = this.roleConfig[role] ?? {
       title: 'Dashboard',
       greeting: 'Welcome.',
       badgeClass: 'badge-secondary',
@@ -74,7 +76,7 @@ export class UserDashboardComponent {
 
   /** Returns the display name (part before @) from the email. */
   getUserName(): string {
-    return this.userEmail?.split('@')[0] ?? 'User';
+    return this.userEmail()?.split('@')[0] ?? 'User';
   }
 
   navigateTo(route: string | null): void {

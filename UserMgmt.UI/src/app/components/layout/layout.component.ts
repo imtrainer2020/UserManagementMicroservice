@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service'; // adjust path if needed
 
@@ -8,24 +8,14 @@ import { AuthService } from '../../services/auth/auth.service'; // adjust path i
   standalone: false,
   styleUrl: './layout.component.css'
 })
-export class LayoutComponent implements OnInit {
-  currentUser: string = '';
-  currentUserRole: string = '';
-  isSidebarCollapsed = false;
-  constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef) { }
-
-  ngOnInit(): void {
-    // Pull from your existing auth service / localStorage
-    const token = this.authService.getToken();
-    if (token) {
-      this.currentUser = this.authService.getUserEmail() ?? 'User';
-      this.currentUserRole = this.authService.getUserRole() ?? '';
-    }
-  }
+export class LayoutComponent {
+  readonly currentUser = computed(() => this.authService.getUserEmail());
+  readonly currentUserRole = computed(() => this.authService.getUserRole());
+  isSidebarCollapsed: boolean = false;
+  constructor(private router: Router, private authService: AuthService) { }
 
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
-    this.cdr.detectChanges();
   }
 
   logout(): void {

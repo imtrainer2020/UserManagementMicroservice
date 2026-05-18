@@ -39,10 +39,10 @@
 
     <div class="sidebar-footer" *ngIf="!isSidebarCollapsed">
       <div class="user-info">
-        <div class="user-avatar">{{ currentUser.charAt(0).toUpperCase() }}</div>
+        <div class="user-avatar">{{ currentUser().charAt(0).toUpperCase() }}</div>
         <div class="user-details">
-          <span class="user-name">{{ currentUser }}</span>
-          <span class="user-role">{{ currentUserRole }}</span>
+          <span class="user-name">{{ currentUser() }}</span>
+          <span class="user-role">{{ currentUserRole() }}</span>
         </div>
       </div>
     </div>
@@ -58,8 +58,8 @@
       </div>
       <div class="topbar-right">
         <span class="topbar-username">
-          <span class="avatar-circle">{{ currentUser.charAt(0).toUpperCase() }}</span>
-          {{ currentUser }}
+          <span class="avatar-circle">{{ currentUser().charAt(0).toUpperCase() }}</span>
+          {{ currentUser() }}
         </span>
         <button class="btn-logout" (click)="logout()">
           🚪 Logout

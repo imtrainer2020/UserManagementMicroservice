@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, computed } from '@angular/core';
 import { LogsService } from '../../../services/audit-logs/logs.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { AuditLogListDto } from '../../../models/audit-log.model';
@@ -23,7 +23,6 @@ export class LogsDashboardComponent {
   constructor(
     private logsService: LogsService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -40,13 +39,11 @@ export class LogsDashboardComponent {
           this.errorMessage = res.message ?? 'No logs found.';
         }
         this.isLoading = false;
-        this.cdr.detectChanges();
       },
       error: err => {
         console.error('Logs load error:', err);
         this.errorMessage = 'Failed to load audit logs. Please try again.';
         this.isLoading = false;
-        this.cdr.detectChanges();
       }
     });
   }
@@ -75,7 +72,6 @@ export class LogsDashboardComponent {
     }
 
     this.filteredLogs = result;
-    this.cdr.detectChanges();
   }
 
   get totalCount(): number { return this.logs.length; }
