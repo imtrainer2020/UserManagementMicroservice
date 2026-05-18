@@ -54,7 +54,8 @@ public class UsersController : ControllerBase
         try
         {
             bool isEmailExist = await repo.ForgetPasswordAsync(email);
-            return Ok(ApiResponse<bool>.Success(isEmailExist, isEmailExist ? "Email exists." : "Email does not exist."));
+            return (isEmailExist) ? Ok(ApiResponse<bool>.Success(isEmailExist, "Email exists."))
+                : Ok(ApiResponse<bool>.Fail("Email does not exist."));
         }
         catch (Exception ex)
         {
