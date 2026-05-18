@@ -16,8 +16,8 @@ export class AuthService {
   readonly currentUser = this._currentUser.asReadonly();
 
   readonly isLoggedIn = computed(() => !!this.currentUser());
-  readonly userRole = computed(() => this.normalizeRole(this.currentUser()?.roleName));
-  readonly userEmail = computed(() => this.currentUser()?.email);
+  readonly userRole = computed(() => this.normalizeRole(this.currentUser()?.roleName) ?? 'user');
+  readonly userEmail = computed(() => this.currentUser()?.email ?? '');
   readonly userId = computed(() => this.currentUser()?.userId);
 
   constructor(private http: HttpClient) { }
