@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
@@ -17,7 +17,8 @@ export class LoginComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService,
+    private router: Router, private cdr: ChangeDetectorRef) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -54,11 +55,12 @@ export class LoginComponent {
           // Redirect based on user role
           this.router.navigate(['dashboard']);
         }
-
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         this.isSubmitting = false;
         this.errorMessage = err.error?.message || 'Invalid email or password.';
+        this.cdr.detectChanges();
         // Handle login error
       }
     });

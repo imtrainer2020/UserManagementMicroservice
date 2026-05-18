@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -23,6 +23,7 @@ export class ResetPasswordComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {
     // Custom cross-field validation for password matching
     this.resetPasswordForm = this.fb.group({
@@ -76,12 +77,14 @@ export class ResetPasswordComponent implements OnInit {
           this.errorMessage = response?.message || 'Failed to reset password.';
           this.isSubmitting = false;
         }
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         // Stop the spinner if the server crashes
         console.error("API Error details:", err);
         this.errorMessage = err.error.message || 'Unable to connect to the server';
         this.isSubmitting = false;
+        this.cdr.detectChanges();
       }
     });
 
