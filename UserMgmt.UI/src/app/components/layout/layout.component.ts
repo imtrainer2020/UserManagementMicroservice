@@ -9,8 +9,8 @@ import { AuthService } from '../../services/auth/auth.service'; // adjust path i
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
-  readonly currentUser = computed(() => this.authService.getUserEmail() || '');
-  readonly currentUserRole = computed(() => this.authService.getUserRole() || 'user');
+  readonly currentUser = computed(() => this.authService.userEmail() || '');
+  readonly currentUserRole = computed(() => this.authService.userRole() || 'user');
   isSidebarCollapsed: boolean = false;
   constructor(private router: Router, private authService: AuthService) { }
 

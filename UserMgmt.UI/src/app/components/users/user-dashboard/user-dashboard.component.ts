@@ -11,8 +11,8 @@ import { DashboardConfig } from '../../../models/dashboard.model';
 })
 export class UserDashboardComponent {
 
-  readonly userEmail = computed(() => this.authService.getUserEmail());
-  readonly userRole = computed(() => this.authService.getUserRole());
+  readonly userEmail = computed(() => this.authService.userEmail());
+  readonly userRole = computed(() => this.authService.userRole());
 
   config!: DashboardConfig;
   today = new Date();
