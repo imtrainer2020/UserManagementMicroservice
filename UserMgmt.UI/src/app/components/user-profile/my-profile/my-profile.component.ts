@@ -1,4 +1,4 @@
-import { ApplicationInitStatus, Component, OnInit, computed } from '@angular/core';
+import { ApplicationInitStatus, Component, OnInit, computed, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth.service';
 import { UserProfileService } from '../../../services/user-profile/user-profile.service';
@@ -35,12 +35,13 @@ export class MyProfileComponent implements OnInit {
   constructor(
     private profileService: UserProfileService,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
     this.profileForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]],
+      fullname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]],
       address: ['', [Validators.maxLength(500)]],
-      phone: ['', [, Validators.pattern(/^\d{10}$/)]],
+      phone: ['', [Validators.pattern(/^\d{10}$/)]],
       photoUrl: ['', [Validators.maxLength(500)]],
     });
   }
@@ -50,6 +51,7 @@ export class MyProfileComponent implements OnInit {
 
     if (!userId || userId <= 0) {
       this.errorMessage = 'Unable to identify current user.';
+      this.cdr.detectChanges();
       return;
     }
     this.loadUserProfile(userId);
@@ -62,9 +64,9 @@ export class MyProfileComponent implements OnInit {
     this.profileService.getMyProfile(userId).subscribe({
       next: (response: ApiResponse<UserProfileDto>) => {
         this.isLoading = false;
-        console.log(response);
+
         if (response.isSuccess && response.data && response.data.id > 0) {
-          console.log("update: " + response);
+          console.log("update: ", response);
           const profile = response.data;
 
           this.profileId = profile.id ?? null;
@@ -73,13 +75,13 @@ export class MyProfileComponent implements OnInit {
           this.isEditMode = false;
 
           this.profileForm.patchValue({
-            fullName: profile.fullname ?? '',
+            fullname: profile.fullname ?? '',
             address: profile.address ?? '',
             phone: profile.phone ?? '',
             photoUrl: profile.photoUrl ?? ''
           });
         } else {
-          console.log("create: " + response);
+          console.log("create: ", response);
           // No profile found - treat as new profile creation
           this.profileId = null;
           this.createdAt = '';
@@ -87,18 +89,20 @@ export class MyProfileComponent implements OnInit {
           this.isEditMode = true;
 
           this.profileForm.patchValue({
-            fullName: '',
+            fullname: '',
             address: '',
             phone: '',
             photoUrl: ''
           });
         }
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Failed to load user profile.';
       },
       complete: () => {
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -116,6 +120,7 @@ export class MyProfileComponent implements OnInit {
 
     if (!userId || userId <= 0) {
       this.errorMessage = 'Unable to identify current user.';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -123,7 +128,7 @@ export class MyProfileComponent implements OnInit {
       this.loadUserProfile(userId);
     } else {
       this.profileForm.reset({
-        fullName: '',
+        fullname: '',
         address: '',
         phone: '',
         photoUrl: ''
@@ -136,12 +141,14 @@ export class MyProfileComponent implements OnInit {
   saveProfile(): void {
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
+      this.cdr.detectChanges();
       return;
     }
 
     const userId = this.currentUserId();
     if (!userId || userId <= 0) {
       this.errorMessage = 'Unable to identify current user.';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -162,10 +169,15 @@ export class MyProfileComponent implements OnInit {
         } else {
           this.errorMessage = response.message || 'Failed to save profile.';
         }
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.isSaving = false;
         this.errorMessage = err.error?.message || 'Failed to save profile.';
+        this.cdr.detectChanges();
+      },
+      complete: () => {
+        this.cdr.detectChanges();
       }
     });
 
@@ -174,7 +186,7 @@ export class MyProfileComponent implements OnInit {
   private buildCreateProfilePayload(userId: number): UserProfileCreateDto {
     return {
       userId,
-      fullname: this.normalizeText(this.profileForm.get('fullName')?.value),
+      fullname: this.normalizeText(this.profileForm.get('fullname')?.value),
       address: this.normalizeText(this.profileForm.get('address')?.value),
       phone: this.normalizeText(this.profileForm.get('phone')?.value),
       photoUrl: this.normalizeText(this.profileForm.get('photoUrl')?.value)
@@ -185,7 +197,7 @@ export class MyProfileComponent implements OnInit {
     return {
       id: this.profileId ?? 0,
       userId,
-      fullname: this.normalizeText(this.profileForm.get('fullName')?.value),
+      fullname: this.normalizeText(this.profileForm.get('fullname')?.value),
       address: this.normalizeText(this.profileForm.get('address')?.value),
       phone: this.normalizeText(this.profileForm.get('phone')?.value),
       photoUrl: this.normalizeText(this.profileForm.get('photoUrl')?.value)
@@ -204,7 +216,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   get displayName(): string {
-    const name = this.profileForm.get('fullName')?.value?.trim();
+    const name = this.profileForm.get('fullname')?.value?.trim();
     if (name) return name;
     const email = this.currentUserEmail();
     return email ? email.split('@')[0] : 'User';
