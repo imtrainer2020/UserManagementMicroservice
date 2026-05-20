@@ -36,6 +36,17 @@ public class UserDetailsController : ControllerBase
             : Ok(ApiResponse<UserDetailViewDto>.Fail("User Detail not found."));
     }
 
+    // GET: api/UserDetail/user/5
+    [HttpGet("user/{userId:int}")]
+    public async Task<ActionResult<ApiResponse<UserDetailViewDto?>>> GetUserDetailbyUserId(int userId)
+    {
+        UserDetailViewDto? userdetail = await repo.GetUserDetailsByUserIdAsync(userId);
+
+        return (userdetail != null && userdetail.UserId > 0) ?
+            Ok(ApiResponse<UserDetailViewDto>.Success(userdetail, "User Detail viewed successfully."))
+            : Ok(ApiResponse<UserDetailViewDto>.Fail("User Detail not found."));
+    }
+
     // PUT: api/UserDetail/5
     [HttpPut]
     public async Task<ActionResult<ApiResponse<int>>> PutUserDetail(UserDetailUpdateDto dto)

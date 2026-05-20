@@ -17,7 +17,7 @@ export class UserProfileService {
   constructor(private http: HttpClient) { }
 
   getMyProfile(userId: number): Observable<ApiResponse<UserProfileDto>> {
-    return this.http.get<ApiResponse<UserProfileDto>>(`${this.apiUrl}/${userId}`);
+    return this.http.get<ApiResponse<UserProfileDto>>(`${this.apiUrl}/user/${userId}`);
   }
 
   updateMyProfile(payload: UserProfileUpdateDto): Observable<ApiResponse<number>> {

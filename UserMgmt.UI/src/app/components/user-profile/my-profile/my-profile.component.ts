@@ -62,8 +62,9 @@ export class MyProfileComponent implements OnInit {
     this.profileService.getMyProfile(userId).subscribe({
       next: (response: ApiResponse<UserProfileDto>) => {
         this.isLoading = false;
-
-        if (response.isSuccess && response.data) {
+        console.log(response);
+        if (response.isSuccess && response.data && response.data.id > 0) {
+          console.log("update: " + response);
           const profile = response.data;
 
           this.profileId = profile.id ?? null;
@@ -78,6 +79,7 @@ export class MyProfileComponent implements OnInit {
             photoUrl: profile.photoUrl ?? ''
           });
         } else {
+          console.log("create: " + response);
           // No profile found - treat as new profile creation
           this.profileId = null;
           this.createdAt = '';
