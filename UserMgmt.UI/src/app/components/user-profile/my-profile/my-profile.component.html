@@ -1,1 +1,144 @@
-<p>my-profile works!</p>
+<section class="profile-page">
+
+  <div class="profile-header">
+    <div>
+      <h2>My Profile</h2>
+      <p>View and update your personal information.</p>
+    </div>
+
+    @if (!isLoading && isExistingProfile && !isEditMode) {
+    <button class="btn btn-primary" type="button" (click)="startEdit()">
+      Edit Profile
+    </button>
+    }
+  </div>
+
+  @if (isLoading) {
+  <div class="state-card">
+    <p>Loading profile...</p>
+  </div>
+  } @else {
+
+  @if (errorMessage) {
+  <div class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+  }
+
+  @if (successMessage) {
+  <div class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  }
+
+  <div class="profile-grid">
+
+    <!-- Left Card -->
+    <div class="profile-card profile-summary">
+      <img [src]="photoPreview" alt="Profile photo" class="profile-photo" />
+
+      <h3>{{ displayName }}</h3>
+      <p class="muted">{{ currentUserEmail() || 'No email found' }}</p>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <span class="label">Role</span>
+          <span class="value">{{ currentUserRole() || 'User' }}</span>
+        </div>
+
+        <div class="summary-item">
+          <span class="label">Phone</span>
+          <span class="value">{{ f['phone'].value || '-' }}</span>
+        </div>
+
+        <div class="summary-item">
+          <span class="label">Address</span>
+          <span class="value">{{ f['address'].value || '-' }}</span>
+        </div>
+
+        <div class="summary-item">
+          <span class="label">Created</span>
+          <span class="value">{{ createdAt ? (createdAt | date:'medium') : '-' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Card -->
+    <div class="profile-card">
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+
+        <div class="form-row">
+          <label>Email</label>
+          <input type="text" [value]="currentUserEmail()" readonly />
+          <small class="hint">Email is read-only here.</small>
+        </div>
+
+        <div class="form-row">
+          <label>Role</label>
+          <input type="text" [value]="currentUserRole()" readonly />
+          <small class="hint">Role comes from your login session.</small>
+        </div>
+
+        <div class="form-row">
+          <label for="fullname">Full Name</label>
+          <input id="fullname"
+                 type="text"
+                 formControlName="fullname"
+                 [readonly]="!isEditMode"
+                 placeholder="Enter full name" />
+          @if (f['fullname'].touched && f['fullname'].invalid) {
+          <small class="error-text">Full name is required (minimum 3 characters).</small>
+          }
+        </div>
+
+        <div class="form-row">
+          <label for="photoUrl">Photo URL</label>
+          <input id="photoUrl"
+                 type="text"
+                 formControlName="photoUrl"
+                 [readonly]="!isEditMode"
+                 placeholder="Paste image URL here" />
+          <small class="hint">
+            Current backend stores photo as URL. Real file upload needs a separate upload API.
+          </small>
+        </div>
+
+        <div class="form-row">
+          <label for="phone">Phone</label>
+          <input id="phone"
+                 type="text"
+                 formControlName="phone"
+                 [readonly]="!isEditMode"
+                 placeholder="Enter phone number" />
+          @if (f['phone'].touched && f['phone'].invalid) {
+          <small class="error-text">Phone should contain 10 to 20 digits.</small>
+          }
+        </div>
+
+        <div class="form-row">
+          <label for="address">Address</label>
+          <textarea id="address"
+                    rows="4"
+                    formControlName="address"
+                    [readonly]="!isEditMode"
+                    placeholder="Enter address"></textarea>
+        </div>
+
+        @if (isEditMode) {
+        <div class="action-row">
+          <button class="btn btn-primary" type="submit" [disabled]="isSaving">
+            {{ isSaving ? 'Saving...' : (isExistingProfile ? 'Update Profile' : 'Create Profile') }}
+          </button>
+
+          <button class="btn btn-secondary" type="button" (click)="cancelEdit()" [disabled]="isSaving">
+            Cancel
+          </button>
+        </div>
+        }
+
+      </form>
+    </div>
+
+  </div>
+  }
+</section>

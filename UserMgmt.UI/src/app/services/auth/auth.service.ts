@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, Injectable, signal } from '@angular/core';
-import { LoginRequest, LoggedUserDto, ResetPasswordRequest, SignupRequest } from '../../models/authdto.model';
+import { LoginRequest, LoggedUserDto, ResetPasswordRequest, SignupRequest, UserRoleChangeDto } from '../../models/authdto.model';
 import { Common } from '../../models/common.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../shared/apiresponse.model';
@@ -28,15 +28,19 @@ export class AuthService {
 
   forgetPassword(email: string): Observable<ApiResponse<boolean>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<ApiResponse<boolean>>(`${this.apiUrl}/forgetpassword`, JSON.stringify(email), { headers });
+    return this.http.get<ApiResponse<boolean>>(`${this.apiUrl}/forgetpassword?email=${email}`,);
   }
 
   resetPassword(data: ResetPasswordRequest): Observable<ApiResponse<number>> {
-    return this.http.post<ApiResponse<number>>(`${this.apiUrl}/resetpassword`, data);
+    return this.http.put<ApiResponse<number>>(`${this.apiUrl}/resetpassword`, data);
   }
 
   signup(data: SignupRequest): Observable<ApiResponse<number>> {
     return this.http.post<ApiResponse<number>>(`${this.apiUrl}/register`, data);
+  }
+
+  changeUserRole(data: UserRoleChangeDto): Observable<ApiResponse<number>> {
+    return this.http.put<ApiResponse<number>>(`${this.apiUrl}/resetuserrole`, data);
   }
 
   saveToken(loggedUser: LoggedUserDto): void {
