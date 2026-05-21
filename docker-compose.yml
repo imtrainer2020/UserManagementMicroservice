@@ -1,0 +1,74 @@
+services:
+  # 1. SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123
+    ports:
+      - "1433:1433"
+
+  # 2. Auth Service
+  auth-api:
+    build:
+      context: .
+      dockerfile: AuthService.API/Dockerfile
+    environment:
+      - ConnectionStrings__AuthDbConnectionString=Server=sqlserver;Database=MS_UserMgmt;User Id=sa;Password=Password123;TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+
+  # 3. User Service
+  user-api:
+    build:
+      context: .
+      dockerfile: UserService.API/Dockerfile
+    environment:
+      - ConnectionStrings__UserDbContext=Server=sqlserver;Database=MS_UserMgmt;User Id=sa;Password=Password123;TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+
+  # 4. Role Service
+  role-api:
+    build:
+      context: .
+      dockerfile: RoleService.API/Dockerfile
+    environment:
+      - ConnectionStrings__RoleDbContext=Server=sqlserver;Database=MS_UserMgmt;User Id=sa;Password=Password123;TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+
+  # 5. Audit Log Service
+  audit-api:
+    build:
+      context: .
+      dockerfile: AuditLogService.API/Dockerfile
+    environment:
+      - ConnectionStrings__AuditLogDbContext=Server=sqlserver;Database=MS_UserMgmt;User Id=sa;Password=Password123;TrustServerCertificate=True;Encrypt=False;
+    depends_on:
+      - sqlserver
+
+  # 6. The Gateway
+  gateway-api:
+    build:
+      context: .
+      dockerfile: Gateway.API/Dockerfile
+    ports:
+      - "5070:8080"
+    volumes:
+      - ./Gateway.API/ocelot.Docker.json:/app/ocelot.json
+    depends_on:
+      - auth-api
+      - user-api
+      - role-api
+      - audit-api
+
+  # 7. Angular UI
+  angular-ui:
+    build:
+      context: ./UserMgmt.UI
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - gateway-api
