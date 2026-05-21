@@ -94,5 +94,26 @@ namespace UserService.API.Repository
             user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
             return await context.SaveChangesAsync();
         }
+
+        public async Task<UserDetailViewDto?> GetUserDetailsByUserIdAsync(int userId)
+        {
+            UserDetail? ud = await context.UserDetails.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == userId);
+            if (ud == null)
+            {
+                return new UserDetailViewDto(0)
+                {
+                    UserId = userId
+                };
+            }
+
+            return new UserDetailViewDto(ud.Id)
+            {
+                Address = ud.Address,
+                Fullname = ud.Fullname,
+                PhotoUrl = ud.PhotoUrl,
+                Phone = ud.Phone,
+                UserId = userId
+            };
+        }
     }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, computed } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { DashboardConfig } from '../../../models/dashboard.model';
+import { ApiResponse } from '../../../shared/apiresponse.model';
 
 @Component({
   selector: 'app-user-dashboard',

@@ -9,6 +9,7 @@ namespace UserService.API.Repository
         public Task<int> UpdateUserDetailsAsync(UserDetailUpdateDto dto);
         public Task<int> DeleteUserDetailsAsync(int id);
         public Task<UserDetailViewDto?> GetUserDetailsAsync(int id);
+        public Task<UserDetailViewDto?> GetUserDetailsByUserIdAsync(int userId);
         public Task<IList<UserDetailViewDto>> GetAllUserDetailsAsync();
         public Task<int> UserResetPasswordAsync(UserPasswordChangeDto dto);
     }

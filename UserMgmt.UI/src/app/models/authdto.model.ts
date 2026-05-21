@@ -21,3 +21,9 @@ export interface SignupRequest {
   email: string;
   password: string;
 }
+
+export interface UserRoleChangeDto {
+  userId: number;
+  oldRoleId?: number;
+  newRoleId: number;
+}

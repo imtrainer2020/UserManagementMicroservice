@@ -47,9 +47,9 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpPost("forgetpassword")]
+    [HttpGet("forgetpassword")]
     [AllowAnonymous]
-    public async Task<ActionResult<ApiResponse<bool>>> ForgetPassword([FromBody] string email)
+    public async Task<ActionResult<ApiResponse<bool>>> ForgetPassword([FromQuery] string email)
     {
         try
         {
@@ -72,7 +72,7 @@ public class UsersController : ControllerBase
             : Ok(ApiResponse<int>.Fail("User update failed."));
     }
 
-    [HttpPost("resetpassword")]
+    [HttpPut("resetpassword")]
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<int>>> ResetPassword([FromBody] ResetPasswordDto dto)
     {
@@ -88,7 +88,7 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpPost("resetuserrole")]
+    [HttpPut("resetuserrole")]
     [RoleAuthorize(RolesEnum.Admin)]
     public async Task<ActionResult<ApiResponse<int>>> ChangeUserRoles([FromBody] ChangeUserRolesDto dto)
     {
