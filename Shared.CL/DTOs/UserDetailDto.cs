@@ -24,6 +24,7 @@ namespace Shared.CL.DTOs
         public UserDetailViewDto(int Id) : base(Id)
         {
         }
+        public string? CreatedAt { get; init; }
     }
 
     public record UserPasswordChangeDto(int UserId, string NewPassword);

@@ -37,6 +37,18 @@
             "UpstreamHttpMethod": [ "Get" ]
         },
         {
+            "DownstreamPathTemplate": "/uploads/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5284
+                }
+            ],
+            "UpstreamPathTemplate": "/uploads/{everything}",
+            "UpstreamHttpMethod": [ "Get" ]
+        },
+        {
             "DownstreamPathTemplate": "/api/roles/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [

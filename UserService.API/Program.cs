@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.CL.Filters;
+using Shared.CL.Repository;
 using UserService.API.Data;
 using UserService.API.Repository;
 
@@ -9,6 +10,7 @@ var connectionString = builder.Configuration.GetConnectionString("UserDbConnecti
 builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
+builder.Services.AddScoped<IPhotoUploadService, PhotoUploadService>();
 
 // Register HttpClient so the filter can use it
 builder.Services.AddHttpClient();
@@ -41,6 +43,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

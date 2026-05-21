@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shared.CL;
 using Shared.CL.DTOs;
 using Shared.CL.Filters;
+using Shared.CL.Repository;
 using UserService.API.Repository;
 
 [Route("api/[controller]")]
@@ -49,9 +50,9 @@ public class UserDetailsController : ControllerBase
 
     // PUT: api/UserDetail/5
     [HttpPut]
-    public async Task<ActionResult<ApiResponse<int>>> PutUserDetail(UserDetailUpdateDto dto)
+    public async Task<ActionResult<ApiResponse<int>>> PutUserDetail([FromForm] UserDetailUpdateDto dto, IFormFile? file = null)
     {
-        int res = await repo.UpdateUserDetailsAsync(dto);
+        int res = await repo.UpdateUserDetailsAsync(dto, file);
         return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User details updated successfully."))
             : Ok(ApiResponse<int>.Fail("Failed to update user details."));
     }
@@ -66,9 +67,9 @@ public class UserDetailsController : ControllerBase
 
     // POST: api/UserDetail
     [HttpPost]
-    public async Task<ActionResult<ApiResponse<int>>> PostUserDetail(UserDetailCreateDto dto)
+    public async Task<ActionResult<ApiResponse<int>>> PostUserDetail([FromForm] UserDetailCreateDto dto, IFormFile? file = null)
     {
-        int res = await repo.AddUserDetailsAsync(dto);
+        int res = await repo.AddUserDetailsAsync(dto, file);
         return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User details added successfully."))
             : Ok(ApiResponse<int>.Fail("Failed to add user details."));
     }
@@ -82,4 +83,5 @@ public class UserDetailsController : ControllerBase
             : Ok(ApiResponse<int>.Fail("Failed to delete user detail."));
     }
 
+    
 }

@@ -20,16 +20,16 @@ export class UserProfileService {
     return this.http.get<ApiResponse<UserProfileDto>>(`${this.apiUrl}/user/${userId}`);
   }
 
-  updateMyProfile(payload: UserProfileUpdateDto): Observable<ApiResponse<number>> {
-    return this.http.put<ApiResponse<number>>(`${this.apiUrl}`, payload);
+  updateMyProfile(formData: FormData): Observable<ApiResponse<number>> {
+    return this.http.put<ApiResponse<number>>(`${this.apiUrl}`, formData);
   }
 
   changeUserPassword(payload: UserPasswordChangeDto): Observable<ApiResponse<number>> {
     return this.http.put<ApiResponse<number>>(`${this.apiUrl}/resetpassword`, payload);
   }
 
-  createMyProfile(payload: UserProfileCreateDto): Observable<ApiResponse<number>> {
-    return this.http.post<ApiResponse<number>>(`${this.apiUrl}`, payload);
+  createMyProfile(formData: FormData): Observable<ApiResponse<number>> {
+    return this.http.post<ApiResponse<number>>(`${this.apiUrl}`, formData);
   }
 
 }

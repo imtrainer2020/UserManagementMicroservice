@@ -5,37 +5,64 @@
       <h2>My Profile</h2>
       <p>View and update your personal information.</p>
     </div>
-
     @if (!isLoading && isExistingProfile && !isEditMode) {
-    <button class="btn btn-primary" type="button" (click)="startEdit()">
-      Edit Profile
-    </button>
+    <button class="btn btn-primary" type="button" (click)="startEdit()">Edit Profile</button>
     }
   </div>
 
   @if (isLoading) {
-  <div class="state-card">
-    <p>Loading profile...</p>
-  </div>
+  <div class="state-card"><p>Loading profile…</p></div>
   } @else {
 
   @if (errorMessage) {
-  <div class="alert alert-error">
-    {{ errorMessage }}
-  </div>
+  <div class="alert alert-error">{{ errorMessage }}</div>
   }
-
   @if (successMessage) {
-  <div class="alert alert-success">
-    {{ successMessage }}
-  </div>
+  <div class="alert alert-success">{{ successMessage }}</div>
   }
 
   <div class="profile-grid">
 
-    <!-- Left Card -->
+    <!-- ── Left: Summary card ── -->
     <div class="profile-card profile-summary">
-      <img [src]="photoPreview" alt="Profile photo" class="profile-photo" />
+
+      <!-- Photo with overlay button in edit mode -->
+      <div class="photo-wrapper">
+        <img [src]="photoPreview"
+             alt="Profile photo"
+             class="profile-photo"
+             (error)="onImageError($event)" />
+
+        @if (isEditMode) {
+        <label class="photo-overlay" for="photoFileInput" title="Change photo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86
+                     a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0
+                     01-2 2H5a2 2 0 01-2-2V9z" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </label>
+        <!-- Hidden real file input -->
+        <input id="photoFileInput"
+               type="file"
+               accept="image/*"
+               class="sr-only"
+               (change)="onFileSelected($event)" />
+        }
+      </div>
+
+      <!-- Remove / pending badge -->
+      @if (isEditMode && hasPhoto) {
+      <button class="btn-remove-photo" type="button" (click)="removePhoto()">
+        ✕ Remove photo
+      </button>
+      }
+      @if (selectedFile) {
+      <p class="photo-pending">📎 {{ selectedFile.name }} — will upload on save</p>
+      }
 
       <h3>{{ displayName }}</h3>
       <p class="muted">{{ currentUserEmail() || 'No email found' }}</p>
@@ -45,25 +72,22 @@
           <span class="label">Role</span>
           <span class="value">{{ currentUserRole() || 'User' }}</span>
         </div>
-
         <div class="summary-item">
           <span class="label">Phone</span>
           <span class="value">{{ f['phone'].value || '-' }}</span>
         </div>
-
         <div class="summary-item">
           <span class="label">Address</span>
           <span class="value">{{ f['address'].value || '-' }}</span>
         </div>
-
         <div class="summary-item">
           <span class="label">Created</span>
-          <span class="value">{{ createdAt ? (createdAt | date:'medium') : '-' }}</span>
+          <span class="value">{{ createdAt || '-' }}</span>
         </div>
       </div>
     </div>
 
-    <!-- Right Card -->
+    <!-- ── Right: Form card ── -->
     <div class="profile-card">
       <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
 
@@ -81,56 +105,63 @@
 
         <div class="form-row">
           <label for="fullname">Full Name</label>
-          <input id="fullname"
-                 type="text"
-                 formControlName="fullname"
-                 [readonly]="!isEditMode"
-                 placeholder="Enter full name" />
+          <input id="fullname" type="text" formControlName="fullname"
+                 [readonly]="!isEditMode" placeholder="Enter full name" />
           @if (f['fullname'].touched && f['fullname'].invalid) {
           <small class="error-text">Full name is required (minimum 3 characters).</small>
           }
         </div>
 
+        @if (isEditMode) {
+        <!-- Photo section inside form -->
         <div class="form-row">
-          <label for="photoUrl">Photo URL</label>
-          <input id="photoUrl"
-                 type="text"
-                 formControlName="photoUrl"
-                 [readonly]="!isEditMode"
-                 placeholder="Paste image URL here" />
-          <small class="hint">
-            Current backend stores photo as URL. Real file upload needs a separate upload API.
-          </small>
-        </div>
+          <label>Profile Photo</label>
 
+          <!-- File pick button -->
+          <label class="file-pick-btn" for="photoFileInput2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            Choose image file
+          </label>
+          <input id="photoFileInput2"
+                 type="file"
+                 accept="image/*"
+                 class="sr-only"
+                 (change)="onFileSelected($event)" />
+
+          <span class="or-divider">— or paste a URL —</span>
+
+          <input type="text" formControlName="photoUrl"
+                 placeholder="https://example.com/photo.jpg" />
+          <small class="hint">Max 5 MB · JPG / PNG / WEBP · URL is saved to your profile.</small>
+
+        </div>
+        }
         <div class="form-row">
           <label for="phone">Phone</label>
-          <input id="phone"
-                 type="text"
-                 formControlName="phone"
-                 [readonly]="!isEditMode"
-                 placeholder="Enter phone number" />
+          <input id="phone" type="text" formControlName="phone"
+                 [readonly]="!isEditMode" placeholder="Enter phone number" />
           @if (f['phone'].touched && f['phone'].invalid) {
-          <small class="error-text">Phone should contain 10 to 20 digits.</small>
+          <small class="error-text">Phone should contain 10 digits.</small>
           }
         </div>
 
         <div class="form-row">
           <label for="address">Address</label>
-          <textarea id="address"
-                    rows="4"
-                    formControlName="address"
-                    [readonly]="!isEditMode"
-                    placeholder="Enter address"></textarea>
+          <textarea id="address" rows="4" formControlName="address"
+                    [readonly]="!isEditMode" placeholder="Enter address"></textarea>
         </div>
 
         @if (isEditMode) {
         <div class="action-row">
           <button class="btn btn-primary" type="submit" [disabled]="isSaving">
-            {{ isSaving ? 'Saving...' : (isExistingProfile ? 'Update Profile' : 'Create Profile') }}
+            {{ isSaving ? 'Saving…' : (isExistingProfile ? 'Update Profile' : 'Create Profile') }}
           </button>
-
-          <button class="btn btn-secondary" type="button" (click)="cancelEdit()" [disabled]="isSaving">
+          <button class="btn btn-secondary" type="button"
+                  (click)="cancelEdit()" [disabled]="isSaving">
             Cancel
           </button>
         </div>
@@ -141,4 +172,5 @@
 
   </div>
   }
+
 </section>

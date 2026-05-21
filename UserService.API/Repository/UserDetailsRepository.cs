@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.CL;
 using Shared.CL.DTOs;
+using Shared.CL.Repository;
 using UserService.API.Data;
 using UserService.API.Models;
 
@@ -9,37 +10,60 @@ namespace UserService.API.Repository
     public class UserDetailsRepository : IUserDetailsRepository
     {
         private readonly UserDbContext context;
+        private readonly IPhotoUploadService photoService;
 
-        public UserDetailsRepository(UserDbContext _context)
+        public UserDetailsRepository(UserDbContext _context, IPhotoUploadService _photoService)
         {
             context = _context;
+            photoService = _photoService;
         }
 
-        public async Task<int> AddUserDetailsAsync(UserDetailCreateDto dto)
+        public async Task<int> AddUserDetailsAsync(UserDetailCreateDto dto, IFormFile? file = null)
         {
             UserDetail ud = new UserDetail
             {
                 Address = dto.Address,
                 Fullname = dto.Fullname,
-                PhotoUrl = dto.PhotoUrl,
                 Phone = dto.Phone,
                 UserId = dto.UserId
             };
+
+            if (file != null && file.Length > 0)
+            {
+                string newPhotoUrl = await UploadUserPhoto(file);
+                if (newPhotoUrl != null && newPhotoUrl.Length > 0)
+                {
+                    if (ud.PhotoUrl != null && ud.PhotoUrl.Length > 0)
+                        photoService.DeletePhoto(ud.PhotoUrl);
+                    ud.PhotoUrl = newPhotoUrl;
+                }
+            }
+
             await context.UserDetails.AddAsync(ud);
             await context.SaveChangesAsync();
 
             return ud.Id;
         }
 
-        public async Task<int> UpdateUserDetailsAsync(UserDetailUpdateDto dto)
+        public async Task<int> UpdateUserDetailsAsync(UserDetailUpdateDto dto, IFormFile? file = null)
         {
             UserDetail? ud = await context.UserDetails.FirstOrDefaultAsync(u => u.Id == dto.Id);
             if (ud == null)
                 throw new Exception("User detail not found");
 
+            if (file != null && file.Length > 0)
+            {
+                string newPhotoUrl = await UploadUserPhoto(file);
+                if (newPhotoUrl != null && newPhotoUrl.Length > 0)
+                {
+                    if (ud.PhotoUrl != null && ud.PhotoUrl.Length > 0)
+                        photoService.DeletePhoto(ud.PhotoUrl);
+                    ud.PhotoUrl = newPhotoUrl;
+                }
+            }
+
             ud.Address = dto.Address;
             ud.Fullname = dto.Fullname;
-            ud.PhotoUrl = dto.PhotoUrl;
             ud.Phone = dto.Phone;
             ud.UserId = dto.UserId;
 
@@ -58,7 +82,8 @@ namespace UserService.API.Repository
                 Fullname = ud.Fullname,
                 PhotoUrl = ud.PhotoUrl,
                 Phone = ud.Phone,
-                UserId = ud.UserId
+                UserId = ud.UserId,
+                CreatedAt = ud.CreatedAt.ToShortDateString()
             };
         }
 
@@ -71,7 +96,8 @@ namespace UserService.API.Repository
                 Fullname = ud.Fullname,
                 PhotoUrl = ud.PhotoUrl,
                 Phone = ud.Phone,
-                UserId = ud.UserId
+                UserId = ud.UserId,
+                CreatedAt = ud.CreatedAt.ToShortDateString()
             }).ToList();
         }
 
@@ -112,8 +138,17 @@ namespace UserService.API.Repository
                 Fullname = ud.Fullname,
                 PhotoUrl = ud.PhotoUrl,
                 Phone = ud.Phone,
-                UserId = userId
+                UserId = userId,
+                CreatedAt = ud.CreatedAt.ToShortDateString()
             };
+        }
+
+        private async Task<string> UploadUserPhoto(IFormFile file)
+        {
+            string? photoUrl = null;
+            if (file != null && file.Length > 0)
+                photoUrl = await photoService.SavePhotoAsync(file);
+            return photoUrl ?? string.Empty;
         }
     }
 }
