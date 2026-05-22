@@ -25,19 +25,15 @@ namespace UserService.API.Repository
                 Address = dto.Address,
                 Fullname = dto.Fullname,
                 Phone = dto.Phone,
-                UserId = dto.UserId
+                UserId = dto.UserId,
+                PhotoUrl = dto.PhotoUrl
             };
 
+            if (ud.PhotoUrl != null && ud.PhotoUrl.Length > 0)
+                photoService.DeletePhoto(ud.PhotoUrl);
+
             if (file != null && file.Length > 0)
-            {
-                string newPhotoUrl = await UploadUserPhoto(file);
-                if (newPhotoUrl != null && newPhotoUrl.Length > 0)
-                {
-                    if (ud.PhotoUrl != null && ud.PhotoUrl.Length > 0)
-                        photoService.DeletePhoto(ud.PhotoUrl);
-                    ud.PhotoUrl = newPhotoUrl;
-                }
-            }
+                ud.PhotoUrl = await photoService.SavePhotoAsync(file);
 
             await context.UserDetails.AddAsync(ud);
             await context.SaveChangesAsync();
@@ -51,21 +47,19 @@ namespace UserService.API.Repository
             if (ud == null)
                 throw new Exception("User detail not found");
 
-            if (file != null && file.Length > 0)
-            {
-                string newPhotoUrl = await UploadUserPhoto(file);
-                if (newPhotoUrl != null && newPhotoUrl.Length > 0)
-                {
-                    if (ud.PhotoUrl != null && ud.PhotoUrl.Length > 0)
-                        photoService.DeletePhoto(ud.PhotoUrl);
-                    ud.PhotoUrl = newPhotoUrl;
-                }
-            }
-
             ud.Address = dto.Address;
             ud.Fullname = dto.Fullname;
             ud.Phone = dto.Phone;
             ud.UserId = dto.UserId;
+
+            if (dto.PhotoUrl != null && dto.PhotoUrl.Length > 0 && ud.PhotoUrl.Trim().ToLower() != dto.PhotoUrl.Trim().ToLower())
+            {
+                ud.PhotoUrl = dto.PhotoUrl;
+                photoService.DeletePhoto(ud.PhotoUrl);
+            }
+
+            if (file != null && file.Length > 0)
+                ud.PhotoUrl = await photoService.SavePhotoAsync(file);
 
             return await context.SaveChangesAsync();
         }
@@ -141,14 +135,6 @@ namespace UserService.API.Repository
                 UserId = userId,
                 CreatedAt = ud.CreatedAt.ToShortDateString()
             };
-        }
-
-        private async Task<string> UploadUserPhoto(IFormFile file)
-        {
-            string? photoUrl = null;
-            if (file != null && file.Length > 0)
-                photoUrl = await photoService.SavePhotoAsync(file);
-            return photoUrl ?? string.Empty;
         }
     }
 }
