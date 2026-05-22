@@ -1,4 +1,4 @@
-import { Component, OnInit, computed } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { LogsService } from '../../../services/audit-logs/logs.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { AuditLogListDto } from '../../../models/audit-log.model';
@@ -16,11 +16,12 @@ export class MyActivityComponent implements OnInit {
   isLoading = true;
   errorMessage = '';
   searchTerm = '';
-  filterStatus = 'all'; // 'all' | 'success' | 'error'
+  filterStatus = 'all';
 
   constructor(
     private logsService: LogsService,
     private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -33,51 +34,76 @@ export class MyActivityComponent implements OnInit {
     }
 
     this.logsService.getMyActivity(userId).subscribe({
-      next: res => {
-        if (res.isSuccess && res.data) {
-          this.logs = res.data.sort(
-            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-          this.filteredLogs = [...this.logs];
-        } else {
-          this.errorMessage = res.message ?? 'No activity found.';
+      // We use 'any' here temporarily to safely check for both camelCase and PascalCase
+      next: (response: any) => {
+        try {
+          // 1. Safe extraction (handles both JSON casing styles)
+          const isSuccess = response?.isSuccess ?? response?.IsSuccess;
+          const data = response?.data ?? response?.Data;
+          const message = response?.message ?? response?.Message;
+
+          if (isSuccess && Array.isArray(data)) {
+            // 2. Ultra-safe sort (protects against null objects inside the array)
+            this.logs = data.sort((a: any, b: any) => {
+              const dateA = a?.createdAt ? new Date(a.createdAt).getTime() : 0;
+              const dateB = b?.createdAt ? new Date(b.createdAt).getTime() : 0;
+              return dateB - dateA;
+            });
+
+            this.filteredLogs = [...this.logs];
+          } else {
+            this.errorMessage = message || 'No activity found.';
+          }
+        } catch (e) {
+          console.error('Data parsing error:', e);
+          this.errorMessage = 'An error occurred while processing your data.';
+        } finally {
+          // 3. FINALLY block guarantees the spinner turns off even if a crash happens
+          this.isLoading = false;
+          this.cdr.detectChanges();
         }
-        this.isLoading = false;
       },
       error: (err) => {
         console.error('Activity load error:', err);
         this.errorMessage = 'Failed to load activity. Please try again.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   applyFilters(): void {
-    let result = [...this.logs];
+    try {
+      let result = [...this.logs];
 
-    if (this.filterStatus === 'success') {
-      result = result.filter(l => !l.isError);
-    } else if (this.filterStatus === 'error') {
-      result = result.filter(l => l.isError);
+      if (this.filterStatus === 'success') {
+        result = result.filter(l => l && !l.isError);
+      } else if (this.filterStatus === 'error') {
+        result = result.filter(l => l && l.isError);
+      }
+
+      if (this.searchTerm && this.searchTerm.trim()) {
+        const term = this.searchTerm.trim().toLowerCase();
+        result = result.filter(l =>
+          l?.action?.toLowerCase().includes(term) ||
+          l?.serviceName?.toLowerCase().includes(term) ||
+          (l?.errorMessage || '').toLowerCase().includes(term)
+        );
+      }
+
+      this.filteredLogs = result;
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error('Filter error:', error);
     }
-
-    if (this.searchTerm.trim()) {
-      const term = this.searchTerm.toLowerCase();
-      result = result.filter(l =>
-        l.action.toLowerCase().includes(term) ||
-        l.serviceName.toLowerCase().includes(term) ||
-        (l.errorMessage ?? '').toLowerCase().includes(term)
-      );
-    }
-
-    this.filteredLogs = result;
   }
 
   get successCount(): number {
-    return this.logs.filter(l => !l.isError).length;
+    return this.logs.filter(l => l && !l.isError).length;
   }
+
   get errorCount(): number {
-    return this.logs.filter(l => l.isError).length;
+    return this.logs.filter(l => l && l.isError).length;
   }
 
 }

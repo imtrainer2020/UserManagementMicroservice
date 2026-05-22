@@ -1,6 +1,5 @@
 <div class="container-fluid py-4 px-4">
 
-  <!-- Page Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
       <h4 class="fw-bold mb-0">
@@ -10,7 +9,6 @@
     </div>
   </div>
 
-  <!-- Loading -->
   @if (isLoading) {
   <div class="text-center py-5">
     <div class="spinner-border text-primary" role="status"></div>
@@ -18,7 +16,6 @@
   </div>
   }
 
-  <!-- Error -->
   @if (!isLoading && errorMessage) {
   <div class="alert alert-warning d-flex align-items-center">
     <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -27,7 +24,7 @@
   }
 
   @if (!isLoading && !errorMessage) {
-  <!-- Stats -->
+
   <div class="row g-3 mb-4">
     <div class="col-sm-4">
       <div class="card border-0 shadow-sm">
@@ -70,7 +67,6 @@
     </div>
   </div>
 
-  <!-- Filters -->
   <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
       <div class="row g-2 align-items-end">
@@ -108,19 +104,18 @@
     Showing <strong>{{ filteredLogs.length }}</strong> of <strong>{{ logs.length }}</strong> records
   </p>
 
-  <!-- Table -->
   <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
       <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
+        <table class="table table-hover align-middle mb-0" style="table-layout: fixed;">
           <thead class="table-light">
             <tr>
-              <th class="ps-3">#</th>
-              <th>Date &amp; Time</th>
-              <th>Service</th>
-              <th>Action</th>
-              <th>Status</th>
-              <th>Error Detail</th>
+              <th class="ps-3" style="width: 5%;">#</th>
+              <th style="width: 15%;">Date &amp; Time</th>
+              <th style="width: 25%;">Service</th>
+              <th style="width: 20%;">Action</th>
+              <th style="width: 10%;">Status</th>
+              <th style="width: 25%;">Error Detail</th>
             </tr>
           </thead>
           <tbody>
@@ -132,19 +127,26 @@
               </td>
             </tr>
             }
-            @for (log of filteredLogs; track log.createdAt; let i = $index) {
+            @for (log of filteredLogs; track $index; let i = $index) {
             <tr>
               <td class="ps-3 text-muted small">{{ i + 1 }}</td>
               <td class="small">
                 <span class="fw-semibold">{{ log.createdAt | date:'dd MMM yyyy' }}</span><br />
                 <span class="text-muted">{{ log.createdAt | date:'HH:mm:ss' }}</span>
               </td>
+
               <td>
-                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25">
+                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 d-inline-block text-truncate w-100 align-middle"
+                      [title]="log.serviceName"
+                      style="cursor: help;">
                   {{ log.serviceName }}
                 </span>
               </td>
-              <td class="small fw-semibold">{{ log.action }}</td>
+
+              <td class="small fw-semibold" [title]="log.action">
+                {{ log.action }}
+              </td>
+
               <td>
                 @if (!log.isError) {
                 <span class="badge bg-success-subtle text-success border border-success border-opacity-25">
@@ -156,7 +158,12 @@
                 </span>
                 }
               </td>
-              <td class="small text-danger">{{ log.errorMessage ?? '—' }}</td>
+
+              <td class="small text-danger text-truncate"
+                  [title]="log.errorMessage || 'No errors'"
+                  style="cursor: help;">
+                {{ log.errorMessage ?? '—' }}
+              </td>
             </tr>
             }
           </tbody>
@@ -165,5 +172,4 @@
     </div>
   </div>
   }
-
 </div>

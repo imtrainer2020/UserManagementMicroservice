@@ -2,8 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Shared.CL.DTOs;
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -30,15 +28,49 @@ namespace Shared.CL.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            string payload = string.Empty;
+            if (context.ActionArguments.Any())
+            {
+                try
+                {
+                    // Serialize the input parameters into a JSON string
+                    payload = JsonSerializer.Serialize(context.ActionArguments);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogWarning(ex, "Failed to serialize action arguments for audit log.");
+                    payload = "Serialization Failed";
+                }
+            }
+
             var resultContext = await next();
 
             if (resultContext.Exception != null || resultContext.ExceptionHandled)
                 return;
 
             ClaimsPrincipal user = context.HttpContext.User;
-            string? userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            string? emailClaim = user.FindFirst(ClaimTypes.Email)?.Value;
+            string? userIdClaim = null;
+            string? emailClaim = null;
+
+            // FIX: Ensure the user is actually authenticated before digging for claims
+            if (user.Identity != null && user.Identity.IsAuthenticated)
+            {
+                // FIX: Fallback to simple string keys if Microsoft's ClaimTypes are not found
+                userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                           ?? user.FindFirst("id")?.Value
+                           ?? user.FindFirst("nameid")?.Value
+                           ?? user.FindFirst("UserId")?.Value;
+
+                emailClaim = user.FindFirst(ClaimTypes.Email)?.Value
+                          ?? user.FindFirst("email")?.Value;
+            }
+
             int? userId = int.TryParse(userIdClaim, out var id) ? id : null;
+
+            // STEP 2: Format the string to include the service name and the payload
+            string combinedServiceAndPayload = string.IsNullOrEmpty(payload)
+                ? serviceName
+                : $"{serviceName} | Payload: {payload}";
 
             // BUILDING THE LOG RECORD
             AuditLogCreateDto auditLog = new AuditLogCreateDto
@@ -47,7 +79,7 @@ namespace Shared.CL.Filters
                 UserEmail = emailClaim,
                 // Captures the HTTP Verb and the URL path (e.g., "POST /api/roles")
                 Action = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}",
-                ServiceName = serviceName,
+                ServiceName = combinedServiceAndPayload,
                 IsError = false, // This filter only handles successful/normal requests
                 ErrorMessage = null
             };
