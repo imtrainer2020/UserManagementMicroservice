@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, computed, ChangeDetectorRef, effect } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth.service';
 import { UserProfileService } from '../../../services/user-profile/user-profile.service';
@@ -54,16 +54,23 @@ export class MyProfileComponent implements OnInit {
       phone: ['', [Validators.pattern(/^\d{10}$/)]],
       photoUrl: ['', [Validators.maxLength(500)]],
     });
+
+    effect(() => {
+      this.successMessage = '';
+      this.errorMessage = '';
+      const userId = this.currentUserId();
+      if (userId && userId > 0) {
+        this.loadUserProfile(userId);
+      } else {
+        this.errorMessage = 'Unable to identify current user.';
+      }
+      this.cdr.detectChanges();
+    });
+
   }
 
   ngOnInit(): void {
-    const userId = this.currentUserId();
-    if (!userId || userId <= 0) {
-      this.errorMessage = 'Unable to identify current user.';
-      this.cdr.detectChanges();
-      return;
-    }
-    this.loadUserProfile(userId);
+    
   }
 
   onFileSelected(event: Event): void {
