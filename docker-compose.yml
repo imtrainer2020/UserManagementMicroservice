@@ -72,3 +72,21 @@ services:
       - "4200:80"
     depends_on:
       - gateway-api
+
+# 8. SonarQube Code Analyzer
+  sonarqube:
+    image: sonarqube:lts-community
+    ports:
+      - "9000:9000"
+    environment:
+      # This bypasses a strict memory check that usually crashes SonarQube inside Codespaces
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
