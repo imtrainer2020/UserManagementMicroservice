@@ -32,4 +32,8 @@ export class UserProfileService {
     return this.http.post<ApiResponse<number>>(`${this.apiUrl}`, formData);
   }
 
+  deleteMyProfile(userId: number): Observable<ApiResponse<number>> {
+    return this.http.delete<ApiResponse<number>>(`${this.apiUrl}/${userId}`);
+  }
+
 }

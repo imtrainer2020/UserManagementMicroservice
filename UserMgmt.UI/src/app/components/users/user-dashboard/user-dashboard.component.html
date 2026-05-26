@@ -1,1 +1,140 @@
-<p>user-dashboard works!</p>
+<section class="dashboard-page">
+  <div class="dashboard-header">
+    <div>
+      <h2>User Management</h2>
+      <p>Manage accounts, roles, and profiles (Admin/Manager Access).</p>
+    </div>
+    @if (isAuthorized()) {
+    <button class="btn btn-primary" (click)="fetchUsers()" [disabled]="isLoading()">Refresh Data</button>
+    }
+  </div>
+
+  @if (!isAuthorized()) {
+  <div class="alert alert-error">
+    <strong>Access Denied:</strong> {{ errorMessage() }}
+  </div>
+  } @else {
+
+  @if (errorMessage()) { <div class="alert alert-error">{{ errorMessage() }}</div> }
+  @if (successMessage()) { <div class="alert alert-success">{{ successMessage() }}</div> }
+
+  <div class="card table-card border-0 shadow-sm mt-3">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 data-table" style="table-layout: fixed;">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3" style="width: 8%;">ID</th>
+              <th style="width: 25%;">Email Account</th>
+              <th style="width: 15%;">Role</th>
+              <th style="width: 15%;">Status</th>
+              <th style="width: 17%;">Joined Date</th>
+              <th style="width: 20%; text-align: right; padding-right: 20px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (isLoading()) {
+            <tr><td colspan="6" class="text-center py-4">Loading users...</td></tr>
+            }
+            @for (user of users(); track user.id) {
+            <tr>
+              <td class="ps-3 text-muted small">#{{ user.id }}</td>
+              <td class="fw-semibold text-truncate" [title]="user.email">{{ user.email }}</td>
+              <td>
+                <span class="badge"
+                      [class.bg-primary-subtle]="user.roleName === 'Admin'"
+                      [class.text-primary]="user.roleName === 'Admin'"
+                      [class.bg-info-subtle]="user.roleName === 'Manager'"
+                      [class.text-info]="user.roleName === 'Manager'"
+                      [class.bg-secondary-subtle]="user.roleName === 'User'"
+                      [class.text-secondary]="user.roleName === 'User'">
+                  {{ user.roleName }}
+                </span>
+              </td>
+              <td>
+                @if (user.isActive) {
+                <span class="badge bg-success-subtle text-success border border-success border-opacity-25">Active</span>
+                } @else {
+                <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-25">Disabled</span>
+                }
+              </td>
+              <td class="small text-muted">{{ user.createdAt | date:'mediumDate' }}</td>
+              <td style="text-align: right; padding-right: 20px;">
+                <button class="btn-action edit" (click)="openEditModal(user)" title="Edit User">Edit</button>
+
+                @if (canDelete(user)) {
+                <button class="btn-action delete ms-2" (click)="deleteUser(user.id, user.email)" title="Delete User">Delete</button>
+                } @else {
+                <button class="btn-action disabled ms-2" title="Permission Denied" disabled>Delete</button>
+                }
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (isEditModalOpen()) {
+  <div class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit User: {{ selectedUser()?.email }}</h3>
+        <button class="close-btn" (click)="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-section">
+            <h4>Account Settings</h4>
+            <form [formGroup]="authForm">
+              <div class="form-row">
+                <label>Assign Role</label>
+                <select formControlName="roleId" class="form-control">
+                  <option [value]="1">Admin</option>
+                  <option [value]="3">Manager</option>
+                  <option [value]="2">Standard User</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Account Status</label>
+                <select formControlName="isActive" class="form-control">
+                  <option [value]="true">Active</option>
+                  <option [value]="false">Disabled</option>
+                </select>
+              </div>
+            </form>
+          </div>
+
+          <div class="form-section">
+            <h4>Profile Details</h4>
+            <form [formGroup]="profileForm">
+              <div class="form-row">
+                <label>Full Name</label>
+                <input type="text" formControlName="fullname" class="form-control" placeholder="Enter full name" />
+              </div>
+              <div class="form-row">
+                <label>Phone Number</label>
+                <input type="text" formControlName="phone" class="form-control" placeholder="10-digit number" />
+              </div>
+              <div class="form-row">
+                <label>Address</label>
+                <textarea formControlName="address" rows="2" class="form-control" placeholder="Enter street address"></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()" [disabled]="isSaving()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveChanges()" [disabled]="isSaving() || authForm.invalid || profileForm.invalid">
+          {{ isSaving() ? 'Saving...' : 'Save All Changes' }}
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</section>

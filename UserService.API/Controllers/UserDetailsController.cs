@@ -77,14 +77,12 @@ namespace UserService.API.Controllers
         }
 
         // DELETE: api/UserDetail/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ApiResponse<int>>> DeleteUserDetail(int id)
+        [HttpDelete("{userId:int}")]
+        public async Task<ActionResult<ApiResponse<int>>> DeleteUserDetail(int userId)
         {
-            int res = await repo.DeleteUserDetailsAsync(id);
+            int res = await repo.DeleteUserDetailsAsync(userId);
             return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User detail deleted successfully."))
                 : Ok(ApiResponse<int>.Fail("Failed to delete user detail."));
         }
-
-
     }
 }

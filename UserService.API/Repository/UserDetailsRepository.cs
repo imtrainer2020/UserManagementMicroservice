@@ -95,9 +95,9 @@ namespace UserService.API.Repository
             }).ToList();
         }
 
-        public async Task<int> DeleteUserDetailsAsync(int id)
+        public async Task<int> DeleteUserDetailsAsync(int userId)
         {
-            UserDetail? ud = await context.UserDetails.FirstOrDefaultAsync(u => u.Id == id);
+            UserDetail? ud = await context.UserDetails.FirstOrDefaultAsync(u => u.UserId == userId);
             if (ud == null)
                 throw new Exception("User detail not found");
 
