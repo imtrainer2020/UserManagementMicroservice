@@ -1,16 +1,16 @@
 import { Component, OnInit, computed } from '@angular/core';
-import { AuthService } from '../../../services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { DashboardConfig } from '../../../models/dashboard.model';
-import { ApiResponse } from '../../../shared/apiresponse.model';
+import { DashboardConfig } from '../../models/dashboard.model';
+import { ApiResponse } from '../../shared/apiresponse.model';
 
 @Component({
-  selector: 'app-user-dashboard',
+  selector: 'app-dashboard',
   standalone: false,
-  templateUrl: './user-dashboard.component.html',
-  styleUrl: './user-dashboard.component.css',
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css',
 })
-export class UserDashboardComponent {
+export class DashboardComponent {
 
   readonly userEmail = computed(() => this.authService.userEmail());
   readonly userRole = computed(() => this.authService.userRole());

@@ -57,9 +57,9 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       ADMIN + MANAGER SHARED SECTION  —  hidden for User
+       MANAGER SHARED SECTION  —  hidden for User
   ══════════════════════════════════════════════════════════════════════ -->
-  <div *appHasRole="['admin', 'manager']" class="dash-section">
+  <div *appHasRole="['manager']" class="dash-section">
 
     <h6 class="section-label label-manager">
       <i class="bi bi-people me-1"></i> Team &amp; Reports
@@ -67,7 +67,7 @@
 
     <div class="widget-grid">
 
-      <div class="widget-card widget-manager">
+      <div class="widget-card widget-manager" (click)="navigateTo('/users')">
         <div class="widget-icon icon-manager">
           <i class="bi bi-people"></i>
         </div>
@@ -94,7 +94,7 @@
        ALL ROLES — config-driven workspace widgets
        Rendered from roleConfig[] in the component TypeScript
   ══════════════════════════════════════════════════════════════════════ -->
-  <div class="dash-section">
+  <div class="dash-section" *appHasRole="['user']">
 
     <h6 class="section-label label-workspace">
       <i class="bi bi-grid me-1"></i> My Workspace

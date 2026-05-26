@@ -8,6 +8,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\UserMgmt.UI\browser\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\app\components\users\" />
     <Folder Include="src\app\services\roles\" />
     <Folder Include="src\app\shared\" />
     <Folder Include="src\app\shared\interceptors\" />

@@ -7,7 +7,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RolesDashboardComponent } from './components/roles/roles-dashboard/roles-dashboard.component';
 import { authGuard } from './shared/guards/auth-guard';
 import { UnauthorizedComponent } from './components/auth/unauthorized/unauthorized.component';
-import { UserDashboardComponent } from './components/users/user-dashboard/user-dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { MyProfileComponent } from './components/user-profile/my-profile/my-profile.component';
 import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/logs-dashboard.component';
@@ -29,7 +29,7 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: UserDashboardComponent,
+        component: DashboardComponent,
         data: { roles: ['Admin', 'Manager', 'User'] }
       },
       {

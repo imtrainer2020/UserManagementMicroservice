@@ -133,17 +133,17 @@
   <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
       <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0" aria-label="Audit logs table: chronological list of events with timestamp, user, service, action, status, and error details">
+        <table class="table table-hover align-middle mb-0" style="table-layout: fixed;" aria-label="Audit logs table: chronological list of events with timestamp, user, service, action, status, and error details">
           <caption class="visually-hidden">Audit logs — chronological list of user and system actions across services. Columns: Date & Time, User, Service, Action, Status, Error Detail.</caption>
           <thead class="table-light">
             <tr>
-              <th class="ps-3">#</th>
-              <th>Date &amp; Time</th>
-              <th>User</th>
-              <th>Service</th>
-              <th>Action</th>
-              <th>Status</th>
-              <th>Error Detail</th>
+              <th class="ps-3" style="width: 5%;">#</th>
+              <th style="width: 15%;">Date &amp; Time</th>
+              <th style="width: 10%;">User</th>
+              <th style="width: 25%;">Service</th>
+              <th style="width: 20%;">Action</th>
+              <th style="width: 10%;">Status</th>
+              <th style="width: 15%;">Error Detail</th>
             </tr>
           </thead>
           <tbody>
@@ -155,7 +155,7 @@
               </td>
             </tr>
             }
-            @for (log of filteredLogs; track log.createdAt; let i = $index) {
+            @for (log of filteredLogs; track $index; let i = $index) {
             <tr>
               <td class="ps-3 text-muted small">{{ i + 1 }}</td>
               <td class="small">
@@ -164,7 +164,8 @@
                 </span><br />
                 <span class="text-muted">{{ log.createdAt | date:'HH:mm:ss' }}</span>
               </td>
-              <td class="small">
+
+              <td class="small text-truncate" [title]="log.userEmail || 'System'">
                 @if (log.userEmail) {
                 <span>{{ log.userEmail }}</span>
                 @if (log.userId) {
@@ -174,12 +175,19 @@
                 <span class="text-muted fst-italic">System</span>
                 }
               </td>
+
               <td>
-                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25">
+                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 d-inline-block text-truncate w-100 align-middle"
+                      [title]="log.serviceName"
+                      style="cursor: help;">
                   {{ log.serviceName }}
                 </span>
               </td>
-              <td class="small fw-semibold">{{ log.action }}</td>
+
+              <td class="small fw-semibold text-truncate" [title]="log.action">
+                {{ log.action }}
+              </td>
+
               <td>
                 @if (!log.isError) {
                 <span class="badge bg-success-subtle text-success border border-success border-opacity-25">
@@ -191,7 +199,10 @@
                 </span>
                 }
               </td>
-              <td class="small text-danger">
+
+              <td class="small text-danger text-truncate"
+                  [title]="log.errorMessage || 'No errors'"
+                  style="cursor: help;">
                 {{ log.errorMessage ?? '—' }}
               </td>
             </tr>
@@ -201,6 +212,5 @@
       </div>
     </div>
   </div>
-
   }
 </div>
