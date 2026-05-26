@@ -11,7 +11,7 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       ADMIN-ONLY SECTION  —  hidden for Manager and User
+       ADMIN ONLY SECTION
   ══════════════════════════════════════════════════════════════════════ -->
   <div *appHasRole="['admin']" class="dash-section">
 
@@ -57,7 +57,7 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       MANAGER SHARED SECTION  —  hidden for User
+       MANAGER ONLY SECTION
   ══════════════════════════════════════════════════════════════════════ -->
   <div *appHasRole="['manager']" class="dash-section">
 
@@ -77,13 +77,13 @@
         </div>
       </div>
 
-      <div class="widget-card widget-manager">
+      <div class="widget-card widget-manager" (click)="navigateTo('/roles')">
         <div class="widget-icon icon-manager">
           <i class="bi bi-bar-chart-fill"></i>
         </div>
         <div class="widget-body">
-          <h6>Reports</h6>
-          <p>View performance and activity reports</p>
+          <h6>Roles</h6>
+          <p>View roles across the platform</p>
         </div>
       </div>
 
@@ -91,7 +91,7 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       ALL ROLES — config-driven workspace widgets
+       USER ONLY Section — config-driven workspace widgets
        Rendered from roleConfig[] in the component TypeScript
   ══════════════════════════════════════════════════════════════════════ -->
   <div class="dash-section" *appHasRole="['user']">

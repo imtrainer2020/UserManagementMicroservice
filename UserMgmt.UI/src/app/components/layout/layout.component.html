@@ -20,7 +20,7 @@
             <span class="nav-label" *ngIf="!isSidebarCollapsed">Dashboard</span>
           </a>
         </li>
-        <li>
+        <li *appHasRole="['User', 'Manager']">
           <a routerLink="/my-profile" routerLinkActive="active" title="My Profile">
             <span class="nav-icon">👤</span>
             <span class="nav-label" *ngIf="!isSidebarCollapsed">My Profile</span>
@@ -28,7 +28,7 @@
         </li>
         <!-- Only visible to Admin/Manager via HasRoleDirective -->
         <li *appHasRole="['Admin', 'Manager']">
-          <a routerLink="/roles-dashboard" routerLinkActive="active" title="Roles">
+          <a routerLink="/roles" routerLinkActive="active" title="Roles">
             <span class="nav-icon">🛡️</span>
             <span class="nav-label" *ngIf="!isSidebarCollapsed">Roles</span>
           </a>

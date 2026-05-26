@@ -12,6 +12,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { MyProfileComponent } from './components/user-profile/my-profile/my-profile.component';
 import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/logs-dashboard.component';
 import { MyActivityComponent } from './components/audit-logs/my-activity/my-activity.component';
+import { UserDashboardComponent } from './components/users/user-dashboard/user-dashboard.component';
 
 const routes: Routes = [
   // ─── Public routes (no shell/layout) ───
@@ -38,7 +39,7 @@ const routes: Routes = [
         data: { roles: ['Admin', 'Manager', 'User'] }
       },
       {
-        path: 'roles-dashboard',
+        path: 'roles',
         component: RolesDashboardComponent,
         data: { roles: ['Admin', 'Manager'] }
       },
@@ -51,6 +52,11 @@ const routes: Routes = [
         path: 'my-activity',
         component: MyActivityComponent,
         data: { roles: ['Admin', 'Manager', 'User'] }
+      },
+      {
+        path: 'users',
+        component: UserDashboardComponent,
+        data: { roles: ['Admin', 'Manager'] }
       },
       // ← Add all future pages here as children
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

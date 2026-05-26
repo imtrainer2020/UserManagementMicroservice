@@ -21,25 +21,25 @@ export class DashboardComponent {
   // ✅ Central role config — add a new role here ONLY when roles grow.
   // No changes needed in routing, login, or template.
   private readonly roleConfig: Record<string, DashboardConfig> = {
-    admin: {
-      title: 'Admin Dashboard',
-      greeting: 'Full system access.',
-      badgeClass: 'badge-admin',
-      widgets: [
-        { label: 'User Management', icon: 'bi-people-fill', route: '/users', description: 'Create, update and manage all users' },
-        { label: 'Role Management', icon: 'bi-shield-fill', route: '/roles-dashboard', description: 'Assign and configure system roles' },
-        { label: 'System Settings', icon: 'bi-gear-fill', route: null, description: 'Configure application-level settings' },
-      ]
-    },
-    manager: {
-      title: 'Manager Dashboard',
-      greeting: 'Manage your team.',
-      badgeClass: 'badge-manager',
-      widgets: [
-        { label: 'Role Management', icon: 'bi-shield-check', route: '/roles-dashboard', description: 'Manage role assignments for your team' },
-        { label: 'My Activity', icon: 'bi-activity', route: '/my-activity', description: 'See your recent actions' },
-      ]
-    },
+    // admin: {
+    //   title: 'Admin Dashboard',
+    //   greeting: 'Full system access.',
+    //   badgeClass: 'badge-admin',
+    //   widgets: [
+    //     { label: 'User Management', icon: 'bi-people-fill', route: '/users', description: 'Create, update and manage all users' },
+    //     { label: 'Role Management', icon: 'bi-shield-fill', route: '/roles-dashboard', description: 'Assign and configure system roles' },
+    //     { label: 'System Settings', icon: 'bi-gear-fill', route: null, description: 'Configure application-level settings' },
+    //   ]
+    // },
+    // manager: {
+    //   title: 'Manager Dashboard',
+    //   greeting: 'Manage your team.',
+    //   badgeClass: 'badge-manager',
+    //   widgets: [
+    //     { label: 'Role Management', icon: 'bi-shield-check', route: '/roles-dashboard', description: 'Manage role assignments for your team' },
+    //     { label: 'My Activity', icon: 'bi-activity', route: '/my-activity', description: 'See your recent actions' },
+    //   ]
+    // },
     user: {
       title: 'User Dashboard',
       greeting: 'Welcome to your workspace.',
@@ -47,7 +47,7 @@ export class DashboardComponent {
       widgets: [
         { label: 'My Profile', icon: 'bi-person-circle', route: '/my-profile', description: 'View and update your profile' },
         { label: 'My Activity', icon: 'bi-activity', route: '/my-activity', description: 'See your recent actions' },
-        { label: 'Notifications', icon: 'bi-bell-fill', route: null, description: 'See your notifications' },
+        // { label: 'Notifications', icon: 'bi-bell-fill', route: null, description: 'See your notifications' },
       ]
     },
     // ➕ Future role example — just add this block:

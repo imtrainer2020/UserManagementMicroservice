@@ -20,6 +20,7 @@ import { MyProfileComponent } from './components/user-profile/my-profile/my-prof
 import { RolesDashboardComponent } from './components/roles/roles-dashboard/roles-dashboard.component';
 import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/logs-dashboard.component';
 import { MyActivityComponent } from './components/audit-logs/my-activity/my-activity.component';
+import { UserDashboardComponent } from './components/users/user-dashboard/user-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -35,9 +36,17 @@ import { MyActivityComponent } from './components/audit-logs/my-activity/my-acti
     MyProfileComponent,
     RolesDashboardComponent,
     LogsDashboardComponent,
-    MyActivityComponent
+    MyActivityComponent,
+    UserDashboardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, CommonModule, RouterModule, FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+  ],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor])),
