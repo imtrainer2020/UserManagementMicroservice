@@ -18,9 +18,6 @@ public partial class AuditLogDbContext : DbContext
 
     public virtual DbSet<AuditLog> AuditLogs { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MS_AuditLog;Trusted_Connection=True;TrustServerCertificate=True");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AuditLog>(entity =>

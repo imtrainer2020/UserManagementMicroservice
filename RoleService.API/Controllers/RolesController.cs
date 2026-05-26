@@ -5,6 +5,8 @@ using Shared.CL.DTOs;
 using Shared.CL.Enums;
 using Shared.CL.Filters;
 
+namespace RoleService.API.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 [RoleAuthorize(RolesEnum.Admin, RolesEnum.Manager)]

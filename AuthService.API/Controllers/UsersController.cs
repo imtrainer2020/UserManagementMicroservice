@@ -6,6 +6,8 @@ using Shared.CL.DTOs;
 using Shared.CL.Enums;
 using Shared.CL.Filters;
 
+namespace AuthService.API.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
