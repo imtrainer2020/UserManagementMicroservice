@@ -58,7 +58,7 @@
                 <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-25">Disabled</span>
                 }
               </td>
-              <td class="small text-muted">{{ user.createdAt | date:'mediumDate' }}</td>
+              <td class="small text-muted">{{ user.createdAt | date:'dd MMM yyyy' }}</td>
               <td style="text-align: right; padding-right: 20px;">
                 <button class="btn-action edit" (click)="openEditModal(user)" title="Edit User">Edit</button>
 

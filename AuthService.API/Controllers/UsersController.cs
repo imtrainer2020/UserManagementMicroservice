@@ -110,12 +110,12 @@ public class UsersController : ControllerBase
 
     [RoleAuthorize]
     [HttpGet("list")]
-    public async Task<ActionResult<ApiResponse<IList<UserListDto>>>> ListUsers()
+    public async Task<ActionResult<ApiResponse<IList<UserViewDto>>>> ListUsers()
     {
-        IList<UserListDto> users = await repo.GetAllUsersAsync();
+        IList<UserViewDto> users = await repo.GetAllUsersAsync();
         return (users != null && users.Count > 0) ?
-            Ok(ApiResponse<IList<UserListDto>>.Success(users, "Users listed successfully."))
-            : Ok(ApiResponse<IList<UserListDto>>.Fail("No users found."));
+            Ok(ApiResponse<IList<UserViewDto>>.Success(users, "Users listed successfully."))
+            : Ok(ApiResponse<IList<UserViewDto>>.Fail("No users found."));
     }
 
     [RoleAuthorize]

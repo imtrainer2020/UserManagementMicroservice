@@ -5,7 +5,7 @@ namespace AuthService.API.Repository
 {
     public interface IAuthRepository
     {
-        public Task<IList<UserListDto>> GetAllUsersAsync();
+        public Task<IList<UserViewDto>> GetAllUsersAsync();
         public Task<int> RegisterUserAsync(UserRegisterDto dto);
         public Task<bool> ForgetPasswordAsync(string email);
         public Task<LoggedUserDto> LoginUserAsync(UserLoginDto dto);

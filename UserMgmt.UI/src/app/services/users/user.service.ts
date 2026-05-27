@@ -11,7 +11,7 @@ import { UserProfileService } from '../user-profile/user-profile.service';
   providedIn: 'root',
 })
 export class UserService {
-  private authApiUrl = new Common().API_BASE_URL + 'users';
+  private authApiUrl = new Common().API_BASE_URL + 'auth';
 
   constructor(private http: HttpClient, private profileService: UserProfileService) { }
 

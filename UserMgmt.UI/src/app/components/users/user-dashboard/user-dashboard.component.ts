@@ -31,7 +31,7 @@ export class UserDashboardComponent implements OnInit {
   // Authorization Signals
   readonly currentUserRole = computed(() => this.authService.userRole());
   readonly currentUserId = computed(() => this.authService.userId());
-  readonly isAuthorized = computed(() => ['Admin', 'Manager'].includes(this.currentUserRole() || ''));
+  readonly isAuthorized = computed(() => ['admin', 'manager'].includes(this.currentUserRole().toLowerCase() || ''));
 
   constructor(
     private userService: UserService,
@@ -65,10 +65,12 @@ export class UserDashboardComponent implements OnInit {
       next: (res) => {
         if (res.isSuccess && res.data) this.users.set(res.data);
         this.isLoading.set(false);
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage.set('Failed to load users.');
         this.isLoading.set(false);
+        this.cdr.detectChanges();
       }
     });
   }
@@ -86,30 +88,32 @@ export class UserDashboardComponent implements OnInit {
 
   deleteUser(userId: number, userEmail: string): void {
     if (!confirm(`Are you absolutely sure you want to delete ${userEmail}? This action cannot be undone.`)) return;
-    
+
     this.userService.deleteUserProfile(userId).subscribe({
       next: (res) => {
         if (res.isSuccess && res.data && res.data > 0) {
           this.successMessage.set('User-profile deleted successfully.');
 
           this.userService.deleteUser(userId).subscribe({
-            next: (res) => {
-              if (res.isSuccess) {
+            next: (res1) => {
+              if (res1.isSuccess) {
                 this.successMessage.set('User deleted successfully.');
                 this.fetchUsers(); // Refresh the list
               } else {
-                this.errorMessage.set(res.message || 'Failed to delete user.');
+                this.errorMessage.set(res1.message || 'Failed to delete user.');
               }
             },
             error: (err) => this.errorMessage.set(err.error?.message || 'Error occurred during deletion.')
           });
-          
+          this.cdr.detectChanges();
         } else {
           this.errorMessage.set(res.message || 'Failed to delete user profile.');
         }
+        this.cdr.detectChanges();
       },
       error: (err) => this.errorMessage.set(err.error?.message || 'Error occurred during deletion.')
-    });    
+    });
+    this.cdr.detectChanges();
   }
 
   // --- Edit Logic ---
@@ -140,12 +144,14 @@ export class UserDashboardComponent implements OnInit {
           this.profileForm.reset({ fullname: '', phone: '', address: '' });
         }
         this.isEditModalOpen.set(true);
+        this.cdr.detectChanges();
       },
       error: () => {
         // If profile fetch fails, still open modal but with empty profile form
         this.selectedProfileId.set(null);
         this.profileForm.reset({ fullname: '', phone: '', address: '' });
         this.isEditModalOpen.set(true);
+        this.cdr.detectChanges();
       }
     });
   }
@@ -198,10 +204,12 @@ export class UserDashboardComponent implements OnInit {
             this.isSaving.set(false);
           }
         });
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage.set(err.error?.message || 'Failed to update account settings.');
         this.isSaving.set(false);
+        this.cdr.detectChanges();
       }
     });
   }

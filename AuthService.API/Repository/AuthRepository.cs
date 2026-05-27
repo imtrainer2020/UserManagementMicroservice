@@ -116,14 +116,17 @@ namespace AuthService.API.Repository
             return await context.SaveChangesAsync();
         }
 
-        public async Task<IList<UserListDto>> GetAllUsersAsync()
+        public async Task<IList<UserViewDto>> GetAllUsersAsync()
         {
-            return await context.Users.AsNoTracking()
-                .Select(u => new UserListDto
+            return await context.Users.OrderDescending().AsNoTracking()
+                .Select(u => new UserViewDto
                 {
                     Id = u.Id,
                     Email = u.Email,
-                    IsActive = u.IsActive
+                    IsActive = u.IsActive,
+                    RoleId = u.RoleId,
+                    RoleName = u.Role.RoleName ?? "User",
+                    CreatedAt = u.CreatedAt
                 })
                 .ToListAsync();
         }

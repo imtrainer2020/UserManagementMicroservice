@@ -35,11 +35,6 @@ namespace Shared.CL.DTOs
         public int RoleId { get; init; } = 2;
         public bool IsActive { get; init; } = true;
         public string RoleName { get; init; } = "User";
-    }
-    public record UserListDto
-    {
-        public int Id { get; init; }
-        public string Email { get; init; } = null!;
-        public bool IsActive { get; init; } = true;
+        public DateTime CreatedAt { get; set; }
     }
 }
