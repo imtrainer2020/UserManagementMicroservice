@@ -13,6 +13,7 @@ import { MyProfileComponent } from './components/user-profile/my-profile/my-prof
 import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/logs-dashboard.component';
 import { MyActivityComponent } from './components/audit-logs/my-activity/my-activity.component';
 import { UserDashboardComponent } from './components/users/user-dashboard/user-dashboard.component';
+import { EditUserProfileComponent } from './components/user-profile/edit-user-profile/edit-user-profile.component';
 
 const routes: Routes = [
   // ─── Public routes (no shell/layout) ───
@@ -37,6 +38,11 @@ const routes: Routes = [
         path: 'my-profile',
         component: MyProfileComponent,
         data: { roles: ['Admin', 'Manager', 'User'] }
+      },
+      {
+        path: 'edit-user-profile/:id',
+        component: EditUserProfileComponent,
+        data: { roles: ['Admin', 'Manager'] }
       },
       {
         path: 'roles',

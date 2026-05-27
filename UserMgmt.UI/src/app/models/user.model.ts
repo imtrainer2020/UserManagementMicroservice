@@ -13,3 +13,9 @@ export interface UserEditDto {
   roleId: number;
   isActive: boolean;
 }
+
+export interface UserRoleChangeDto {
+  id: number;
+  email: string;
+  newRoleId: number;
+}

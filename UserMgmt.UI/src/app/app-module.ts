@@ -21,6 +21,7 @@ import { RolesDashboardComponent } from './components/roles/roles-dashboard/role
 import { LogsDashboardComponent } from './components/audit-logs/logs-dashboard/logs-dashboard.component';
 import { MyActivityComponent } from './components/audit-logs/my-activity/my-activity.component';
 import { UserDashboardComponent } from './components/users/user-dashboard/user-dashboard.component';
+import { EditUserProfileComponent } from './components/user-profile/edit-user-profile/edit-user-profile.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { UserDashboardComponent } from './components/users/user-dashboard/user-d
     LogsDashboardComponent,
     MyActivityComponent,
     UserDashboardComponent,
+    EditUserProfileComponent,
   ],
   imports: [
     BrowserModule,

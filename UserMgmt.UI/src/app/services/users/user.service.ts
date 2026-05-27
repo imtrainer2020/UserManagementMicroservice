@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../shared/apiresponse.model';
 import { Common } from '../../models/common.model';
-import { UserProfileDto } from '../../models/user-profile.model';
-import { UserListDto, UserEditDto } from '../../models/user.model';
+import { UserProfileDto, UserPasswordChangeDto } from '../../models/user-profile.model';
+import { UserListDto, UserEditDto, UserRoleChangeDto } from '../../models/user.model';
 import { UserProfileService } from '../user-profile/user-profile.service';
 
 @Injectable({
@@ -25,10 +25,13 @@ export class UserService {
   }
 
   deleteUser(userId: number): Observable<ApiResponse<number>> {
-    // Angular requires 'body' to be passed in the options object for HTTP DELETE
     return this.http.delete<ApiResponse<number>>(`${this.authApiUrl}/delete`, {
       body: { id: userId }
     });
+  }
+
+  changeUserRole(payload: UserRoleChangeDto): Observable<ApiResponse<number>> {
+    return this.http.put<ApiResponse<number>>(`${this.authApiUrl}/resetuserrole`, payload);
   }
 
   // --- User Profile Service Calls ---
@@ -42,6 +45,10 @@ export class UserService {
 
   deleteUserProfile(userId: number): Observable<ApiResponse<number>> {
     return this.profileService.deleteMyProfile(userId);
+  }
+
+  adminResetUserPassword(payload: UserPasswordChangeDto): Observable<ApiResponse<number>> {
+    return this.profileService.changeUserPassword(payload);
   }
 
 }
