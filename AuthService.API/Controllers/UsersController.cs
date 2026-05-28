@@ -118,6 +118,22 @@ public class UsersController : ControllerBase
             : Ok(ApiResponse<IList<UserViewDto>>.Fail("No users found."));
     }
 
+    [HttpPost("createuser")]
+    [RoleAuthorize(RolesEnum.Admin, RolesEnum.Manager)]
+    public async Task<ActionResult<ApiResponse<int>>> CreateUser([FromBody] UserRegisterDto dto)
+    {
+        try
+        {
+            int res = await repo.RegisterUserAsync(dto);
+            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User Created successfully."))
+                : Ok(ApiResponse<int>.Fail("User creation failed."));
+        }
+        catch (Exception ex)
+        {
+            return Ok(ApiResponse<int>.Fail(ex.Message));
+        }
+    }
+
     [RoleAuthorize]
     [HttpGet("view")]
     public async Task<ActionResult<ApiResponse<UserViewDto>>> ViewUser([FromQuery] int? id, [FromQuery] string? email)

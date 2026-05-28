@@ -34,6 +34,12 @@ export class UserService {
     return this.http.put<ApiResponse<number>>(`${this.authApiUrl}/resetuserrole`, payload);
   }
 
+  createUser(payload: any): Observable<ApiResponse<number>> {
+    // This targets your gateway's auth/register endpoint 
+    return this.http.post<ApiResponse<number>>(`${this.authApiUrl}/createuser`, payload);
+  }
+
+
   // --- User Profile Service Calls ---
   getUserProfile(userId: number): Observable<ApiResponse<UserProfileDto>> {
     return this.profileService.getMyProfile(userId);

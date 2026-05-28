@@ -82,6 +82,10 @@ export class UserDashboardComponent implements OnInit {
     return true;
   }
 
+  createUser() {
+
+  }
+
   deleteUser(userId: number): void {
     if (!confirm(`Are you absolutely sure you want to delete? This action cannot be undone.`)) return;
     this.userService.deleteUserProfile(userId).subscribe({
