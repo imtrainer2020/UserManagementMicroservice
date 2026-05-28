@@ -9,7 +9,7 @@
       <button class="btn btn-outline-primary" routerLink="/create-user">
         <i class="bi bi-plus-lg"></i> New User
       </button>
-      <button class="btn btn-primary" (click)="fetchUsers()" [disabled]="isLoading()">
+      <button class="btn btn-primary" (click)="refreshData()" [disabled]="isLoading()">
         <i class="bi bi-arrow-clockwise"></i> Refresh Data
       </button>
     </div>

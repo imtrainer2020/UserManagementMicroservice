@@ -39,6 +39,12 @@ export class UserDashboardComponent implements OnInit {
     this.fetchUsers();
   }
 
+  refreshData(): void {
+    this.errorMessage.set('');
+    this.successMessage.set('');
+    this.fetchUsers();
+  }
+
   fetchUsers(): void {
     this.isLoading.set(true);
     this.userService.getAllUsers().subscribe({
@@ -87,10 +93,9 @@ export class UserDashboardComponent implements OnInit {
     // 1. Fetch the profile
     this.userService.getUserProfile(userId).subscribe({
       next: (res) => {
-        const up = res.data;
-
+        
         // 2. The data has arrived! Now we evaluate it.
-        if (!up) {
+        if (!res.data || res.data.id == 0) {
           // No profile exists, just delete the user account
           this.deleteUserOnly(userId);
         } else {
