@@ -49,6 +49,10 @@ export class UserService {
     return this.profileService.updateMyProfile(formData);
   }
 
+  createUserProfile(formData: FormData): Observable<ApiResponse<number>> {
+    return this.profileService.createMyProfile(formData);
+  }
+
   deleteUserProfile(userId: number): Observable<ApiResponse<number>> {
     return this.profileService.deleteMyProfile(userId);
   }

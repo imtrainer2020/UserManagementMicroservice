@@ -82,36 +82,52 @@ export class UserDashboardComponent implements OnInit {
     return true;
   }
 
-  createUser() {
-
-  }
-
   deleteUser(userId: number): void {
     if (!confirm(`Are you absolutely sure you want to delete? This action cannot be undone.`)) return;
-    this.userService.deleteUserProfile(userId).subscribe({
+    // 1. Fetch the profile
+    this.userService.getUserProfile(userId).subscribe({
       next: (res) => {
-        if (res.isSuccess && res.data && res.data > 0) {
-          this.successMessage.set('User-profile deleted successfully.');
+        const up = res.data;
 
-          this.userService.deleteUser(userId).subscribe({
-            next: (res1) => {
-              if (res1.isSuccess) {
-                this.successMessage.set('User deleted successfully.');
-                this.fetchUsers(); // Refresh the list
+        // 2. The data has arrived! Now we evaluate it.
+        if (!up) {
+          // No profile exists, just delete the user account
+          this.deleteUserOnly(userId);
+        } else {
+          // Profile exists, delete the profile first
+          this.userService.deleteUserProfile(userId).subscribe({
+            next: (delRes) => {
+              if (delRes.isSuccess) {
+                this.successMessage.set('User-profile deleted successfully.');
+
+                // 3. Chain the next deletion ONLY after the profile is successfully deleted
+                this.deleteUserOnly(userId);
               } else {
-                this.errorMessage.set(res1.message || 'Failed to delete user.');
+                this.errorMessage.set(delRes.message || 'Failed to delete user profile.');
               }
             },
-            error: (err) => this.errorMessage.set(err.error?.message || 'Error occurred during deletion.')
+            error: (err) => this.errorMessage.set(err.error?.message || 'Error occurred during profile deletion.')
           });
-          this.cdr.detectChanges();
-        } else {
-          this.errorMessage.set(res.message || 'Failed to delete user profile.');
         }
-        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.errorMessage.set('Failed to check if a user profile exists.');
+      }
+    });
+  }
+
+  deleteUserOnly(userId: number): void {
+    this.userService.deleteUser(userId).subscribe({
+      next: (res1) => {
+        if (res1.isSuccess) {
+          this.successMessage.set('User deleted successfully.');
+          this.fetchUsers(); // Refresh the list
+        } else {
+          this.errorMessage.set(res1.message || 'Failed to delete user.');
+        }
       },
       error: (err) => this.errorMessage.set(err.error?.message || 'Error occurred during deletion.')
     });
-    this.cdr.detectChanges();
   }
+
 }

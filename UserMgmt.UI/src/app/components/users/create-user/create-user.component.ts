@@ -30,10 +30,8 @@ export class CreateUserComponent {
   ) {
     this.createForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
       roleId: [2, [Validators.required]] // Defaults to Standard User (ID: 2)
-    }, { validators: this.passwordMatchValidator });
+    });
   }
 
   ngOnInit(): void {
@@ -64,7 +62,7 @@ export class CreateUserComponent {
 
     const payload = {
       email: this.createForm.value.email,
-      password: this.createForm.value.password,
+      password: '123456',
       roleId: Number(this.createForm.value.roleId)
     };
 

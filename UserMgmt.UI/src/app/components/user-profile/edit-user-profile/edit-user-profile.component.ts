@@ -189,6 +189,7 @@ export class EditUserProfileComponent implements OnInit {
     // Safely extract values
     const formRoleId = this.authForm.get('roleId')?.value;
     const formIsActive = this.authForm.get('isActive')?.value;
+    const newPass = this.passwordForm.value.newPassword;
 
     // 1. Update Auth Settings
     const authPayload: UserEditDto = {
@@ -196,7 +197,7 @@ export class EditUserProfileComponent implements OnInit {
       userId: this.targetUserId,
       email: this.targetUserEmail,
       roleId: Number(formRoleId),
-      password: '',
+      password: (this.isAdmin() && newPass && newPass.length >= 6) ? newPass : '',
       isActive: formIsActive === true || formIsActive === 'true'
     };
 
@@ -219,28 +220,35 @@ export class EditUserProfileComponent implements OnInit {
         if (this.profileForm.value.photoUrl) formData.append('photoUrl', this.profileForm.value.photoUrl);
         if (this.selectedFile) formData.append('file', this.selectedFile, this.selectedFile.name);
 
-        this.userService.updateUserProfile(formData).subscribe({
-          next: () => {
-            // 3. Update Password (If Admin & Filled)
-            const newPass = this.passwordForm.value.newPassword;
-            if (this.isAdmin() && newPass && newPass.length >= 6) {
-              const passPayload = { userId: this.targetUserId, newPassword: newPass };
-
-              this.userService.adminResetUserPassword(passPayload).subscribe((result) => {
-                if (result.isSuccess && result.data != null && result.data > 0)
-                  this.router.navigate(['/users']);
-                else
-                  this.errorMessage = result.message;
-              });
-            } else {
-              this.router.navigate(['/users']);
+        if (this.isExistingProfile && this.profileId) {
+          this.userService.updateUserProfile(formData).subscribe({
+            next: (result) => {
+              if (result.isSuccess && result.data != null && result.data > 0)
+                this.router.navigate(['/users']);
+              else
+                this.errorMessage = result.message;
+            },
+            error: () => {
+              this.errorMessage = 'Account updated, but profile update failed.';
+              this.isSaving = false;
             }
-          },
-          error: () => {
-            this.errorMessage = 'Account updated, but profile update failed.';
-            this.isSaving = false;
-          }
-        });
+          });
+        }
+        else {
+          this.userService.createUserProfile(formData).subscribe({
+            next: (result) => {
+              if (result.isSuccess && result.data != null && result.data > 0)
+                this.router.navigate(['/users']);
+              else
+                this.errorMessage = result.message;
+            },
+            error: () => {
+              this.errorMessage = 'Account updated, but profile creation failed.';
+              this.isSaving = false;
+            }
+          });
+        }
+
       },
       error: (err) => {
         const backendError = err.error?.title || err.error?.message || 'Network error while updating account.';
@@ -250,6 +258,17 @@ export class EditUserProfileComponent implements OnInit {
       }
     });
   }
+
+  // passwordResetbyAdmin(newPass: string): void {
+  //   const passPayload = { userId: this.targetUserId, newPassword: newPass };
+
+  //   this.userService.adminResetUserPassword(passPayload).subscribe((result) => {
+  //     if (result.isSuccess && result.data != null && result.data > 0)
+  //       this.router.navigate(['/users']);
+  //     else
+  //       this.errorMessage = result.message;
+  //   });
+  // }
 
   cancel(): void {
     this.router.navigate(['/users']);
