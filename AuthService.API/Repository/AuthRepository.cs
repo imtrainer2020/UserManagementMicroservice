@@ -26,11 +26,13 @@ namespace AuthService.API.Repository
             if (user == null) throw new Exception("User not found");
 
             user.Email = dto.Email;
-            user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            if (dto.Password != null && dto.Password.Length > 0)
+                user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
             user.RoleId = (dto.RoleId > 0) ? dto.RoleId : 2; // Default to "User" role if not provided
             user.IsActive = dto.IsActive;
 
-            return await context.SaveChangesAsync();
+            int res = await context.SaveChangesAsync();
+            return (res == 0) ? user.Id : res;
         }
 
         public async Task<bool> ForgetPasswordAsync(string email)

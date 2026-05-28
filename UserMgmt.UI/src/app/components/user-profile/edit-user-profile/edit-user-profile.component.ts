@@ -5,6 +5,8 @@ import { UserService } from '../../../services/users/user.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Common } from '../../../models/common.model';
 import { forkJoin } from 'rxjs';
+//import { UserPasswordChangeDto } from '../../../models/user-profile.model';
+import { UserEditDto, UserRoleChangeDto } from '../../../models/user.model';
 
 const DEFAULT_AVATAR =
   `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'
@@ -184,12 +186,18 @@ export class EditUserProfileComponent implements OnInit {
     this.isSaving = true;
     this.errorMessage = '';
 
+    // Safely extract values
+    const formRoleId = this.authForm.get('roleId')?.value;
+    const formIsActive = this.authForm.get('isActive')?.value;
+
     // 1. Update Auth Settings
-    const authPayload = {
+    const authPayload: UserEditDto = {
       id: this.targetUserId,
+      userId: this.targetUserId,
       email: this.targetUserEmail,
-      roleId: Number(this.authForm.value.roleId),
-      isActive: this.authForm.value.isActive === true || this.authForm.value.isActive === 'true'
+      roleId: Number(formRoleId),
+      password: '',
+      isActive: formIsActive === true || formIsActive === 'true'
     };
 
     this.userService.updateUserAuth(authPayload).subscribe({
@@ -217,22 +225,28 @@ export class EditUserProfileComponent implements OnInit {
             const newPass = this.passwordForm.value.newPassword;
             if (this.isAdmin() && newPass && newPass.length >= 6) {
               const passPayload = { userId: this.targetUserId, newPassword: newPass };
-              this.userService.adminResetUserPassword(passPayload).subscribe(() => {
-                this.router.navigate(['/users']);
+
+              this.userService.adminResetUserPassword(passPayload).subscribe((result) => {
+                if (result.isSuccess && result.data != null && result.data > 0)
+                  this.router.navigate(['/users']);
+                else
+                  this.errorMessage = result.message;
               });
             } else {
               this.router.navigate(['/users']);
             }
           },
           error: () => {
-            this.errorMessage = 'Account updated, but profile image upload failed.';
+            this.errorMessage = 'Account updated, but profile update failed.';
             this.isSaving = false;
           }
         });
       },
-      error: () => {
-        this.errorMessage = 'Network error while updating account.';
+      error: (err) => {
+        const backendError = err.error?.title || err.error?.message || 'Network error while updating account.';
+        this.errorMessage = `Error 400: ${backendError}. Check console for details.`;
         this.isSaving = false;
+        console.error('Validation Errors:', err.error?.errors); // This prints the exact mismatch to the console!
       }
     });
   }

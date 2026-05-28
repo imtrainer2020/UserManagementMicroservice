@@ -61,7 +61,8 @@ namespace UserService.API.Repository
             if (file != null && file.Length > 0)
                 ud.PhotoUrl = await photoService.SavePhotoAsync(file);
 
-            return await context.SaveChangesAsync();
+            int res = await context.SaveChangesAsync();
+            return (res == 0) ? ud.Id : res;
         }
 
         public async Task<UserDetailViewDto?> GetUserDetailsAsync(int id)

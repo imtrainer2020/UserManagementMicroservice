@@ -25,7 +25,7 @@ export class UserProfileService {
   }
 
   changeUserPassword(payload: UserPasswordChangeDto): Observable<ApiResponse<number>> {
-    return this.http.put<ApiResponse<number>>(`${this.apiUrl}/resetpassword`, payload);
+    return this.http.put<ApiResponse<number>>(`${this.apiUrl}/passwordreset`, payload);
   }
 
   createMyProfile(formData: FormData): Observable<ApiResponse<number>> {

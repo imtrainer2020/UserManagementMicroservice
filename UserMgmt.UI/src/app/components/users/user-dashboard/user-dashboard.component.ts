@@ -72,7 +72,11 @@ export class UserDashboardComponent implements OnInit {
   }
 
   canEdit(user: UserListDto): boolean {
-    if (user.id === this.currentUserId() && this.currentUserRole().toLowerCase() !== 'admin') return true; // can edit self
+    if (user.id === this.currentUserId()) {
+      if (this.currentUserRole().toLowerCase() === 'admin')
+        return false; // admin can't edit self
+      return true; // can edit self
+    }
     if (this.currentUserRole().toLowerCase() === 'manager' && user.roleName.toLowerCase() === 'admin')
       return false; // Manager cannot edit Admin
     return true;
@@ -80,7 +84,6 @@ export class UserDashboardComponent implements OnInit {
 
   deleteUser(userId: number): void {
     if (!confirm(`Are you absolutely sure you want to delete? This action cannot be undone.`)) return;
-
     this.userService.deleteUserProfile(userId).subscribe({
       next: (res) => {
         if (res.isSuccess && res.data && res.data > 0) {

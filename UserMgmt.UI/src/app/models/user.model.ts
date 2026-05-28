@@ -8,7 +8,9 @@ export interface UserListDto {
 }
 
 export interface UserEditDto {
-  id: number;
+  id?: number;
+  userId?: number;
+  password?: string | null,
   email: string;
   roleId: number;
   isActive: boolean;

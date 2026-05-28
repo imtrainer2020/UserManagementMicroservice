@@ -15,10 +15,10 @@ export const authInterceptor: HttpInterceptorFn =
 
     // 1. Define endpoints that DO NOT need a token
     const exemptUrls: string[] = [
-      '/login',
-      '/register',
-      '/forgetpassword',
-      '/resetpassword'
+      '/auth/login',
+      '/auth/register',
+      '/auth/forgetpassword',
+      '/auth/resetpassword'
     ];
 
     // 2. Check if the current request URL contains any of the exempt URLs

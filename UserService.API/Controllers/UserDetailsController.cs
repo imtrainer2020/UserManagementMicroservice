@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shared.CL;
 using Shared.CL.DTOs;
+using Shared.CL.Enums;
 using Shared.CL.Filters;
 using Shared.CL.Repository;
 using UserService.API.Repository;
@@ -59,7 +60,8 @@ namespace UserService.API.Controllers
                 : Ok(ApiResponse<int>.Fail("Failed to update user details."));
         }
 
-        [HttpPut("resetpassword")]
+        [RoleAuthorize(RolesEnum.Admin)]
+        [HttpPut("passwordreset")]
         public async Task<ActionResult<ApiResponse<int>>> PutUserResetPassword(UserPasswordChangeDto dto)
         {
             int res = await repo.UserResetPasswordAsync(dto);
