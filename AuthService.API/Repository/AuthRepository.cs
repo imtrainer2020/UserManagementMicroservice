@@ -46,7 +46,9 @@ namespace AuthService.API.Repository
         {
             // 1. Find the user
             User? user = await GetUserByEmailAsync(dto.Email);
-            if (user == null || !user.IsActive)
+            if (user == null)
+                return new LoggedUserDto(null, 0, dto.Email, RolesEnum.User.ToString());
+            else if (!user.IsActive)
                 return new LoggedUserDto(null, user.Id, user.Email, user.Role?.RoleName ?? RolesEnum.User.ToString());
 
             // 2. Verify Password
@@ -178,14 +180,12 @@ namespace AuthService.API.Repository
         {
             return await context.Users.
                 Include(u => u.Role).
-                AsNoTracking().
                 FirstOrDefaultAsync(u => u.Email == email);
         }
         private async Task<User?> GetUserByIdAsync(int id)
         {
             return await context.Users.
                 Include(u => u.Role).
-                AsNoTracking().
                 FirstOrDefaultAsync(u => u.Id == id);
         }
 
