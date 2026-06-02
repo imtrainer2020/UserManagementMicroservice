@@ -15,11 +15,11 @@ namespace Shared.CL.Filters
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             // Skip authorization if [AllowAnonymous] is present
-            bool allowAnonymous = context.ActionDescriptor.EndpointMetadata
-                                         .Any(em => em.GetType() == typeof(AllowAnonymousAttribute));
+            bool allowAnonymous = await Task.FromResult(context.ActionDescriptor.EndpointMetadata
+                                         .Any(em => em.GetType() == typeof(AllowAnonymousAttribute)));
             if (allowAnonymous) return;
 
-            ClaimsPrincipal user = context.HttpContext.User;
+            ClaimsPrincipal user = await Task.FromResult(context.HttpContext.User);
             if (!user.Identity?.IsAuthenticated ?? true)
             {
                 context.Result = new ObjectResult(ApiResponse<object>.Fail("Unauthorized access."))
@@ -30,9 +30,9 @@ namespace Shared.CL.Filters
             if (allowedRoles == null || allowedRoles.Length == 0) return;
 
             // Extract the user's roles from their JWT claims
-            var userRoles = user.Claims
+            var userRoles = await Task.FromResult(user.Claims
                                 .Where(c => c.Type == ClaimTypes.Role || c.Type == "role")
-                                .Select(c => c.Value);
+                                .Select(c => c.Value));
 
             // Check if any of the user's roles match the allowed roles
             bool hasAccess = allowedRoles.Any(role => userRoles.Contains(role.ToString()));

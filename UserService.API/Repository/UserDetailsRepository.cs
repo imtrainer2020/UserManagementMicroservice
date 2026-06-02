@@ -45,7 +45,7 @@ namespace UserService.API.Repository
         {
             UserDetail? ud = await context.UserDetails.FirstOrDefaultAsync(u => u.Id == dto.Id);
             if (ud == null)
-                throw new Exception("User detail not found");
+                return -1;
 
             ud.Address = dto.Address;
             ud.Fullname = dto.Fullname;
@@ -67,11 +67,10 @@ namespace UserService.API.Repository
 
         public async Task<UserDetailViewDto?> GetUserDetailsAsync(int id)
         {
-            UserDetail? ud = await context.UserDetails.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
-            if (ud == null)
-                throw new Exception("User detail not found");
-
-            return new UserDetailViewDto(ud.Id)
+            return await context.UserDetails
+            .AsNoTracking()
+            .Where(u => u.Id == id)
+            .Select(ud => new UserDetailViewDto(ud.Id)
             {
                 Address = ud.Address,
                 Fullname = ud.Fullname,
@@ -79,28 +78,29 @@ namespace UserService.API.Repository
                 Phone = ud.Phone,
                 UserId = ud.UserId,
                 CreatedAt = ud.CreatedAt.ToShortDateString()
-            };
+            })
+            .FirstOrDefaultAsync();
         }
 
         public async Task<IList<UserDetailViewDto>> GetAllUserDetailsAsync()
         {
-            IList<UserDetail> userDetailsService = await context.UserDetails.AsNoTracking().ToListAsync();
-            return userDetailsService.Select(ud => new UserDetailViewDto(ud.Id)
-            {
-                Address = ud.Address,
-                Fullname = ud.Fullname,
-                PhotoUrl = ud.PhotoUrl,
-                Phone = ud.Phone,
-                UserId = ud.UserId,
-                CreatedAt = ud.CreatedAt.ToShortDateString()
-            }).ToList();
+            return await context.UserDetails.AsNoTracking()
+                .Select(ud => new UserDetailViewDto(ud.Id)
+                {
+                    Address = ud.Address,
+                    Fullname = ud.Fullname,
+                    PhotoUrl = ud.PhotoUrl,
+                    Phone = ud.Phone,
+                    UserId = ud.UserId,
+                    CreatedAt = ud.CreatedAt.ToShortDateString()
+                }).ToListAsync();
         }
 
         public async Task<int> DeleteUserDetailsAsync(int userId)
         {
             UserDetail? ud = await context.UserDetails.FirstOrDefaultAsync(u => u.UserId == userId);
             if (ud == null)
-                throw new Exception("User detail not found");
+                return -1;
 
             context.UserDetails.Remove(ud);
             return await context.SaveChangesAsync();
@@ -110,7 +110,7 @@ namespace UserService.API.Repository
         {
             User? user = await context.Users.FirstOrDefaultAsync(u => u.Id == dto.UserId);
             if (user == null)
-                throw new Exception("User not found");
+                return -1;
 
             user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
             return await context.SaveChangesAsync();

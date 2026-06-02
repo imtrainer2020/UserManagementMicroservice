@@ -47,7 +47,7 @@ namespace Shared.CL.Filters
                 Action = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}",
                 ServiceName = serviceName,
                 IsError = true,
-                ErrorMessage = context.Exception.ToString() // Sends full stack trace to the DB
+                ErrorMessage = context.Exception.Message // Sends full stack trace to the DB
             };
 
             // 3. Send the log to the AuditLogService.API

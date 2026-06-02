@@ -51,7 +51,7 @@ namespace AuthService.API.Repository
 
             // 2. Verify Password
             bool isPasswordValid = global::BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
-            if (!isPasswordValid) 
+            if (!isPasswordValid)
                 return new LoggedUserDto(null, user.Id, user.Email, user.Role?.RoleName ?? RolesEnum.User.ToString());
 
             // 3. Create the JWT Token
@@ -122,14 +122,15 @@ namespace AuthService.API.Repository
 
         public async Task<IList<UserViewDto>> GetAllUsersAsync()
         {
-            return await context.Users.OrderDescending().AsNoTracking()
+            return await context.Users.OrderByDescending(u => u.CreatedAt)
+                .AsNoTracking()
                 .Select(u => new UserViewDto
                 {
                     Id = u.Id,
                     Email = u.Email,
                     IsActive = u.IsActive,
                     RoleId = u.RoleId,
-                    RoleName = u.Role.RoleName ?? "User",
+                    RoleName = u.Role.RoleName ?? RolesEnum.User.ToString(),
                     CreatedAt = u.CreatedAt
                 })
                 .ToListAsync();
@@ -153,7 +154,8 @@ namespace AuthService.API.Repository
                 Email = user.Email,
                 RoleId = user.RoleId,
                 IsActive = user.IsActive,
-                RoleName = user.Role?.RoleName ?? "User"
+                RoleName = user.Role?.RoleName ?? RolesEnum.User.ToString(),
+                CreatedAt = user.CreatedAt
             };
             return userViewDto;
         }

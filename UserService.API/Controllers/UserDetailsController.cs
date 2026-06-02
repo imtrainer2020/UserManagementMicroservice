@@ -56,8 +56,15 @@ namespace UserService.API.Controllers
         public async Task<ActionResult<ApiResponse<int>>> PutUserDetail([FromForm] UserDetailUpdateDto dto, IFormFile? file = null)
         {
             int res = await repo.UpdateUserDetailsAsync(dto, file);
-            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User details updated successfully."))
-                : BadRequest(ApiResponse<int>.Fail("Failed to update user details."));
+            switch (res)
+            {
+                case > 0:
+                    return Ok(ApiResponse<int>.Success(res, "User details updated successfully."));
+                case -1:
+                    return NotFound(ApiResponse<int>.Fail("User detail not found."));
+                default:
+                    return BadRequest(ApiResponse<int>.Fail("Failed to update user details."));
+            }
         }
 
         [RoleAuthorize(RolesEnum.Admin)]
@@ -65,8 +72,15 @@ namespace UserService.API.Controllers
         public async Task<ActionResult<ApiResponse<int>>> PutUserResetPassword(UserPasswordChangeDto dto)
         {
             int res = await repo.UserResetPasswordAsync(dto);
-            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User password reset successfully."))
-                : BadRequest(ApiResponse<int>.Fail("Failed to reset user password."));
+            switch (res)
+            {
+                case > 0:
+                    return Ok(ApiResponse<int>.Success(res, "User password reset successfully."));
+                case -1:
+                    return NotFound(ApiResponse<int>.Fail("User not found."));
+                default:
+                    return BadRequest(ApiResponse<int>.Fail("Failed to reset user password."));
+            }
         }
 
         // POST: api/UserDetail
@@ -83,8 +97,15 @@ namespace UserService.API.Controllers
         public async Task<ActionResult<ApiResponse<int>>> DeleteUserDetail(int userId)
         {
             int res = await repo.DeleteUserDetailsAsync(userId);
-            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User detail deleted successfully."))
-                : BadRequest(ApiResponse<int>.Fail("Failed to delete user detail."));
+            switch (res)
+            {
+                case > 0:
+                    return Ok(ApiResponse<int>.Success(res, "User detail deleted successfully."));
+                case -1:
+                    return NotFound(ApiResponse<int>.Fail("User detail not found"));
+                default:
+                    return BadRequest(ApiResponse<int>.Fail("Failed to delete user detail."));
+            }
         }
     }
 }
