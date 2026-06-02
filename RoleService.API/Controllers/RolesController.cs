@@ -46,18 +46,30 @@ public class RolesController : ControllerBase
     public async Task<ActionResult<ApiResponse<int>>> UpdateRole(RoleUpdateDto dto)
     {
         int res = await repo.UpdateRoleAsync(dto);
-        return (res > 0) ?
-         Ok(ApiResponse<int>.Success(res, "Role updated successfully."))
-         : BadRequest(ApiResponse<int>.Fail("An error occurred while updating the role."));
+        switch (res)
+        {
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "Role updated successfully."));
+            case -1:
+                return NotFound(ApiResponse<int>.Fail("Role not found."));
+            default:
+                return BadRequest(ApiResponse<int>.Fail("An error occurred while updating the role."));
+        }
     }
 
     [HttpDelete]
     public async Task<ActionResult<ApiResponse<int>>> DeleteRole(int id)
     {
         int res = await repo.DeleteRoleAsync(id);
-        return (res > 0) ?
-         Ok(ApiResponse<int>.Success(res, "Role deleted successfully."))
-         : BadRequest(ApiResponse<int>.Fail("An error occurred while deleting the role."));
+        switch (res)
+        {
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "Role deleted successfully."));
+            case -1:
+                return NotFound(ApiResponse<int>.Fail("Role not found."));
+            default:
+                return BadRequest(ApiResponse<int>.Fail("An error occurred while deleting the role."));
+        }
     }
 
     [HttpGet("id")]

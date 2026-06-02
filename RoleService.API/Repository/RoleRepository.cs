@@ -40,7 +40,7 @@ namespace RoleService.API.Repository
                 return await context.SaveChangesAsync();
             }
             else
-                throw new Exception("Role not found");
+                return -1;
         }
 
         public async Task<IList<RoleViewDto>> GetAllRolesAsync()
@@ -52,13 +52,10 @@ namespace RoleService.API.Repository
 
         public async Task<RoleViewDto?> GetRoleByIdAsync(int id)
         {
-            RoleViewDto? role = await context.Roles.AsNoTracking()
+            return await context.Roles.AsNoTracking()
                 .Where(r => r.Id == id)
                 .Select(s => new RoleViewDto(s.Id, s.RoleName, s.CreatedAt))
                 .FirstOrDefaultAsync();
-            if (role == null)
-                throw new Exception("Role not found");
-            return role;
         }
 
         public async Task<int> UpdateRoleAsync(RoleUpdateDto dto)
@@ -70,7 +67,7 @@ namespace RoleService.API.Repository
                 return await context.SaveChangesAsync();
             }
             else
-                throw new Exception("Role not found");
+                return -1;
         }
     }
 }
