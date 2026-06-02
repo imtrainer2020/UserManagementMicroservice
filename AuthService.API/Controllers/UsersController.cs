@@ -22,15 +22,15 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<int>>> RegisterUser([FromBody] UserRegisterDto dto)
     {
-        try
+        int res = await repo.RegisterUserAsync(dto);
+        switch (res)
         {
-            int res = await repo.RegisterUserAsync(dto);
-            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User registered successfully."))
-                : Ok(ApiResponse<int>.Fail("User registration failed."));
-        }
-        catch (Exception ex)
-        {
-            return Ok(ApiResponse<int>.Fail(ex.Message));
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "User registered successfully."));
+            case -1:
+                return BadRequest(ApiResponse<int>.Fail("User - " + dto.Email + " already exists."));
+            default:
+                return BadRequest(ApiResponse<int>.Fail("An error occurred while adding the User."));
         }
     }
 
@@ -38,31 +38,19 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<LoggedUserDto>>> LoginUser([FromBody] UserLoginDto dto)
     {
-        try
-        {
-            LoggedUserDto loggedUser = await repo.LoginUserAsync(dto);
-            return Ok(ApiResponse<LoggedUserDto>.Success(loggedUser, "Login successful."));
-        }
-        catch (Exception ex)
-        {
-            return Ok(ApiResponse<LoggedUserDto>.Fail(ex.Message));
-        }
+        LoggedUserDto loggedUser = await repo.LoginUserAsync(dto);
+        return (loggedUser != null && loggedUser.JwtToken != null && loggedUser.JwtToken.Length > 0) ?
+            Ok(ApiResponse<LoggedUserDto>.Success(loggedUser, "Login successful."))
+        : BadRequest(ApiResponse<LoggedUserDto>.Fail("Invalid Email or Password"));
     }
 
     [HttpGet("forgetpassword")]
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<bool>>> ForgetPassword([FromQuery] string email)
     {
-        try
-        {
-            bool isEmailExist = await repo.ForgetPasswordAsync(email);
-            return (isEmailExist) ? Ok(ApiResponse<bool>.Success(isEmailExist, "Email exists."))
-                : Ok(ApiResponse<bool>.Fail("Email does not exist."));
-        }
-        catch (Exception ex)
-        {
-            return Ok(ApiResponse<bool>.Fail(ex.Message));
-        }
+        bool isEmailExist = await repo.ForgetPasswordAsync(email);
+        return (isEmailExist) ? Ok(ApiResponse<bool>.Success(isEmailExist, "Email exists."))
+            : BadRequest(ApiResponse<bool>.Fail("Email does not exist."));
     }
 
     [RoleAuthorize]
@@ -70,23 +58,30 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<ApiResponse<int>>> UpdateUser([FromBody] UserEditDto dto)
     {
         int res = await repo.UpdateUserAsync(dto);
-        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User updated successfully."))
-            : Ok(ApiResponse<int>.Fail("User update failed."));
+        switch (res)
+        {
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "User updated successfully."));
+            case -1:
+                return BadRequest(ApiResponse<int>.Fail("User - " + dto.Email + " already exists."));
+            default:
+                return BadRequest(ApiResponse<int>.Fail("An error occurred while updating the User."));
+        }
     }
 
     [HttpPut("resetpassword")]
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<int>>> ResetPassword([FromBody] ResetPasswordDto dto)
     {
-        try
+        int res = await repo.ResetPasswordAsync(dto);
+        switch (res)
         {
-            int res = await repo.ResetPasswordAsync(dto);
-            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "Password reset successfully."))
-                : Ok(ApiResponse<int>.Fail("Password reset failed."));
-        }
-        catch (Exception ex)
-        {
-            return Ok(ApiResponse<int>.Fail(ex.Message));
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "Password reset successfully."));
+            case -1:
+                return NotFound(ApiResponse<int>.Fail("User - " + dto.Email + " Not Found."));
+            default:
+                return BadRequest(ApiResponse<int>.Fail("Password reset failed."));
         }
     }
 
@@ -95,8 +90,15 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<ApiResponse<int>>> ChangeUserRoles([FromBody] ChangeUserRolesDto dto)
     {
         int res = await repo.ChangeUserRolesAsync(dto);
-        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User role changed successfully."))
-            : Ok(ApiResponse<int>.Fail("Failed to change user role."));
+        switch (res)
+        {
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "User role changed successfully."));
+            case -1:
+                return NotFound(ApiResponse<int>.Fail("User - " + dto.Email + " Not Found."));
+            default:
+                return BadRequest(ApiResponse<int>.Fail("Failed to change user role."));
+        }
     }
 
     [RoleAuthorize]
@@ -104,8 +106,15 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<ApiResponse<int>>> DeleteUser([FromBody] UserDeleteDto dto)
     {
         int res = await repo.DeleteUserAsync(dto);
-        return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User deleted successfully."))
-            : Ok(ApiResponse<int>.Fail("User deletion failed."));
+        switch (res)
+        {
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "User deleted successfully."));
+            case -1:
+                return NotFound(ApiResponse<int>.Fail("User - " + dto.Email + " Not Found."));
+            default:
+                return BadRequest(ApiResponse<int>.Fail("User deletion failed."));
+        }
     }
 
     [RoleAuthorize]
@@ -115,22 +124,22 @@ public class UsersController : ControllerBase
         IList<UserViewDto> users = await repo.GetAllUsersAsync();
         return (users != null && users.Count > 0) ?
             Ok(ApiResponse<IList<UserViewDto>>.Success(users, "Users listed successfully."))
-            : Ok(ApiResponse<IList<UserViewDto>>.Fail("No users found."));
+            : NotFound(ApiResponse<IList<UserViewDto>>.Fail("No users found."));
     }
 
     [HttpPost("createuser")]
     [RoleAuthorize(RolesEnum.Admin, RolesEnum.Manager)]
     public async Task<ActionResult<ApiResponse<int>>> CreateUser([FromBody] UserRegisterDto dto)
     {
-        try
+        int res = await repo.RegisterUserAsync(dto);
+        switch (res)
         {
-            int res = await repo.RegisterUserAsync(dto);
-            return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User Created successfully."))
-                : Ok(ApiResponse<int>.Fail("User creation failed."));
-        }
-        catch (Exception ex)
-        {
-            return Ok(ApiResponse<int>.Fail(ex.Message));
+            case > 0:
+                return Ok(ApiResponse<int>.Success(res, "User registered successfully."));
+            case -1:
+                return BadRequest(ApiResponse<int>.Fail("User - " + dto.Email + " not found."));
+            default:
+                return BadRequest(ApiResponse<int>.Fail("An error occurred while adding the User."));
         }
     }
 
@@ -139,8 +148,19 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<ApiResponse<UserViewDto>>> ViewUser([FromQuery] int? id, [FromQuery] string? email)
     {
         UserViewDto user = await repo.ViewUserAsync(id, email);
-        return (user != null && user.Id > 1) ?
-            Ok(ApiResponse<UserViewDto>.Success(user, "User viewed successfully."))
-            : Ok(ApiResponse<UserViewDto>.Fail("User not found."));
+        if (user != null)
+        {
+            switch (user.Id)
+            {
+                case > 0:
+                    return Ok(ApiResponse<UserViewDto>.Success(user, "User viewed successfully."));
+                case -1:
+                    return BadRequest(ApiResponse<UserViewDto>.Fail("User - " + email + " not found."));
+                default:
+                    return BadRequest(ApiResponse<UserViewDto>.Fail("An error occurred while adding the User."));
+            }
+        }
+        else
+            return BadRequest(ApiResponse<UserViewDto>.Fail("Invalid request. Please provide either a valid user ID or email."));
     }
 }

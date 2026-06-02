@@ -23,7 +23,7 @@ namespace AuditLogService.API.Controllers
         {
             int res = await repo.AddAuditLogAsync(dto);
             return (res > 0) ? Ok(ApiResponse<int>.Success(res, "Log registered successfully."))
-                : Ok(ApiResponse<int>.Fail("Log registration failed."));
+                : BadRequest(ApiResponse<int>.Fail("Log registration failed."));
         }
 
         [HttpGet]
@@ -33,7 +33,7 @@ namespace AuditLogService.API.Controllers
             IList<AuditLogListDto> auditLogs = await repo.GetAuditLogsAsync();
             return (auditLogs != null && auditLogs.Count > 0) ?
                 Ok(ApiResponse<IList<AuditLogListDto>>.Success(auditLogs, "Audit logs retrieved successfully."))
-                : Ok(ApiResponse<IList<AuditLogListDto>>.Fail("No audit logs found."));
+                : NotFound(ApiResponse<IList<AuditLogListDto>>.Fail("No audit logs found."));
         }
 
         [HttpGet("user/{userId:int}")]
@@ -43,7 +43,7 @@ namespace AuditLogService.API.Controllers
             IList<AuditLogListDto> auditLogs = await repo.GetAuditLogsByUserIdAsync(userId);
             return (auditLogs != null && auditLogs.Count > 0) ?
                Ok(ApiResponse<IList<AuditLogListDto>>.Success(auditLogs, "Audit logs retrieved successfully."))
-               : Ok(ApiResponse<IList<AuditLogListDto>>.Fail("No audit logs found."));
+               : NotFound(ApiResponse<IList<AuditLogListDto>>.Fail("No audit logs found."));
         }
     }
 }

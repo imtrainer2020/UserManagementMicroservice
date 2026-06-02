@@ -26,7 +26,7 @@ namespace UserService.API.Controllers
             IList<UserDetailViewDto> udList = await repo.GetAllUserDetailsAsync();
             return (udList != null && udList.Count > 0) ?
                 Ok(ApiResponse<IList<UserDetailViewDto>>.Success(udList, "User Details listed successfully."))
-                : Ok(ApiResponse<IList<UserDetailViewDto>>.Fail("No user details found."));
+                : NotFound(ApiResponse<IList<UserDetailViewDto>>.Fail("No user details found."));
         }
 
         // GET: api/UserDetail/5
@@ -37,7 +37,7 @@ namespace UserService.API.Controllers
 
             return (userdetail != null && userdetail.Id > 0) ?
                 Ok(ApiResponse<UserDetailViewDto>.Success(userdetail, "User Detail viewed successfully."))
-                : Ok(ApiResponse<UserDetailViewDto>.Fail("User Detail not found."));
+                : NotFound(ApiResponse<UserDetailViewDto>.Fail("User Detail not found."));
         }
 
         // GET: api/UserDetail/user/5
@@ -48,7 +48,7 @@ namespace UserService.API.Controllers
 
             return (userdetail != null && userdetail.UserId > 0) ?
                 Ok(ApiResponse<UserDetailViewDto>.Success(userdetail, "User Detail viewed successfully."))
-                : Ok(ApiResponse<UserDetailViewDto>.Fail("User Detail not found."));
+                : NotFound(ApiResponse<UserDetailViewDto>.Fail("User Detail not found."));
         }
 
         // PUT: api/UserDetail/5
@@ -57,7 +57,7 @@ namespace UserService.API.Controllers
         {
             int res = await repo.UpdateUserDetailsAsync(dto, file);
             return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User details updated successfully."))
-                : Ok(ApiResponse<int>.Fail("Failed to update user details."));
+                : BadRequest(ApiResponse<int>.Fail("Failed to update user details."));
         }
 
         [RoleAuthorize(RolesEnum.Admin)]
@@ -66,7 +66,7 @@ namespace UserService.API.Controllers
         {
             int res = await repo.UserResetPasswordAsync(dto);
             return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User password reset successfully."))
-                : Ok(ApiResponse<int>.Fail("Failed to reset user password."));
+                : BadRequest(ApiResponse<int>.Fail("Failed to reset user password."));
         }
 
         // POST: api/UserDetail
@@ -75,7 +75,7 @@ namespace UserService.API.Controllers
         {
             int res = await repo.AddUserDetailsAsync(dto, file);
             return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User details added successfully."))
-                : Ok(ApiResponse<int>.Fail("Failed to add user details."));
+                : BadRequest(ApiResponse<int>.Fail("Failed to add user details."));
         }
 
         // DELETE: api/UserDetail/5
@@ -84,7 +84,7 @@ namespace UserService.API.Controllers
         {
             int res = await repo.DeleteUserDetailsAsync(userId);
             return (res > 0) ? Ok(ApiResponse<int>.Success(res, "User detail deleted successfully."))
-                : Ok(ApiResponse<int>.Fail("Failed to delete user detail."));
+                : BadRequest(ApiResponse<int>.Fail("Failed to delete user detail."));
         }
     }
 }

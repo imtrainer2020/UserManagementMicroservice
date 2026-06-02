@@ -27,9 +27,9 @@ public class RolesController : ControllerBase
             case > 0:
                 return Ok(ApiResponse<int>.Success(res, "Role added successfully."));
             case -1:
-                return Ok(ApiResponse<int>.Fail("Role " + dto.RoleName + " already exists."));
+                return BadRequest(ApiResponse<int>.Fail("Role " + dto.RoleName + " already exists."));
             default:
-                return Ok(ApiResponse<int>.Fail("An error occurred while adding the role."));
+                return BadRequest(ApiResponse<int>.Fail("An error occurred while adding the role."));
         }
     }
 
@@ -39,7 +39,7 @@ public class RolesController : ControllerBase
         IList<RoleViewDto> roles = await repo.GetAllRolesAsync();
         return (roles != null && roles.Count > 0) ?
          Ok(ApiResponse<IList<RoleViewDto>>.Success(roles, "Roles retrieved successfully."))
-         : Ok(ApiResponse<IList<RoleViewDto>>.Fail("No roles found."));
+         : NotFound(ApiResponse<IList<RoleViewDto>>.Fail("No roles found."));
     }
 
     [HttpPut]
@@ -48,7 +48,7 @@ public class RolesController : ControllerBase
         int res = await repo.UpdateRoleAsync(dto);
         return (res > 0) ?
          Ok(ApiResponse<int>.Success(res, "Role updated successfully."))
-         : Ok(ApiResponse<int>.Fail("An error occurred while updating the role."));
+         : BadRequest(ApiResponse<int>.Fail("An error occurred while updating the role."));
     }
 
     [HttpDelete]
@@ -57,7 +57,7 @@ public class RolesController : ControllerBase
         int res = await repo.DeleteRoleAsync(id);
         return (res > 0) ?
          Ok(ApiResponse<int>.Success(res, "Role deleted successfully."))
-         : Ok(ApiResponse<int>.Fail("An error occurred while deleting the role."));
+         : BadRequest(ApiResponse<int>.Fail("An error occurred while deleting the role."));
     }
 
     [HttpGet("id")]
@@ -66,6 +66,6 @@ public class RolesController : ControllerBase
         RoleViewDto? role = await repo.GetRoleByIdAsync(id);
         return (role != null) ?
          Ok(ApiResponse<RoleViewDto>.Success(role, "Role retrieved successfully."))
-         : Ok(ApiResponse<RoleViewDto>.Fail("Role not found."));
+         : NotFound(ApiResponse<RoleViewDto>.Fail("Role not found."));
     }
 }

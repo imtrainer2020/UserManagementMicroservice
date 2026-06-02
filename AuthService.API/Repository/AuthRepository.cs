@@ -14,6 +14,7 @@ namespace AuthService.API.Repository
     {
         private readonly AuthDbContext context;
         private readonly IConfiguration config;
+        private const int DefaultUserRoleId = 2; // Assuming "User" role has an ID of 2
         public AuthRepository(AuthDbContext _context, IConfiguration _config)
         {
             context = _context;
@@ -23,12 +24,12 @@ namespace AuthService.API.Repository
         public async Task<int> UpdateUserAsync(UserEditDto dto)
         {
             User? user = await GetUserByIdAsync(dto.Id);
-            if (user == null) throw new Exception("User not found");
+            if (user == null) return -1;
 
             user.Email = dto.Email;
             if (dto.Password != null && dto.Password.Length > 0)
                 user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password);
-            user.RoleId = (dto.RoleId > 0) ? dto.RoleId : 2; // Default to "User" role if not provided
+            user.RoleId = (dto.RoleId > 0) ? dto.RoleId : DefaultUserRoleId; // Default to "User" role if not provided
             user.IsActive = dto.IsActive;
 
             int res = await context.SaveChangesAsync();
@@ -44,18 +45,19 @@ namespace AuthService.API.Repository
         public async Task<LoggedUserDto> LoginUserAsync(UserLoginDto dto)
         {
             // 1. Find the user
-            User? user = await context.Users.AsNoTracking()
-                                      .Include(u => u.Role)
-                                      .FirstOrDefaultAsync(u => u.Email == dto.Email && u.IsActive == true);
-            if (user == null) throw new Exception("Invalid Email or Password");
+            User? user = await GetUserByEmailAsync(dto.Email);
+            if (user == null || !user.IsActive)
+                return new LoggedUserDto(null, user.Id, user.Email, user.Role?.RoleName ?? RolesEnum.User.ToString());
 
             // 2. Verify Password
             bool isPasswordValid = global::BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
-            if (!isPasswordValid) throw new Exception("Invalid Email or Password");
+            if (!isPasswordValid) 
+                return new LoggedUserDto(null, user.Id, user.Email, user.Role?.RoleName ?? RolesEnum.User.ToString());
 
             // 3. Create the JWT Token
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(config["JwtSettings:Secret"]!);
+            string secretKey = config["JwtSettings:Secret"];
+            byte[] key = Encoding.ASCII.GetBytes(secretKey);
 
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -81,13 +83,13 @@ namespace AuthService.API.Repository
         public async Task<int> RegisterUserAsync(UserRegisterDto dto)
         {
             User? user = await GetUserByEmailAsync(dto.Email);
-            if (user != null) throw new Exception("Email already exists");
+            if (user != null) return -1;
 
             user = new User
             {
                 Email = dto.Email,
                 PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                RoleId = (dto.RoleId > 0) ? dto.RoleId : 2 // Default to "User" role if not provided
+                RoleId = (dto.RoleId > 0) ? dto.RoleId : DefaultUserRoleId // Default to "User" role if not provided
             };
 
             await context.Users.AddAsync(user);
@@ -98,7 +100,7 @@ namespace AuthService.API.Repository
         public async Task<int> ResetPasswordAsync(ResetPasswordDto dto)
         {
             User? user = await GetUserByEmailAsync(dto.Email);
-            if (user == null) throw new Exception("User not found");
+            if (user == null) return -1;
 
             user.PasswordHash = global::BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
             return await context.SaveChangesAsync();
@@ -112,7 +114,7 @@ namespace AuthService.API.Repository
             else if (dto.Email != null && dto.Email.Length > 0)
                 user = await GetUserByEmailAsync(dto.Email);
 
-            if (user == null) throw new Exception("User not found");
+            if (user == null) return -1;
 
             context.Users.Remove(user);
             return await context.SaveChangesAsync();
@@ -133,23 +135,25 @@ namespace AuthService.API.Repository
                 .ToListAsync();
         }
 
-        public async Task<UserViewDto> ViewUserAsync(int? id, string? email)
+        public async Task<UserViewDto?> ViewUserAsync(int? id, string? email)
         {
             User? user = null;
+            UserViewDto? userViewDto = null;
+
             if (id != null && id > 0)
                 user = await GetUserByIdAsync(id.Value);
             else if (email != null && email.Length > 0)
                 user = await GetUserByEmailAsync(email);
 
-            if (user == null) throw new Exception("User not found");
+            if (user == null) return userViewDto;
 
-            UserViewDto userViewDto = new UserViewDto
+            userViewDto = new UserViewDto
             {
                 Id = user.Id,
                 Email = user.Email,
                 RoleId = user.RoleId,
                 IsActive = user.IsActive,
-                RoleName = (await context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Id == user.RoleId))?.RoleName ?? "User"
+                RoleName = user.Role?.RoleName ?? "User"
             };
             return userViewDto;
         }
@@ -162,7 +166,7 @@ namespace AuthService.API.Repository
             else if (dto.Email != null && dto.Email.Length > 0)
                 user = await GetUserByEmailAsync(dto.Email);
 
-            if (user == null) throw new Exception("User not found");
+            if (user == null) return -1;
 
             user.RoleId = dto.RoleId;
             return await context.SaveChangesAsync();
@@ -170,11 +174,17 @@ namespace AuthService.API.Repository
 
         private async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await context.Users.
+                Include(u => u.Role).
+                AsNoTracking().
+                FirstOrDefaultAsync(u => u.Email == email);
         }
         private async Task<User?> GetUserByIdAsync(int id)
         {
-            return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return await context.Users.
+                Include(u => u.Role).
+                AsNoTracking().
+                FirstOrDefaultAsync(u => u.Id == id);
         }
 
     }
