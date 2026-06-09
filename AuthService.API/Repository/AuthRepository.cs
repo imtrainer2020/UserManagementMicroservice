@@ -47,14 +47,13 @@ namespace AuthService.API.Repository
             // 1. Find the user
             User? user = await GetUserByEmailAsync(dto.Email);
             if (user == null)
-                return new LoggedUserDto(null, 0, dto.Email, RolesEnum.User.ToString());
+                return new LoggedUserDto(null, -1, dto.Email, RolesEnum.User.ToString());
             else if (!user.IsActive)
-                return new LoggedUserDto(null, user.Id, user.Email, user.Role?.RoleName ?? RolesEnum.User.ToString());
+                return new LoggedUserDto(null, -2, user.Email, user.Role?.RoleName ?? RolesEnum.User.ToString());
 
             // 2. Verify Password
-            bool isPasswordValid = global::BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
-            if (!isPasswordValid)
-                return new LoggedUserDto(null, user.Id, user.Email, user.Role?.RoleName ?? RolesEnum.User.ToString());
+            if (!global::BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+                return new LoggedUserDto(null, -3, user.Email, user.Role?.RoleName ?? RolesEnum.User.ToString());
 
             // 3. Create the JWT Token
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

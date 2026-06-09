@@ -5,7 +5,7 @@
   <div class="dash-welcome">
     <div>
       <h4 class="dash-greeting">Hello, {{ getUserName().toUpperCase() }} 👋</h4>
-      <p class="dash-subtext">{{ config?.greeting }}</p>
+      <p class="dash-subtext">{{ config.greeting }}</p>
     </div>
     <!--<span class="dash-date">{{ today | date:'EEEE, d MMMM y' }}</span>-->
   </div>
@@ -102,7 +102,7 @@
 
     <div class="widget-grid">
 
-      @for (widget of config?.widgets; track widget.label) {
+      @for (widget of config.widgets; track widget.label) {
       <div class="widget-card widget-workspace"
            [class.widget-clickable]="widget.route !== null"
            (click)="navigateTo(widget.route)">

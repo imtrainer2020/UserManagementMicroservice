@@ -1,1 +1,109 @@
-<p>roles-dashboard works!</p>
+<section class="dashboard-page">
+  <div class="dashboard-header d-flex justify-content-between align-items-center border-bottom pb-3">
+    <div>
+      <h2 class="mb-1">Role Management</h2>
+      <p class="mb-0 text-muted">Configure access levels and permissions (Admin Only).</p>
+    </div>
+
+    @if (isAdmin()) {
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary" (click)="openModal()">
+        <i class="bi bi-plus-lg"></i> Create Role
+      </button>
+      <button class="btn btn-primary" (click)="fetchRoles()" [disabled]="isLoading()">
+        <i class="bi bi-arrow-clockwise"></i> Refresh Data
+      </button>
+    </div>
+    }
+  </div>
+
+  @if (!isAdmin()) {
+  <div class="alert alert-danger mt-3">
+    <strong>Access Denied:</strong> {{ errorMessage() }}
+  </div>
+  } @else {
+
+  @if (errorMessage()) { <div class="alert alert-danger mt-3 py-2">{{ errorMessage() }}</div> }
+  @if (successMessage()) { <div class="alert alert-success mt-3 py-2">{{ successMessage() }}</div> }
+
+  <div class="card table-card border-0 shadow-sm mt-3">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" style="table-layout: fixed;">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-4" style="width: 15%;">Role ID</th>
+              <th style="width: 50%;">Role Name</th>
+              <th style="width: 35%; text-align: right; padding-right: 24px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (isLoading()) {
+            <tr><td colspan="3" class="text-center py-5 text-muted">Loading roles...</td></tr>
+            }
+
+            @for (role of roles(); track role.id) {
+            <tr>
+              <td class="ps-4 text-muted small">#{{ role.id }}</td>
+              <td class="fw-semibold">
+                {{ role.roleName }}
+                @if (isSystemRole(role.id)) {
+                <span class="badge bg-secondary ms-2" style="font-size: 0.7rem;">System Core</span>
+                }
+              </td>
+              <td style="text-align: right; padding-right: 24px;">
+                @if (isSystemRole(role.id)) {
+                <button class="btn btn-sm btn-light text-muted me-2" disabled title="System roles cannot be edited">Edit</button>
+                <button class="btn btn-sm btn-light text-muted" disabled title="System roles cannot be deleted">Delete</button>
+                } @else {
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="openModal(role)">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteRole(role)">Delete</button>
+                }
+              </td>
+            </tr>
+            } @empty {
+            @if (!isLoading()) {
+            <tr><td colspan="3" class="text-center py-5 text-muted">No roles found in the database.</td></tr>
+            }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (isModalOpen()) {
+  <div class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="m-0">{{ editingRoleId() ? 'Edit Role' : 'Create New Role' }}</h4>
+        <button class="close-btn" (click)="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-body p-4">
+        <form [formGroup]="roleForm" (ngSubmit)="saveRole()">
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Role Name</label>
+            <input type="text" formControlName="roleName" class="form-control" placeholder="e.g., Guest, Editor, Moderator"
+                   [class.is-invalid]="roleForm.get('roleName')?.invalid && roleForm.get('roleName')?.touched" />
+            @if (roleForm.get('roleName')?.hasError('required') && roleForm.get('roleName')?.touched) {
+            <div class="invalid-feedback">Role name is required.</div>
+            }
+            @if (roleForm.get('roleName')?.hasError('minlength') && roleForm.get('roleName')?.touched) {
+            <div class="invalid-feedback">Must be at least 2 characters.</div>
+            }
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()" [disabled]="isSaving()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="isSaving() || roleForm.invalid">
+              {{ isSaving() ? 'Saving...' : (editingRoleId() ? 'Update Role' : 'Create Role') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  }
+</section>

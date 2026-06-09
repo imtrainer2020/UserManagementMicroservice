@@ -57,7 +57,7 @@ public class RolesController : ControllerBase
         }
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<ActionResult<ApiResponse<int>>> DeleteRole(int id)
     {
         int res = await repo.DeleteRoleAsync(id);

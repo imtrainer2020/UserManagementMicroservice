@@ -39,9 +39,16 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<ApiResponse<LoggedUserDto>>> LoginUser([FromBody] UserLoginDto dto)
     {
         LoggedUserDto loggedUser = await repo.LoginUserAsync(dto);
-        return (loggedUser != null && loggedUser.JwtToken != null && loggedUser.JwtToken.Length > 0) ?
-            Ok(ApiResponse<LoggedUserDto>.Success(loggedUser, "Login successful."))
-        : BadRequest(ApiResponse<LoggedUserDto>.Fail("Invalid Email or Password"));
+        if (loggedUser != null && loggedUser.JwtToken != null && loggedUser.JwtToken.Length > 0)
+            return Ok(ApiResponse<LoggedUserDto>.Success(loggedUser, "Login successful."));
+        else if (loggedUser != null && loggedUser.UserId == -1)
+            return NotFound(ApiResponse<LoggedUserDto>.Fail("User Not Found"));
+        else if (loggedUser != null && loggedUser.UserId == -2)
+            return BadRequest(ApiResponse<LoggedUserDto>.Fail("Incorrect Password"));
+        else if (loggedUser != null && loggedUser.UserId == -3)
+            return BadRequest(ApiResponse<LoggedUserDto>.Fail("You're not allowed to Login. Please contact to Admin"));
+        else
+            return BadRequest(ApiResponse<LoggedUserDto>.Fail("Invalid Email or Password"));
     }
 
     [HttpGet("forgetpassword")]

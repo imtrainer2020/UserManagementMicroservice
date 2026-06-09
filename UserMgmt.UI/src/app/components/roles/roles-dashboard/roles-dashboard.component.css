@@ -1,0 +1,81 @@
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Base Table Styles */
+.table-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  font-weight: 600 !important;
+  color: #4b5563 !important;
+}
+
+td {
+  vertical-align: middle;
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(17, 24, 39, 0.6); /* Darker backdrop for focus */
+  backdrop-filter: blur(2px);
+  z-index: 1050;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  border: none;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+  .modal-header h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+  .close-btn:hover {
+    color: #111827;
+  }
+
+.form-control:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
